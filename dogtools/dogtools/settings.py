@@ -40,6 +40,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1",
     "http://176.99.9.17",
     "https://176.99.9.17",
+    "http://dog-tools.ru",
+    "https://dog-tools.ru",
 ]
 
 
