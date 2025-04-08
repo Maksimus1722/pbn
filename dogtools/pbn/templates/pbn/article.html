@@ -45,8 +45,8 @@
                     </li>
                 </ul>
                 <div itemscope itemtype="http://schema.org/Article">
-                    <h1 class="article-title" itemprop="headline">{{ name|capfirst}}</h1>
-                    <span><time itemprop="datePublished" datetime="{{ created.isoformat}}">Дата публикации: {{created|date:"d-m-Y"}}</time></span>
+                    <h1 class="article-title" itemprop="headline">{{ name|capfirst }}</h1>
+                    <span><time itemprop="datePublished" datetime="{{ created.isoformat }}">Дата публикации: {{ created|date:"d-m-Y" }}</time></span>
                     <div class="separator single"></div>
                     <div class="post-content">
                         <div class="post-content-inner" itemprop="articleBody">{{ text|safe }}</div>
