@@ -1,0 +1,44 @@
+{% extends 'pbn/base.html' %}
+{% load static %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}/{{ slug }}/{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="article-single  col-xl-8 col-sm-12 col-small-12 col-xs-12">
+                <ul class="breadcrumb theme" itemscope itemtype="http://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <a itemprop="item" href="/">
+                            <span itemprop="name">Главная</span>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <span itemprop="name">{{ name|capfirst }}</span>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                </ul>
+                <h1 class="article-title">{{ name|capfirst }}</h1>
+                <div class="separator single"></div>
+                <div class="post-content">
+                    <div class="post-content-inner">{{ text|safe }}</div>
+                    <div class="after-post"></div>
+                </div>
+            </div>
+            <div id="sidebar" class="col-xl-4 col-sm-12 col-small-12 col-xs-12">
+                <div id="recent-posts-2" class="widget widget_recent_entries">
+                    <h2>Рубрики блога</h2>
+                    <span class="line"></span>
+                    <ul>
+                        {% for category in list_category %}
+                            <li>
+                                <a href="/blog/{{ category.slug }}/"  aria-current="page">{{ category.name|capfirst }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="separator single big"></div>
+    </div>
+{% endblock content %}

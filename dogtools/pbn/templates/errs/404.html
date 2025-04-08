@@ -1,0 +1,34 @@
+{% extends 'pbn/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="article-single  col-xl-8 col-sm-12 col-small-12 col-xs-12">
+                <h1 class="article-title">Упс... Такой страницы не существует</h1>
+                <div class="separator single"></div>
+                <div class="post-content">
+                    <div class="post-content-inner">
+                        Вы ввели неверный адрес: {{ url }}
+                        <br>
+                        Попробуйте ввести корректный адрес.
+                    </div>
+                    <div class="after-post"></div>
+                </div>
+            </div>
+            <div id="sidebar" class="col-xl-4 col-sm-12 col-small-12 col-xs-12">
+                <div id="recent-posts-2" class="widget widget_recent_entries">
+                    <h2>Рубрики блога</h2>
+                    <span class="line"></span>
+                    <ul>
+                        {% for category in list_category %}
+                            <li>
+                                <a href="/blog/{{ category.slug }}/"  aria-current="page">{{ category.name|capfirst }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="separator single big"></div>
+    </div>
+{% endblock content %}

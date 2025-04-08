@@ -1,0 +1,33 @@
+<urlset>
+<url>
+<loc>{{ request.scheme }}://{{ request.get_host }}</loc>
+<lastmod>{{ domain_last_mod|date:"c" }}</lastmod>
+<priority>1.0</priority>
+</url>
+<url>
+<loc>{{ request.scheme }}://{{ request.get_host }}{% url "blog" %}</loc>
+<lastmod>{{ domain_last_mod|date:"c" }}</lastmod>
+<priority>0.5</priority>
+</url>
+{% for article in list_articles %}
+    <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/</loc>
+    <lastmod>{{ article.last_mod|date:"c" }}</lastmod>
+    <priority>1.0</priority>
+    </url>
+{% endfor %}
+{% for category in list_category %}
+    <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}{% url "blog" %}{{ category.slug }}/</loc>
+    <lastmod>{{ category.last_mod|date:"c" }}</lastmod>
+    <priority>0.8</priority>
+    </url>
+{% endfor %}
+{% for page in list_other_page %}
+    <url>
+    <loc>{{ request.scheme }}://{{ request.get_host }}/{{ page.slug }}/</loc>
+    <lastmod>{{ page.last_mod|date:"c" }}</lastmod>
+    <priority>0.5</priority>
+    </url>
+{% endfor %}
+</urlset>

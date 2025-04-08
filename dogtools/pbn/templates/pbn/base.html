@@ -1,0 +1,78 @@
+{% load static %}
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="ru">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>{{ title }}</title>
+            <meta name="description" content="{{ description }}" />
+            <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
+            <link rel="icon" href="/{{ favicon }}">
+            <link rel='stylesheet'
+                  href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
+                  type='text/css'
+                  media='all' />
+            <link rel="stylesheet" href=" {% static 'pbn/css/style.css' %}">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        </head>
+        <body class="home blog">
+            <div class="overlay"></div>
+            <div class="grid">
+                <header id="theme-header" role="banner">
+                    <div class="logo">
+                        <a href="/">
+                            <img class="hidden-xs"  src="/media/{{ logo }}" />
+                        </a>
+                        <span class="site-title visible-xl">
+                            <a style="color:black" href="/">{{ domain_domain }}</a>
+                        </span>
+                    </div>
+                    <nav class="primary" id="primary">
+                        <button class="mobile-menu-icon mobile-trigger mobile-trigger--slider">
+                            <span class="mobile-trigger-box">
+                                <span class="mobile-trigger-inner"></span>
+                                <span class="screen-reader-text">Меню</span>
+                            </span>
+                        </button>
+                        <ul id="primary" class="menu">
+                            {% for category in list_category %}
+                                <li id="menu-item-110950" class="menu-item">
+                                    <a href="/blog/{{ category.slug }}/">{{ category.name|capfirst}}</a>
+                                </li>
+                            {% endfor %}
+                            {% for page in list_other_page %}
+                                <li id="menu-item-110950" class="menu-item">
+                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </header>
+                {% block content %}
+                {% endblock content %}
+                <footer id="footer" class="footer">
+                    <div class="row" id="footer-widgets">
+                        <div class="col-xl-12">
+                            <ul id="primary" class="menu">
+                                {% for category in list_category %}
+                                    <li id="menu-item-110950" class="menu-item">
+                                        <a href="/blog/{{ category.slug }}/">{{ category.name|capfirst }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% for page in list_other_page %}
+                                    <li id="menu-item-110950" class="menu-item">
+                                        <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
+                <script type="text/javascript" src="{% static "/pbn/js/script.js" %}"></script>
+            </body>
+        </html>
+    {% endspaceless %}

@@ -1,0 +1,65 @@
+{% extends 'pbn/base.html' %}
+{% load static %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="breadcrumb-navigation">
+            <ul class="breadcrumb theme" itemscope itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="/">
+                        <span itemprop="name">Главная</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="{% url "blog" %}">
+                        <span itemprop="name">Блог</span>
+                    </a>
+                    <meta itemprop="position" content="2" />
+                </li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li  itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <span itemprop="name">{{ category_name|capfirst }}</span>
+                    <meta itemprop="position" content="3" />
+                </li>
+            </ul>
+            <h1 class="page-title">{{ h1|capfirst }}</h1>
+        </div>
+        <br>
+        <div class="articles row grid-3"
+             id="content"
+             itemscope
+             itemtype="http://schema.org/Blog">
+            {% for article in list_articles %}
+                <div class="col-xl-4 col-sm-6 col-small-6 col-xs-12">
+                    <article class="post-112249 post type-post status-publish format-standard has-post-thumbnail hentry category-5623"
+                             itemprop="blogPosts"
+                             itemscope
+                             itemtype="http://schema.org/BlogPosting">
+                        <div class="post-thumb">
+                            <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                <img class="cover-image visible"
+                                     src="/media/{{ article.img_preview }}"
+                                     alt="{{ article.name }}"
+                                     itemprop="image">
+                            </a>
+                        </div>
+                        <div class="post-details">
+                            <h2 class="post-title" itemprop="headline">
+                                <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                   class="article-title">{{ article.name }}</a>
+                            </h2>
+                            <p itemprop="description">{{ article.text_preview }}</p>
+                        </div>
+                        <div class="date-published">
+                            <span class="big">{{ article.created|date:"d" }}</span>
+                            <span class="small">{{ article.created|date:"F Y" }}</span>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+            <div class="main-separator"></div>
+        </div>
+    </div>
+{% endblock content %}
