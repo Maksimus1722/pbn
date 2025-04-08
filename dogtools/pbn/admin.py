@@ -66,7 +66,17 @@ class ArticlesAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основное",
-            {"fields": ("last_mod", "active", "created", "name", "category", "slug")},
+            {
+                "fields": (
+                    "last_mod",
+                    "active",
+                    "created",
+                    "name",
+                    "domain",
+                    "category",
+                    "slug",
+                )
+            },
         ),
         ("Мета-данные", {"fields": ("title", "description", "keywords")}),
         ("Содержимое", {"fields": ("img_preview", "text_preview", "text")}),
