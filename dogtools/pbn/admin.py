@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Domains, Article, Category, OtherPage, MembransLinks
+from django.core.cache import cache
+from django.http import HttpResponseRedirect
+from .models import Domains, Article, Category, OtherPage, LinksMembrans, LinksRedirects
+from dogtools.scripts.list_redirects import get_list_redirects
 
 
 admin.site.site_header = "Админ-панель для управления сайтами"
@@ -7,7 +10,12 @@ admin.site.index_title = "Рабочая панель"
 
 
 class MembransLinksInline(admin.TabularInline):
-    model = MembransLinks
+    model = LinksMembrans
+    extra = 1
+
+
+class RedirectLinksInline(admin.TabularInline):
+    model = LinksRedirects
     extra = 1
 
 
@@ -46,7 +54,7 @@ class DomainsAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [MembransLinksInline]
+    inlines = [RedirectLinksInline, MembransLinksInline]
     readonly_fields = ("last_mod",)
 
 

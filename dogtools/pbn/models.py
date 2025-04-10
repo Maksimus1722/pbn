@@ -257,23 +257,24 @@ class OtherPage(models.Model):
         return f"{self.name}"
 
 
-class MembransLinks(models.Model):
+
+class LinksMembrans(models.Model):
     domain = models.ForeignKey(
         Domains,
         on_delete=models.PROTECT,
         verbose_name="Домен",
     )
-    slug_user = models.SlugField(
+    slug_user = models.CharField(
         max_length=100,
-        null=False,
-        db_index=True,
         verbose_name="URL-прокладки",
         help_text="Символный код ссылки-прокладки. Только латиница в нижним регистре и тире. Например: my-new-link",
+        default="",
     )
     link_money_site = models.CharField(
-        max_length=150,
+        max_length=100,
         verbose_name="URL Money Site",
         help_text="URL финальной страницы на Money Site",
+        default="",
     )
 
     class Meta:
@@ -282,3 +283,30 @@ class MembransLinks(models.Model):
 
     def __str__(self):
         return f"{self.slug_user}"
+
+
+class LinksRedirects(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    start_link = models.CharField(
+        max_length=100,
+        verbose_name="Откуда редирект",
+        help_text="Начинается строго со знака /. Например /page.html или /page",
+        default="",
+    )
+    finish_link = models.CharField(
+        max_length=100,
+        verbose_name="Куда редирект",
+        help_text="Начинается строго со знака /. Например /page.html. Если редирект на главную, просто пишем - /.",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Набор"
+        verbose_name_plural = "Ссылки-редиректы"
+
+    def __str__(self):
+        return f"{self.start_link}"

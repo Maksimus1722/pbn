@@ -2,8 +2,8 @@ import re
 from django_filters.views import View
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
-from .scripts.list_redirects import dict_redirects
 from .scripts.database_tools import ConnectDB
+from .scripts.list_redirects import redirects_map
 
 ## Мета-данные страницы ошибки
 title = "Несуществующая страница"
@@ -78,9 +78,9 @@ class Sitemap(View):
 
 class GeneralRedirect(View):
     def get(self, request, *args, **kwargs):
-        host = request.get_host()
+        host = re.sub(r":.*", "", self.request.get_host())
         path = request.path
-        url_redirect = dict_redirects[host].get(path)
+        url_redirect = redirects_map[host].get(path)
         if url_redirect:
             return redirect(url_redirect, permanent=True)
         data = base_function_404(host, request)
