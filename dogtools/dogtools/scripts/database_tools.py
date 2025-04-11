@@ -203,7 +203,7 @@ class ConnectDB:
                 meta = sa.MetaData()
                 meta.reflect(engine)
                 domain_table = meta.tables["pbn_domains"]
-                membran_table = meta.tables["pbn_membranslinks"]
+                membran_table = meta.tables["pbn_linksmembrans"]
                 query = (
                     sa.select(
                         domain_table.c.logo,

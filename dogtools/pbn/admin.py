@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.core.cache import cache
-from django.http import HttpResponseRedirect
 from .models import Domains, Article, Category, OtherPage, LinksMembrans, LinksRedirects
-from dogtools.scripts.list_redirects import get_list_redirects
 
 
 admin.site.site_header = "Админ-панель для управления сайтами"
