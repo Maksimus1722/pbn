@@ -128,7 +128,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категорию"
         verbose_name_plural = "Категории"
-        ordering = ["-domain", "-name"]
 
 
 class Article(models.Model):
@@ -255,7 +254,6 @@ class OtherPage(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
 
 
 class LinksMembrans(models.Model):

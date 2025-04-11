@@ -57,6 +57,26 @@ class DomainsAdmin(admin.ModelAdmin):
     inlines = [RedirectLinksInline, MembransLinksInline]
     readonly_fields = ("last_mod",)
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "h1",
+            "title",
+            "description",
+            "keywords",
+            "blog_title",
+            "blog_description",
+            "blog_keywords",
+            "blog_name",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
+
 
 class ArticlesAdmin(admin.ModelAdmin):
     list_display = ["name", "active", "domain", "category"]
@@ -91,6 +111,22 @@ class ArticlesAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("last_mod",)
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "name",
+            "title",
+            "description",
+            "keywords",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name", "sort", "domain", "category_slug"]
@@ -99,7 +135,7 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = [
         "name__istartswith",
     ]
-    ordering = ["name", "sort"]
+    ordering = ["domain", "name"]
     list_filter = [
         "domain",
     ]
@@ -111,6 +147,22 @@ class CategoryAdmin(admin.ModelAdmin):
         ("Мета-данные", {"fields": ("title", "description", "keywords", "h1")}),
     )
     readonly_fields = ("last_mod",)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "h1",
+            "title",
+            "description",
+            "keywords",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
 
 
 class OtherPageAdmin(admin.ModelAdmin):
@@ -155,6 +207,22 @@ class OtherPageAdmin(admin.ModelAdmin):
         ("Содержимое", {"fields": ("h1", "text")}),
     )
     readonly_fields = ("last_mod",)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "h1",
+            "title",
+            "description",
+            "keywords",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
 
 
 # Register your models here.

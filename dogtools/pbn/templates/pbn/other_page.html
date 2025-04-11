@@ -1,6 +1,6 @@
 {% extends 'pbn/base.html' %}
 {% load static %}
-{% block canonical %}{{ request.scheme }}://{{ request.get_host }}/{{ slug }}/{% endblock canonical %}
+{% block canonical %}https://{{ request.get_host }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="row">
