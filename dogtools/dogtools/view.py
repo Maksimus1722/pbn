@@ -3,7 +3,7 @@ from django_filters.views import View
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 from .scripts.database_tools import ConnectDB
-from .scripts.list_redirects import redirects_map
+from .scripts.list_hosts import redirects_map
 
 ## Мета-данные страницы ошибки
 title = "Несуществующая страница"

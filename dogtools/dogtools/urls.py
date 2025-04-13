@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import view
-from .scripts.list_redirects import redirects_map
+from .scripts.list_hosts import redirects_map
 
 
 urlpatterns = (

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from .scripts.list_hosts import list_hosts
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,20 +27,11 @@ SECRET_KEY = "django-insecure-0lgfz5@ork_-bj4hwegu+5ff!1)+=hlim$ri0(i&&ajn@3%egs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "dog-tools.ru",
-    "www.dog-tools.ru",
-    "shark-tools.ru",
-    "www.shark-tools.ru",
-    "127.0.0.1",
-    "176.99.9.17",
-]
+ALLOWED_HOSTS = list_hosts
 
 CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1",
     "http://127.0.0.1",
-    "http://176.99.9.17",
-    "https://176.99.9.17",
     "http://dog-tools.ru",
     "https://dog-tools.ru",
 ]

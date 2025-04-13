@@ -1,7 +1,9 @@
 import sqlalchemy as sa
 
+connect_db = "mysql+pymysql://max_shark:fdfde0fdf$@176.99.9.17:3306/pbn_crm"
+
+
 def get_list_redirects():
-    connect_db = "mysql+pymysql://max_shark:fdfde0fdf$@176.99.9.17:3306/pbn_crm"
     try:
         engine = sa.create_engine(connect_db)
         with engine.connect() as con:
@@ -35,4 +37,25 @@ def get_list_redirects():
     except Exception as err:
         return False
 
+
+def get_list_allow_host():
+    try:
+        engine = sa.create_engine(connect_db)
+        with engine.connect() as con:
+            meta = sa.MetaData()
+            meta.reflect(engine)
+            domain_table = meta.tables["pbn_domains"]
+            query = sa.select(domain_table.c.domain).order_by(
+                sa.desc(domain_table.c.domain)
+            )
+            rs = con.execute(query).fetchall()
+            list_hosts = [row.domain for row in rs] + [
+                "www." + row.domain for row in rs
+            ]
+            return list_hosts
+    except Exception as err:
+        return False
+
+
 redirects_map = get_list_redirects()
+list_hosts = get_list_allow_host()
