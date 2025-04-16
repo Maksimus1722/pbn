@@ -36,6 +36,9 @@ class ConnectDB:
                         domain_table.c.keywords.label("keywords"),
                         domain_table.c.h1.label("h1"),
                         domain_table.c.main_text.label("main_text"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                     )
                     .select_from(
                         article_table.join(
@@ -68,6 +71,9 @@ class ConnectDB:
                     "keywords": first_rs.keywords,
                     "h1": first_rs.h1,
                     "main_text": first_rs.main_text,
+                    "google_analytics": first_rs.google_analytics,
+                    "yandex_metrika": first_rs.yandex_metrika,
+                    "yandex_webmaster": first_rs.yandex_webmaster,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -116,6 +122,9 @@ class ConnectDB:
                         otherpage_table.c.title.label("title"),
                         otherpage_table.c.h1.label("h1"),
                         otherpage_table.c.text.label("text"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                     )
                     .select_from(
                         otherpage_table.join(
@@ -143,6 +152,9 @@ class ConnectDB:
                     "title": first_row.title,
                     "h1": first_row.h1,
                     "text": first_row.text,
+                    "google_analytics": first_row.google_analytics,
+                    "yandex_metrika": first_row.yandex_metrika,
+                    "yandex_webmaster": first_row.yandex_webmaster,
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
@@ -172,6 +184,9 @@ class ConnectDB:
                     domain_table.c.domain,
                     domain_table.c.logo,
                     domain_table.c.favicon,
+                    domain_table.c.google_analytics.label("google_analytics"),
+                    domain_table.c.yandex_metrika.label("yandex_metrika"),
+                    domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -179,6 +194,9 @@ class ConnectDB:
                     "domain_domain": rs.domain,
                     "logo": rs.logo,
                     "favicon": rs.favicon,
+                    "google_analytics": rs.google_analytics,
+                    "yandex_metrika": rs.yandex_metrika,
+                    "yandex_webmaster": rs.yandex_webmaster,
                 }
                 self._manage_get_category_articles(data["domain_id"])
                 if self.dict_category["valid"] and self.dict_other_page["valid"]:

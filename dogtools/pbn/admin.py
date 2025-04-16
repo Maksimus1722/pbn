@@ -37,7 +37,19 @@ class DomainsAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основное",
-            {"fields": ("last_mod", "domain", "logo", "favicon", "h1", "main_text")},
+            {
+                "fields": (
+                    "last_mod",
+                    "domain",
+                    "logo",
+                    "favicon",
+                    "google_analytics",
+                    "yandex_metrika",
+                    "yandex_webmaster",
+                    "h1",
+                    "main_text",
+                )
+            },
         ),
         ("Мета-данные", {"fields": ("title", "description", "keywords")}),
         (

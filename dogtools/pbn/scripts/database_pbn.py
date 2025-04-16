@@ -34,6 +34,9 @@ class ConnectDB:
                         domain_table.c.blog_title.label("blog_title"),
                         domain_table.c.blog_description.label("blog_description"),
                         domain_table.c.blog_name.label("blog_name"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                     )
                     .select_from(
                         article_table.join(
@@ -63,6 +66,9 @@ class ConnectDB:
                     "title": first_rs.blog_title,
                     "description": first_rs.blog_description,
                     "h1": first_rs.blog_name,
+                    "google_analytics": first_rs.google_analytics,
+                    "yandex_metrika": first_rs.yandex_metrika,
+                    "yandex_webmaster": first_rs.yandex_webmaster,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -117,6 +123,9 @@ class ConnectDB:
                         domain_table.c.logo.label("logo"),
                         domain_table.c.favicon.label("favicon"),
                         domain_table.c.domain.label("domain_domain"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                     )
                     .select_from(
                         article_table.join(
@@ -138,7 +147,6 @@ class ConnectDB:
                     data = {"valid": False}
                     return data
                 first_rs = rs[0]
-                test_leng = len(rs)
                 data = {
                     "domain_id": first_rs.domain_id,
                     "domain_domain": first_rs.domain_domain,
@@ -149,6 +157,9 @@ class ConnectDB:
                     "category_name": first_rs.category_name,
                     "logo": first_rs.logo,
                     "favicon": first_rs.favicon,
+                    "google_analytics": first_rs.google_analytics,
+                    "yandex_metrika": first_rs.yandex_metrika,
+                    "yandex_webmaster": first_rs.yandex_webmaster,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -202,6 +213,9 @@ class ConnectDB:
                         domain_table.c.logo.label("logo"),
                         domain_table.c.favicon.label("favicon"),
                         domain_table.c.domain.label("domain_domain"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                     )
                     .select_from(
                         article_table.join(
@@ -238,6 +252,9 @@ class ConnectDB:
                     "logo": rs.logo,
                     "favicon": rs.favicon,
                     "id_category": rs.category_id,
+                    "google_analytics": rs.google_analytics,
+                    "yandex_metrika": rs.yandex_metrika,
+                    "yandex_webmaster": rs.yandex_webmaster,
                 }
                 article_query = sa.select(article_table).where(
                     sa.and_(
@@ -295,6 +312,9 @@ class ConnectDB:
                     domain_table.c.domain,
                     domain_table.c.logo,
                     domain_table.c.favicon,
+                    domain_table.c.google_analytics.label("google_analytics"),
+                    domain_table.c.yandex_metrika.label("yandex_metrika"),
+                    domain_table.c.yandex_webmaster.label("yandex_webmaster"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -302,6 +322,8 @@ class ConnectDB:
                     "domain_domain": rs.domain,
                     "logo": rs.logo,
                     "favicon": rs.favicon,
+                    "google_analytics": rs.google_analytics,
+                    "yandex_metrika": rs.yandex_metrika,
                 }
                 self._manage_get_category_articles(data["domain_id"])
                 if self.dict_category["valid"] and self.dict_other_page["valid"]:

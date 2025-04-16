@@ -71,6 +71,27 @@ class Domains(models.Model):
         auto_now=True,
         verbose_name="Последнее обновление",
     )
+    google_analytics = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Счетчик Google Analytics",
+        help_text="Например: G-8C1FN89PWR",
+    )
+    yandex_metrika = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Счетчик Yandex metrika",
+        help_text="Например: 94153371",
+    )
+    yandex_webmaster = models.CharField(
+        max_length=150,
+        default="",
+        blank=True,
+        verbose_name="Номер Яндекс.Вебмастера",
+        help_text="Например: ffbe325dc3c6cf09",
+    )
 
     class Meta:
         verbose_name = "Домен"
