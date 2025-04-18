@@ -10,7 +10,8 @@ class ConnectDB:
             "mysql+pymysql://max_shark:fdfde0fdf$@176.99.9.17:3306/pbn_crm"
         )
 
-    def get_info_main_page(self):
+    def get_info_main_page(self) -> dict:
+        """Получение инофрмации для главной страницы"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -26,6 +27,8 @@ class ConnectDB:
                         article_table.c.img_preview,
                         article_table.c.created,
                         article_table.c.text_preview,
+                        article_table.c.page_view,
+                        article_table.c.time_read,
                         category_table.c.category_slug.label("category_slug"),
                         domain_table.c.id.label("domain_id"),
                         domain_table.c.domain.label("domain_domain"),
@@ -82,6 +85,8 @@ class ConnectDB:
                             "img_preview": row.img_preview,
                             "created": row.created,
                             "text_preview": row.text_preview,
+                            "page_view": row.page_view,
+                            "time_read": row.time_read,
                         }
                         for row in rs
                     ],
@@ -102,7 +107,8 @@ class ConnectDB:
         finally:
             return data
 
-    def get_info_other_page(self, slug):
+    def get_info_other_page(self, slug: str) -> dict:
+        """Другие страницы (не категории)"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -172,7 +178,8 @@ class ConnectDB:
         finally:
             return data
 
-    def get_info_404(self):
+    def get_info_404(self) -> dict:
+        """Отработка 404 ошибок"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -214,7 +221,8 @@ class ConnectDB:
         finally:
             return data
 
-    def get_membrans_link(self, page_slug):
+    def get_membrans_link(self, page_slug: str) -> dict:
+        """Получение мембранных ссылок (перенапрваление на мани-сайт)"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -258,7 +266,8 @@ class ConnectDB:
         finally:
             return data
 
-    def _manage_get_category_articles(self, domain_id):
+    def _manage_get_category_articles(self, domain_id: int) -> dict:
+        """Получение списка категорий и списка других страниц в 2 потокока - дочерная функция"""
         thr1 = threading.Thread(
             target=self._get_all_category_host,
             args=[
@@ -276,7 +285,8 @@ class ConnectDB:
         thr1.join()
         thr2.join()
 
-    def _get_all_category_host(self, domain_id):
+    def _get_all_category_host(self, domain_id: int) -> dict:
+        """Получение всех категорий хоста"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -305,7 +315,8 @@ class ConnectDB:
         except:
             self.dict_category = {"valid": False}
 
-    def _get_all_other_page_host(self, domain_id):
+    def _get_all_other_page_host(self, domain_id: int) -> dict:
+        """Получение всех других категорий хоста"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -334,7 +345,8 @@ class ConnectDB:
         except:
             self.dict_other_page = {"valid": False}
 
-    def get_sitemap(self):
+    def get_sitemap(self) -> dict:
+        """Получаем список статей хоста для формирования XML"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:

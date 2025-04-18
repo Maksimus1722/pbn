@@ -106,8 +106,9 @@ class ArticlesAdmin(admin.ModelAdmin):
             "Основное",
             {
                 "fields": (
-                    "last_mod",
                     "active",
+                    "last_mod",
+                    "page_view",
                     "created",
                     "name",
                     "domain",
@@ -117,9 +118,12 @@ class ArticlesAdmin(admin.ModelAdmin):
             },
         ),
         ("Мета-данные", {"fields": ("title", "description", "keywords")}),
-        ("Содержимое", {"fields": ("img_preview", "text_preview", "text")}),
+        (
+            "Содержимое",
+            {"fields": ("time_read", "img_preview", "text_preview", "text")},
+        ),
     )
-    readonly_fields = ("last_mod",)
+    readonly_fields = ("last_mod","page_view")
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

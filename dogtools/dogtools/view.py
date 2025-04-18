@@ -12,6 +12,8 @@ keywords = "страница ошибки"
 
 
 class MainPage(View):
+    """Отображение главное страницы"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
         data = ConnectDB(host)
@@ -29,14 +31,16 @@ class MainPage(View):
 
 
 class OtherPage(View):
+    """Отображение других страниц и параллельно проверка мембран"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
         page_slug = self.kwargs["slug"]
-        database = ConnectDB(host)
-        data = database.get_info_other_page(page_slug)
+        connect = ConnectDB(host)
+        data = connect.get_info_other_page(page_slug)
         if data["valid"]:
             return render(request, "pbn/other_page.html", context=data)
-        data = database.get_membrans_link(page_slug)
+        data = connect.get_membrans_link(page_slug)
         if data["valid"]:
             user_agent = self.request.META.get("HTTP_USER_AGENT", "Неизвестно")
             if re.search(r"google|yandex", user_agent, re.I):
@@ -50,6 +54,8 @@ class OtherPage(View):
 
 
 class Robots(View):
+    """Получение robots.txt"""
+
     def get(self, request, *args, **kwargs):
         return render(
             request,
@@ -59,6 +65,8 @@ class Robots(View):
 
 
 class Sitemap(View):
+    """Формирование sitemap.xml"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
         data = ConnectDB(host)
@@ -77,6 +85,8 @@ class Sitemap(View):
 
 
 class GeneralRedirect(View):
+    """Отработка списка редиректов из админки"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
         path = request.path
@@ -89,7 +99,8 @@ class GeneralRedirect(View):
         return HttpResponseNotFound()
 
 
-def base_function_404(host, request):
+def base_function_404(host, request) -> dict:
+    """Получени кастомной 404 ошибки"""
     data = ConnectDB(host)
     data = data.get_info_404()
     data.update(
@@ -103,6 +114,7 @@ def base_function_404(host, request):
     return data
 
 
+# Просто нужна стандартная функция 404, если ничего не отработало
 def handler404(request, exception):
     host = re.sub(r":.*", "", request.get_host())
     data = base_function_404(host, request)

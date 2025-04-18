@@ -12,86 +12,86 @@ keywords = "страница ошибки"
 
 
 class Blog(View):
+    """Отображение страницы блога"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
-        data = ConnectDB(host)
-        data = data.get_all_arcticle_for_blog()
+        connect = ConnectDB(host)
+        data = connect.get_all_arcticle_for_blog()
         if data["valid"]:
             return render(
                 request,
                 "pbn/blog.html",
                 context=data,
             )
-        else:
-            data = ConnectDB(host)
-            data = data.get_info_404()
-            if data["valid"]:
-                data.update(
-                    {
-                        "title": title,
-                        "description": description,
-                        "keywords": keywords,
-                        "url": self.request._current_scheme_host + self.request.path,
-                    }
-                )
-                return render(request, "errs/404.html", status=404, context=data)
-            else:
-                return HttpResponseNotFound()
+        data = connect.get_info_404()
+        if data["valid"]:
+            data.update(
+                {
+                    "title": title,
+                    "description": description,
+                    "keywords": keywords,
+                    "url": self.request._current_scheme_host + self.request.path,
+                }
+            )
+            return render(request, "errs/404.html", status=404, context=data)
+        return HttpResponseNotFound()
 
 
 class Category(View):
+    """Отображение рубрики блога"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
-        data = ConnectDB(host)
-        data = data.get_article_category(slug=self.kwargs["category_slug"])
+        connect = ConnectDB(host)
+        data = connect.get_article_category(self.kwargs["category_slug"])
         if data["valid"]:
             return render(
                 request,
                 "pbn/category.html",
                 context=data,
             )
-        else:
-            data = ConnectDB(host)
-            data = data.get_info_404()
-            if data["valid"]:
-                data.update(
-                    {
-                        "title": title,
-                        "description": description,
-                        "keywords": keywords,
-                        "url": self.request._current_scheme_host + self.request.path,
-                    }
-                )
-                return render(request, "errs/404.html", status=404, context=data)
-            else:
-                return HttpResponseNotFound()
+        data = connect.get_info_404()
+        if data["valid"]:
+            data.update(
+                {
+                    "title": title,
+                    "description": description,
+                    "keywords": keywords,
+                    "url": self.request._current_scheme_host + self.request.path,
+                }
+            )
+            return render(request, "errs/404.html", status=404, context=data)
+        return HttpResponseNotFound()
 
 
 class Article(View):
+    """Отображение конкретной статьи"""
+
     def get(self, request, *args, **kwargs):
         host = re.sub(r":.*", "", self.request.get_host())
-        data = ConnectDB(host)
-        data = data.get_article(
+        connect = ConnectDB(host)
+        data = connect.get_article(
             article_slug=self.kwargs["slug"], category_slug=self.kwargs["category_slug"]
         )
         if data["valid"]:
-            return render(
-                request,
-                "pbn/article.html",
-                context=data,
-            )
-        else:
-            data = ConnectDB(host)
-            data = data.get_info_404()
-            if data["valid"]:
-                data.update(
-                    {
-                        "title": title,
-                        "description": description,
-                        "keywords": keywords,
-                        "url": self.request._current_scheme_host + self.request.path,
-                    }
+            connect.add_count_view_article(data["id_article"], data["page_view"])
+            data["list_top_articles"] = connect.get_top_articles(data["domain_id"])
+            if data["list_top_articles"]:
+                return render(
+                    request,
+                    "pbn/article.html",
+                    context=data,
                 )
-                return render(request, "errs/404.html", status=404, context=data)
-            else:
-                return HttpResponseNotFound()
+        data = connect.get_info_404()
+        if data["valid"]:
+            data.update(
+                {
+                    "title": title,
+                    "description": description,
+                    "keywords": keywords,
+                    "url": self.request._current_scheme_host + self.request.path,
+                }
+            )
+            return render(request, "errs/404.html", status=404, context=data)
+        return HttpResponseNotFound()

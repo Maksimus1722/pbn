@@ -4,6 +4,7 @@ connect_db = "mysql+pymysql://max_shark:fdfde0fdf$@176.99.9.17:3306/pbn_crm"
 
 
 def get_list_redirects():
+    """Запускается сразу и получает список редиректов"""
     try:
         engine = sa.create_engine(connect_db)
         with engine.connect() as con:
@@ -39,6 +40,7 @@ def get_list_redirects():
 
 
 def get_list_allow_host():
+    """Список доступных хостов для setting.py"""
     try:
         engine = sa.create_engine(connect_db)
         with engine.connect() as con:

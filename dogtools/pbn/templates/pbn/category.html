@@ -50,6 +50,7 @@
                                 <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
                                    class="article-title">{{ article.name }}</a>
                             </h2>
+                            <p>⌛ {{ article.time_read }} мин | 👀 {{ article.page_view }}</p>
                             <p itemprop="description">{{ article.text_preview }}</p>
                         </div>
                         <div class="date-published">

@@ -44,7 +44,9 @@
                 </ul>
                 <div itemscope itemtype="http://schema.org/Article">
                     <h1 class="article-title" itemprop="headline">{{ name|capfirst }}</h1>
-                    <span><time itemprop="datePublished" datetime="{{ created.isoformat }}">Дата публикации: {{ created|date:"d-m-Y" }}</time></span>
+                    <span>📅 <time itemprop="datePublished" datetime="{{ created.isoformat }}">Дата публикации: {{ created|date:"d-m-Y" }}</time></span><br>
+                    <span>⌛ Время на прочтение (мин): {{time_read}}</span><br>
+                    <span>👀 Просмотров: {{page_view}}</span>
                     <div class="separator single"></div>
                     <div class="post-content">
                         <div class="post-content-inner" itemprop="articleBody">{{ text|safe }}</div>
@@ -60,6 +62,17 @@
                         {% for category in list_category %}
                             <li>
                                 <a href="/blog/{{ category.slug }}/"  aria-current="page">{{ category.name|capfirst }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div id="recent-posts-2" class="widget widget_recent_entries">
+                    <h2>ТОП статей</h2>
+                    <span class="line"></span>
+                    <ul>
+                        {% for article in list_top_articles %}
+                            <li>
+                                <a href="/blog/{{ article.category_slug }}/{{ article.slug }}/"  aria-current="page">{{ article.name|capfirst }}</a>&nbsp;({{article.page_view}})
                             </li>
                         {% endfor %}
                     </ul>

@@ -11,6 +11,7 @@ class ConnectDB:
         )
 
     def get_all_arcticle_for_blog(self) -> dict:
+        """Список всех статей хоста для вывода в блог"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -26,6 +27,8 @@ class ConnectDB:
                         article_table.c.img_preview,
                         article_table.c.created,
                         article_table.c.text_preview,
+                        article_table.c.page_view,
+                        article_table.c.time_read,
                         category_table.c.category_slug.label("category_slug"),
                         domain_table.c.id.label("domain_id"),
                         domain_table.c.logo.label("logo"),
@@ -77,6 +80,8 @@ class ConnectDB:
                             "img_preview": row.img_preview,
                             "created": row.created,
                             "text_preview": row.text_preview,
+                            "page_view": row.page_view,
+                            "time_read": row.time_read,
                         }
                         for row in rs
                     ],
@@ -98,7 +103,8 @@ class ConnectDB:
         finally:
             return data
 
-    def get_article_category(self, slug="") -> dict:
+    def get_article_category(self, slug: str) -> dict:
+        """Список активных статей рубрики в рамках хоста"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -114,6 +120,8 @@ class ConnectDB:
                         article_table.c.img_preview,
                         article_table.c.created,
                         article_table.c.text_preview,
+                        article_table.c.page_view,
+                        article_table.c.time_read,
                         category_table.c.category_slug.label("category_slug"),
                         category_table.c.name.label("category_name"),
                         category_table.c.title.label("title"),
@@ -168,6 +176,8 @@ class ConnectDB:
                             "img_preview": row.img_preview,
                             "created": row.created,
                             "text_preview": row.text_preview,
+                            "time_read": row.time_read,
+                            "page_view": row.page_view,
                         }
                         for row in rs
                     ],
@@ -188,7 +198,28 @@ class ConnectDB:
         finally:
             return data
 
-    def get_article(self, article_slug="", category_slug=""):
+    def add_count_view_article(self, id_article: int, now_page_view: int) -> bool:
+        """Добавляем к текущей статье +1 просмотр на каждый get-запрос.
+        Получаем id-статьи и текущее количество просмоторов. Обратно просто TRUE/False.
+        """
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.begin() as conn:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                article_table = meta.tables["pbn_article"]
+                update = (
+                    sa.update(article_table)
+                    .where(article_table.c.id == id_article)
+                    .values(page_view=now_page_view + 1)
+                )
+                conn.execute(update)
+            return True
+        except Exception:
+            return False
+
+    def get_article(self, article_slug="", category_slug="") -> dict:
+        """Получение информации о конкретной статьи на хосте по слагу статьи и слагу категорий"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -206,6 +237,8 @@ class ConnectDB:
                         article_table.c.description,
                         article_table.c.text,
                         article_table.c.created,
+                        article_table.c.time_read,
+                        article_table.c.page_view,
                         category_table.c.id.label("category_id"),
                         category_table.c.name.label("category_name"),
                         category_table.c.category_slug.label("category_slug"),
@@ -245,6 +278,8 @@ class ConnectDB:
                     "title": rs.title,
                     "description": rs.description,
                     "text": rs.text,
+                    "time_read": rs.time_read,
+                    "page_view": rs.page_view,
                     "category_name": rs.category_name,
                     "category_slug": rs.category_slug,
                     "domain_id": rs.domain_id,
@@ -299,6 +334,52 @@ class ConnectDB:
             data = {"valid": False}
         finally:
             return data
+
+    def get_top_articles(self, domain_id: int, top=7) -> list:
+        """Получаем топ-n статей по кол-ву просмотров у хоста и выдаем отсоритированный список"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                article_table = meta.tables["pbn_article"]
+                category_table = meta.tables["pbn_category"]
+                query = (
+                    sa.select(
+                        article_table.c.name,
+                        article_table.c.slug,
+                        article_table.c.page_view,
+                        category_table.c.category_slug.label("category_slug"),
+                    )
+                    .select_from(
+                        article_table.join(
+                            category_table,
+                            article_table.c.category_id == category_table.c.id,
+                        )
+                    )
+                    .where(
+                        article_table.c.domain_id == domain_id,
+                        article_table.c.active == True,
+                    )
+                    .order_by(sa.desc(article_table.c.page_view))
+                    .limit(top)
+                )
+                rs = con.execute(query).fetchall()
+                if not rs:
+                    data = {"valid": False}
+                    return data
+                list_top_articles = [
+                    {
+                        "name": row.name,
+                        "slug": row.slug,
+                        "category_slug": row.category_slug,
+                        "page_view": row.page_view,
+                    }
+                    for row in rs
+                ]
+            return list_top_articles
+        except Exception as err:
+            return False
 
     def get_info_404(self):
         try:

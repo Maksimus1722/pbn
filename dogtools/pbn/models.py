@@ -209,6 +209,8 @@ class Article(models.Model):
         auto_now=True,
         verbose_name="Последнее обновление",
     )
+    page_view = models.IntegerField(default=0, verbose_name="Просмотры")
+    time_read = models.IntegerField(default=1, verbose_name="Минут на прочтение")
 
     class Meta:
         verbose_name = "Статью"
