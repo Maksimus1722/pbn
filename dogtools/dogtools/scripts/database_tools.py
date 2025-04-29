@@ -1,4 +1,5 @@
 import sqlalchemy as sa, threading
+import datetime
 
 
 class ConnectDB:
@@ -344,6 +345,164 @@ class ConnectDB:
             self.dict_other_page = {"valid": True, "list_other_page": list_pages}
         except:
             self.dict_other_page = {"valid": False}
+
+    def get_search_article(self, word_search: str) -> dict:
+        """Поиск статей на странице поиска"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                domain_table = meta.tables["pbn_domains"]
+                article_table = meta.tables["pbn_article"]
+                category_table = meta.tables["pbn_category"]
+                query = (
+                    sa.select(
+                        article_table.c.id,
+                        article_table.c.name,
+                        article_table.c.slug,
+                        article_table.c.title,
+                        article_table.c.created,
+                        article_table.c.time_read,
+                        article_table.c.page_view,
+                        article_table.c.img_preview,
+                        article_table.c.text_preview,
+                        category_table.c.id.label("category_id"),
+                        category_table.c.category_slug.label("category_slug"),
+                        domain_table.c.id.label("domain_id"),
+                        domain_table.c.logo.label("logo"),
+                        domain_table.c.favicon.label("favicon"),
+                        domain_table.c.domain.label("domain_domain"),
+                        domain_table.c.google_analytics.label("google_analytics"),
+                        domain_table.c.yandex_metrika.label("yandex_metrika"),
+                        domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                    )
+                    .select_from(
+                        article_table.join(
+                            domain_table,
+                            article_table.c.domain_id == domain_table.c.id,
+                        ).join(
+                            category_table,
+                            article_table.c.category_id == category_table.c.id,
+                        )
+                    )
+                    .where(
+                        domain_table.c.domain == self.host,
+                        article_table.c.active == True,
+                        sa.func.lower(article_table.c.name).like(
+                            f"%{word_search.lower()}%"
+                        ),
+                    )
+                    .order_by(sa.desc(article_table.c.id))
+                )
+                rs = con.execute(query).fetchall()
+                if not rs:
+                    query = sa.select(
+                        domain_table.c.id,
+                        domain_table.c.domain,
+                        domain_table.c.logo,
+                        domain_table.c.favicon,
+                    ).where(domain_table.c.domain == self.host)
+                    rs = con.execute(query).fetchone()
+                    data = {
+                        "valid": True,
+                        "result": False,
+                        "word_search": word_search,
+                        "domain_id": rs.id,
+                        "qunt_article": 0,
+                        "logo": rs.logo,
+                        "favicon": rs.favicon,
+                        "domain_domain": rs.domain,
+                    }
+                else:
+                    first_rs = rs[0]
+                    data = {
+                        "valid": True,
+                        "result": True,
+                        "word_search": word_search,
+                        "qunt_article": len(rs),
+                        "domain_id": first_rs.domain_id,
+                        "domain_domain": first_rs.domain_domain,
+                        "logo": first_rs.logo,
+                        "favicon": first_rs.favicon,
+                        "google_analytics": first_rs.google_analytics,
+                        "yandex_metrika": first_rs.yandex_metrika,
+                        "yandex_webmaster": first_rs.yandex_webmaster,
+                        "list_articles": [
+                            {
+                                "name": row.name,
+                                "slug": row.slug,
+                                "category_slug": row.category_slug,
+                                "img_preview": row.img_preview,
+                                "created": row.created.strftime("%d.%m.%Y"),
+                                "text_preview": row.text_preview,
+                                "time_read": row.time_read,
+                                "page_view": row.page_view,
+                            }
+                            for row in rs
+                        ],
+                    }
+            self._manage_get_category_articles(data["domain_id"])
+            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+                data.update(
+                    {
+                        "list_category": self.dict_category["list_category"],
+                        "list_other_page": self.dict_other_page["list_other_page"],
+                    }
+                )
+            else:
+                data = {"valid": False}
+        except Exception as err:
+            data = {"valid": False}
+        finally:
+            return data
+
+    def get_default_search(self) -> dict:
+        """Дефолтное отображение поиска при 1-ом get-запросе"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                domain_table = meta.tables["pbn_domains"]
+                query = sa.select(
+                    domain_table.c.id.label("domain_id"),
+                    domain_table.c.logo.label("logo"),
+                    domain_table.c.favicon.label("favicon"),
+                    domain_table.c.domain.label("domain_domain"),
+                    domain_table.c.google_analytics.label("google_analytics"),
+                    domain_table.c.yandex_metrika.label("yandex_metrika"),
+                    domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                ).where(
+                    domain_table.c.domain == self.host,
+                )
+                first_rs = con.execute(query).fetchone()
+                data = {
+                    "valid": True,
+                    "result": False,
+                    "qunt_article": 0,
+                    "domain_id": first_rs.domain_id,
+                    "domain_domain": first_rs.domain_domain,
+                    "logo": first_rs.logo,
+                    "favicon": first_rs.favicon,
+                    "google_analytics": first_rs.google_analytics,
+                    "yandex_metrika": first_rs.yandex_metrika,
+                    "yandex_webmaster": first_rs.yandex_webmaster,
+                }
+            self._manage_get_category_articles(data["domain_id"])
+            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+                data.update(
+                    {
+                        "list_category": self.dict_category["list_category"],
+                        "list_other_page": self.dict_other_page["list_other_page"],
+                    }
+                )
+            else:
+                data = {"valid": False}
+        except Exception as err:
+            data = {"valid": False}
+        finally:
+            return data
 
     def get_sitemap(self) -> dict:
         """Получаем список статей хоста для формирования XML"""

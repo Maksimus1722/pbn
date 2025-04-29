@@ -3,19 +3,22 @@
     <!DOCTYPE html>
     <html lang="ru">
         <head>
-            {% if yandex_webmaster %}
-            <meta name="yandex-verification" content="{{yandex_webmaster}}" />
-            {% endif %}
+            {% block index %}
+            {% endblock index %}
+            {% if yandex_webmaster %}<meta name="yandex-verification" content="{{ yandex_webmaster }}" />{% endif %}
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>{{ title }}</title>
-            <meta name="description" content="{{ description }}" />
+            <meta name="description" content="{{ description|default_if_none:"" }}" />
             <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
             <meta name="robots" content="index, follow" />
             <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
             <link rel="icon" href="/media/{{ favicon }}">
-            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10' type='text/css' media='all' />
+            <link rel='stylesheet'
+                  href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
+                  type='text/css'
+                  media='all' />
             <link rel="stylesheet" href=" {% static 'pbn/css/style.css' %}">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             {% if google_analytics %}
@@ -46,7 +49,10 @@
                 </script>
                 <noscript>
                     <div>
-                        <img src="https://mc.yandex.ru/watch/{{yandex_metrika}}" style="position:absolute; left:-9999px" alt="" />
+                        <img src="https://mc.yandex.ru/watch/{{ yandex_metrika }}"
+                             style="position:absolute;
+                                    left:-9999px"
+                             alt="" />
                     </div>
                 </noscript>
                 <!-- /Yandex.Metrika counter -->
@@ -82,6 +88,19 @@
                                     <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
+                            <li id="menu-item-110950" class="menu-item">
+                                <a href="{% url "search" %}">
+                                    <svg width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24"
+                                         fill="currentColor"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         style="margin:-5px auto">
+                                        <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                                        </path>
+                                    </svg>
+                                Поиск</a>
+                            </li>
                         </ul>
                     </nav>
                 </header>
@@ -106,6 +125,8 @@
                     </div>
                 </footer>
                 <script type="text/javascript" src="{% static "/pbn/js/script.js" %}"></script>
+                {% block scripts %}
+                {% endblock scripts %}
             </body>
         </html>
     {% endspaceless %}

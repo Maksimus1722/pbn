@@ -156,6 +156,7 @@ class ConnectDB:
                     return data
                 first_rs = rs[0]
                 data = {
+                    "qunt_article":len(rs),
                     "domain_id": first_rs.domain_id,
                     "domain_domain": first_rs.domain_domain,
                     "category_slug": first_rs.category_slug,
@@ -308,7 +309,7 @@ class ConnectDB:
                         )
                     )
                     rs = con.execute(article_query)
-                rs = rs.fetchmany(5)
+                rs = rs.fetchmany(3)
                 data["simular_articles"] = [
                     {
                         "name": row.name,

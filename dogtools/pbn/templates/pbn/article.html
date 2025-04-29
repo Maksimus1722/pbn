@@ -1,5 +1,8 @@
 {% extends 'pbn/base.html' %}
 {% load static %}
+{% block index %}
+<meta name="robots" content="index, follow" />
+{% endblock index %}
 {% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">

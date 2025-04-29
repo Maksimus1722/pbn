@@ -34,6 +34,7 @@ urlpatterns = (
         path("admin/", admin.site.urls),
         path("robots.txt", view.Robots.as_view(), name="robots"),
         path("sitemap.xml", view.Sitemap.as_view(), name="sitemap"),
+        path("search/", view.SearchResults.as_view(), name="search"),
         path("blog/", include("pbn.urls")),
         path("<slug:slug>/", view.OtherPage.as_view(), name="other_page"),
         path("ckeditor/", include("ckeditor_uploader.urls")),

@@ -1,7 +1,7 @@
 import re
 from django_filters.views import View
 from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, JsonResponse
 from .scripts.database_tools import ConnectDB
 from .scripts.list_hosts import redirects_map
 
@@ -96,6 +96,27 @@ class GeneralRedirect(View):
         data = base_function_404(host, request)
         if data["valid"]:
             return render(request, "errs/404.html", status=404, context=data)
+        return HttpResponseNotFound()
+
+
+class SearchResults(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        text_search = request.GET.get("text_search")
+        connect = ConnectDB(host)
+        if text_search:
+            data = connect.get_search_article(text_search)
+            data['text_search']=text_search
+            return JsonResponse(data)
+        else:
+            data = connect.get_default_search()
+        if data["valid"]:
+            data["title"] = f"Результаты поиска"
+            return render(request, "pbn/search.html", context=data)
+        else:
+            data = base_function_404(host, request)
+            if data["valid"]:
+                return render(request, "errs/404.html", status=404, context=data)
         return HttpResponseNotFound()
 
 

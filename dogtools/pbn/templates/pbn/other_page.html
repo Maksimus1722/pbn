@@ -1,4 +1,7 @@
 {% extends 'pbn/base.html' %}
+{% block index %}
+<meta name="robots" content="index, follow" />
+{% endblock index %}
 {% load static %}
 {% block canonical %}https://{{ request.get_host }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
