@@ -1,9 +1,11 @@
 {% extends 'pbn/base.html' %}
 {% load static %}
 {% block index %}
-<meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow" />
 {% endblock index %}
-{% block canonical %}https://{{ request.get_host }}{% endblock canonical %}
+{% block canonical %}
+    https://{{ request.get_host }}
+{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <h1>{{ h1|capfirst }}</h1>
@@ -32,7 +34,7 @@
                                    class="article-title">{{ article.name }}</a>
                             </h2>
                             <p>⌛ {{ article.time_read }} мин | 👀 {{ article.page_view }}</p>
-                            <p itemprop="description">{{ article.text_preview }}</p>
+                            <p itemprop="description">{{ article.text_preview|safe }}</p>
                         </div>
                         <div class="date-published">
                             <span class="big">{{ article.created|date:"d" }}</span>

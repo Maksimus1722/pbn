@@ -58,7 +58,7 @@ class ConnectDB:
                         article_table.c.active == True,
                     )
                     .order_by(sa.desc(article_table.c.id))
-                    .limit(10)
+                    .limit(12)
                 )
                 rs = con.execute(query).fetchall()
                 if not rs:

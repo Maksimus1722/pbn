@@ -190,11 +190,11 @@ class Article(models.Model):
             )
         ],
     )
-    text_preview = models.TextField(
+    text_preview = RichTextUploadingField(
         max_length=300,
         verbose_name="Текст-превью",
         default="",
-        help_text="Не более 300 символов вместе с пробелами",
+        help_text="Не более 300 символов вместе с пробелами. Только текст и ссылки.",
     )
     created = models.DateField(
         default=datetime.datetime.now(), verbose_name="Дата создания"
