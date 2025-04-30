@@ -54,7 +54,7 @@ class ConnectDB:
                         domain_table.c.domain == self.host,
                         article_table.c.active == True,
                     )
-                    .order_by(sa.desc(article_table.c.id))
+                    .order_by(sa.desc(article_table.c.created))
                 )
                 rs = con.execute(query).fetchall()
                 if not rs:
@@ -149,6 +149,7 @@ class ConnectDB:
                         domain_table.c.domain == self.host,
                         article_table.c.active == True,
                     )
+                    .order_by(sa.desc(article_table.c.created))
                 )
                 rs = con.execute(query).fetchall()
                 if not rs:
@@ -156,7 +157,7 @@ class ConnectDB:
                     return data
                 first_rs = rs[0]
                 data = {
-                    "qunt_article":len(rs),
+                    "qunt_article": len(rs),
                     "domain_id": first_rs.domain_id,
                     "domain_domain": first_rs.domain_domain,
                     "category_slug": first_rs.category_slug,
@@ -292,21 +293,29 @@ class ConnectDB:
                     "yandex_metrika": rs.yandex_metrika,
                     "yandex_webmaster": rs.yandex_webmaster,
                 }
-                article_query = sa.select(article_table).where(
-                    sa.and_(
-                        article_table.c.category_id == data["id_category"],
-                        article_table.c.id < data["id_article"],
-                        article_table.c.active == True,
+                article_query = (
+                    sa.select(article_table)
+                    .where(
+                        sa.and_(
+                            article_table.c.category_id == data["id_category"],
+                            article_table.c.id < data["id_article"],
+                            article_table.c.active == True,
+                        )
                     )
+                    .order_by(sa.desc(article_table.c.created))
                 )
                 rs = con.execute(article_query)
                 if rs.rowcount < 1:
-                    article_query = sa.select(article_table).where(
-                        sa.and_(
-                            article_table.c.category_id == data["id_category"],
-                            article_table.c.id > data["id_article"],
-                            article_table.c.active == True,
+                    article_query = (
+                        sa.select(article_table)
+                        .where(
+                            sa.and_(
+                                article_table.c.category_id == data["id_category"],
+                                article_table.c.id > data["id_article"],
+                                article_table.c.active == True,
+                            )
                         )
+                        .order_by(sa.desc(article_table.c.created))
                     )
                     rs = con.execute(article_query)
                 rs = rs.fetchmany(3)

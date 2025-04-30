@@ -57,7 +57,7 @@ class ConnectDB:
                         domain_table.c.domain == self.host,
                         article_table.c.active == True,
                     )
-                    .order_by(sa.desc(article_table.c.id))
+                    .order_by(sa.desc(article_table.c.created))
                     .limit(12)
                 )
                 rs = con.execute(query).fetchall()
@@ -393,7 +393,7 @@ class ConnectDB:
                             f"%{word_search.lower()}%"
                         ),
                     )
-                    .order_by(sa.desc(article_table.c.id))
+                    .order_by(sa.desc(article_table.c.created))
                 )
                 rs = con.execute(query).fetchall()
                 if not rs:
