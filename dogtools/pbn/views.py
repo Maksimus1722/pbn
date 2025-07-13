@@ -34,7 +34,12 @@ class Blog(View):
                     "url": self.request._current_scheme_host + self.request.path,
                 }
             )
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -61,7 +66,12 @@ class Category(View):
                     "url": self.request._current_scheme_host + self.request.path,
                 }
             )
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -93,5 +103,10 @@ class Article(View):
                     "url": self.request._current_scheme_host + self.request.path,
                 }
             )
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()

@@ -199,6 +199,7 @@ class ConnectDB:
                     domain_table.c.google_analytics.label("google_analytics"),
                     domain_table.c.yandex_metrika.label("yandex_metrika"),
                     domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                    domain_table.c.template.label("template"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -209,6 +210,7 @@ class ConnectDB:
                     "google_analytics": rs.google_analytics,
                     "yandex_metrika": rs.yandex_metrika,
                     "yandex_webmaster": rs.yandex_webmaster,
+                    "template": rs.template,
                 }
                 self._manage_get_category_articles(data["domain_id"])
                 if self.dict_category["valid"] and self.dict_other_page["valid"]:

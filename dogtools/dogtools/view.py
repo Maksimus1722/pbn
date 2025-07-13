@@ -26,7 +26,12 @@ class MainPage(View):
             )
         data = base_function_404(host, request)
         if data["valid"]:
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -51,7 +56,12 @@ class OtherPage(View):
                 return redirect(self.request._current_scheme_host, permanent=True)
         data = base_function_404(host, request)
         if data["valid"]:
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -82,7 +92,12 @@ class Sitemap(View):
             )
         data = base_function_404(host, request)
         if data["valid"]:
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -97,7 +112,12 @@ class GeneralRedirect(View):
             return redirect(url_redirect, permanent=True)
         data = base_function_404(host, request)
         if data["valid"]:
-            return render(request, "errs/404.html", status=404, context=data)
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
         return HttpResponseNotFound()
 
 
@@ -118,7 +138,12 @@ class SearchResults(View):
         else:
             data = base_function_404(host, request)
             if data["valid"]:
-                return render(request, "errs/404.html", status=404, context=data)
+                return render(
+                    request,
+                    f"pbn/{data['template']}/errs/404.html",
+                    status=404,
+                    context=data,
+                )
         return HttpResponseNotFound()
 
 
@@ -142,5 +167,7 @@ def handler404(request, exception):
     host = re.sub(r":.*", "", request.get_host())
     data = base_function_404(host, request)
     if data["valid"]:
-        return render(request, "errs/404.html", status=404, context=data)
+        return render(
+            request, f"pbn/{data['template']}/errs/404.html", status=404, context=data
+        )
     return HttpResponseNotFound()
