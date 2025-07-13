@@ -6,6 +6,12 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import MinLengthValidator, FileExtensionValidator
 
 
+CHOICES_TEMPLATES = [
+    ("first", "first"),
+    ("second", "second"),
+]
+
+
 # Create your models here.
 class Domains(models.Model):
     domain = models.CharField(
@@ -91,6 +97,12 @@ class Domains(models.Model):
         blank=True,
         verbose_name="Номер Яндекс.Вебмастера",
         help_text="Например: ffbe325dc3c6cf09",
+    )
+    template = models.CharField(
+        choices=CHOICES_TEMPLATES,
+        max_length=150,
+        default="first",
+        verbose_name="Выбор шаблона",
     )
 
     class Meta:

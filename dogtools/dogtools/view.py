@@ -21,7 +21,7 @@ class MainPage(View):
         if data["valid"]:
             return render(
                 request,
-                "pbn/main.html",
+                f"pbn/{data['template']}/main.html",
                 context=data,
             )
         data = base_function_404(host, request)
@@ -39,7 +39,9 @@ class OtherPage(View):
         connect = ConnectDB(host)
         data = connect.get_info_other_page(page_slug)
         if data["valid"]:
-            return render(request, "pbn/other_page.html", context=data)
+            return render(
+                request, f"pbn/{data['template']}/other_page.html", context=data
+            )
         data = connect.get_membrans_link(page_slug)
         if data["valid"]:
             user_agent = self.request.META.get("HTTP_USER_AGENT", "Неизвестно")
@@ -106,13 +108,13 @@ class SearchResults(View):
         connect = ConnectDB(host)
         if text_search:
             data = connect.get_search_article(text_search)
-            data['text_search']=text_search
+            data["text_search"] = text_search
             return JsonResponse(data)
         else:
             data = connect.get_default_search()
         if data["valid"]:
             data["title"] = f"Результаты поиска"
-            return render(request, "pbn/search.html", context=data)
+            return render(request, f"pbn/{data['template']}/search.html", context=data)
         else:
             data = base_function_404(host, request)
             if data["valid"]:

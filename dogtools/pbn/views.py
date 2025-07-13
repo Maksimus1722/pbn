@@ -21,7 +21,7 @@ class Blog(View):
         if data["valid"]:
             return render(
                 request,
-                "pbn/blog.html",
+                f"pbn/{data['template']}/blog.html",
                 context=data,
             )
         data = connect.get_info_404()
@@ -48,7 +48,7 @@ class Category(View):
         if data["valid"]:
             return render(
                 request,
-                "pbn/category.html",
+                f"pbn/{data['template']}/category.html",
                 context=data,
             )
         data = connect.get_info_404()
@@ -80,7 +80,7 @@ class Article(View):
             if data["list_top_articles"]:
                 return render(
                     request,
-                    "pbn/article.html",
+                    f"pbn/{data['template']}/article.html",
                     context=data,
                 )
         data = connect.get_info_404()

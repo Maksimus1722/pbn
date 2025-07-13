@@ -43,6 +43,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         article_table.join(
@@ -78,6 +79,7 @@ class ConnectDB:
                     "google_analytics": first_rs.google_analytics,
                     "yandex_metrika": first_rs.yandex_metrika,
                     "yandex_webmaster": first_rs.yandex_webmaster,
+                    "template": first_rs.template,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -132,6 +134,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         otherpage_table.join(
@@ -162,6 +165,7 @@ class ConnectDB:
                     "google_analytics": first_row.google_analytics,
                     "yandex_metrika": first_row.yandex_metrika,
                     "yandex_webmaster": first_row.yandex_webmaster,
+                    "template": first_row.template,
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
@@ -376,6 +380,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         article_table.join(
@@ -413,6 +418,7 @@ class ConnectDB:
                         "logo": rs.logo,
                         "favicon": rs.favicon,
                         "domain_domain": rs.domain,
+                        "tempalte": rs.tempalte,
                     }
                 else:
                     first_rs = rs[0]
@@ -428,6 +434,7 @@ class ConnectDB:
                         "google_analytics": first_rs.google_analytics,
                         "yandex_metrika": first_rs.yandex_metrika,
                         "yandex_webmaster": first_rs.yandex_webmaster,
+                        "template": first_rs.template,
                         "list_articles": [
                             {
                                 "name": row.name,
@@ -473,6 +480,7 @@ class ConnectDB:
                     domain_table.c.google_analytics.label("google_analytics"),
                     domain_table.c.yandex_metrika.label("yandex_metrika"),
                     domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                    domain_table.c.template.label("template"),
                 ).where(
                     domain_table.c.domain == self.host,
                 )
@@ -488,6 +496,7 @@ class ConnectDB:
                     "google_analytics": first_rs.google_analytics,
                     "yandex_metrika": first_rs.yandex_metrika,
                     "yandex_webmaster": first_rs.yandex_webmaster,
+                    "template": first_rs.template,
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:

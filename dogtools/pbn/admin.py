@@ -43,6 +43,7 @@ class DomainsAdmin(admin.ModelAdmin):
                     "domain",
                     "logo",
                     "favicon",
+                    "template",
                     "google_analytics",
                     "yandex_metrika",
                     "yandex_webmaster",
@@ -123,7 +124,7 @@ class ArticlesAdmin(admin.ModelAdmin):
             {"fields": ("time_read", "img_preview", "text_preview", "text")},
         ),
     )
-    readonly_fields = ("last_mod","page_view")
+    readonly_fields = ("last_mod", "page_view")
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

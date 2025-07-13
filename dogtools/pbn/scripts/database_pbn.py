@@ -40,6 +40,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         article_table.join(
@@ -72,6 +73,7 @@ class ConnectDB:
                     "google_analytics": first_rs.google_analytics,
                     "yandex_metrika": first_rs.yandex_metrika,
                     "yandex_webmaster": first_rs.yandex_webmaster,
+                    "template": first_rs.template,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -134,6 +136,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         article_table.join(
@@ -170,6 +173,7 @@ class ConnectDB:
                     "google_analytics": first_rs.google_analytics,
                     "yandex_metrika": first_rs.yandex_metrika,
                     "yandex_webmaster": first_rs.yandex_webmaster,
+                    "template": first_rs.template,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -251,6 +255,7 @@ class ConnectDB:
                         domain_table.c.google_analytics.label("google_analytics"),
                         domain_table.c.yandex_metrika.label("yandex_metrika"),
                         domain_table.c.yandex_webmaster.label("yandex_webmaster"),
+                        domain_table.c.template.label("template"),
                     )
                     .select_from(
                         article_table.join(
@@ -292,6 +297,7 @@ class ConnectDB:
                     "google_analytics": rs.google_analytics,
                     "yandex_metrika": rs.yandex_metrika,
                     "yandex_webmaster": rs.yandex_webmaster,
+                    "template": rs.template,
                 }
                 article_query = (
                     sa.select(article_table)

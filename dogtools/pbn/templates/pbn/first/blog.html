@@ -1,14 +1,33 @@
-{% extends 'pbn/base.html' %}
+{% extends 'pbn/first/base.html' %}
 {% load static %}
 {% block index %}
-    <meta name="robots" content="index, follow" />
+<meta name="robots" content="index, follow" />
 {% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}
-{% endblock canonical %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
-        <h1>{{ h1|capfirst }}</h1>
+        <div class="breadcrumb-navigation">
+            <ul class="breadcrumb theme"
+                itemscope
+                itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="/">
+                        <span itemprop="name">Главная</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <span itemprop="name">Блог</span>
+                    <meta itemprop="position" content="2" />
+                </li>
+            </ul>
+            <h1 class="page-title">{{ h1|capfirst }}</h1>
+        </div>
         <br>
         <div class="articles row grid-3"
              id="content"
@@ -45,6 +64,5 @@
             {% endfor %}
             <div class="main-separator"></div>
         </div>
-        {{ main_text|safe }}
     </div>
 {% endblock content %}

@@ -1,4 +1,4 @@
-{% extends 'pbn/base.html' %}
+{% extends 'pbn/first/base.html' %}
 {% load static %}
 {% block index %}
     <meta name="robots" content="noindex, nofollow" />
@@ -41,7 +41,7 @@
                     </button>
                 </div>
             </form>
-            <div id="loadingDiv" class="loadingDiv">{% include 'pbn/include/loading.html' %}</div>
+            <div id="loadingDiv" class="loadingDiv">{% include 'pbn/first/include/loading.html' %}</div>
             <p id="count_result"></p>
         </div>
         <div class="articles row grid-3"
@@ -51,5 +51,5 @@
     </div>
 {% endblock content %}
 {% block scripts %}
-    <script type="text/javascript" src="{% static "/pbn/js/search.js" %}"></script>
+    <script type="text/javascript" src="{% static "/pbn/first/js/search.js" %}"></script>
 {% endblock scripts %}
