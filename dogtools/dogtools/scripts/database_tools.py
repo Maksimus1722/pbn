@@ -59,7 +59,7 @@ class ConnectDB:
                         article_table.c.active == True,
                     )
                     .order_by(sa.desc(article_table.c.created))
-                    .limit(12)
+                    .limit(24)
                 )
                 rs = con.execute(query).fetchall()
                 if not rs:
@@ -93,6 +93,7 @@ class ConnectDB:
                         }
                         for row in rs
                     ],
+                    "list_top_arcicle": [],
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
@@ -103,6 +104,20 @@ class ConnectDB:
                         "list_other_page": self.dict_other_page["list_other_page"],
                     }
                 )
+                for category in data["list_category"]:
+                    top_article_category = []
+                    for article in data["list_articles"]:
+                        if (
+                            article["category_slug"] == category["slug"]
+                            and len(top_article_category) < 3
+                        ):
+                            top_article_category.append(article)
+                    data["list_top_arcicle"].append(
+                        {
+                            "name_category": category["name"],
+                            "top_article_category": top_article_category,
+                        }
+                    )
             else:
                 data = {"valid": False}
         except Exception as err:

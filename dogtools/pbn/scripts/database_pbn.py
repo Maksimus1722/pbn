@@ -245,6 +245,7 @@ class ConnectDB:
                         article_table.c.created,
                         article_table.c.time_read,
                         article_table.c.page_view,
+                        article_table.c.table_content,
                         category_table.c.id.label("category_id"),
                         category_table.c.name.label("category_name"),
                         category_table.c.category_slug.label("category_slug"),
@@ -287,6 +288,7 @@ class ConnectDB:
                     "text": rs.text,
                     "time_read": rs.time_read,
                     "page_view": rs.page_view,
+                    "table_content": rs.table_content,
                     "category_name": rs.category_name,
                     "category_slug": rs.category_slug,
                     "domain_id": rs.domain_id,
@@ -332,6 +334,7 @@ class ConnectDB:
                         "category_slug": category_slug,
                         "img_preview": row.img_preview,
                         "created": row.created,
+                        "description": row.description,
                     }
                     for row in rs
                 ]

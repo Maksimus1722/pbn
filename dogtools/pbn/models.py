@@ -146,6 +146,22 @@ class Category(models.Model):
         auto_now=True,
         verbose_name="Последнее обновление",
     )
+    img_preview = models.ImageField(
+        upload_to="static/pbn/img",
+        verbose_name="Картинка-превью",
+        help_text="Для некоторых шаблонов",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+        blank=True,
+        default="",
+    )
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -212,7 +228,7 @@ class Article(models.Model):
         default=datetime.datetime.now(), verbose_name="Дата создания"
     )
     text = RichTextUploadingField(
-        verbose_name="Содержание статьи",
+        verbose_name="Текст статьи",
         validators=[MinLengthValidator(300)],
         help_text="Не менее 300 символов",
     )
@@ -223,6 +239,12 @@ class Article(models.Model):
     )
     page_view = models.IntegerField(default=0, verbose_name="Просмотры")
     time_read = models.IntegerField(default=1, verbose_name="Минут на прочтение")
+    table_content = RichTextUploadingField(
+        verbose_name="Содержание статьи",
+        help_text="Маркированный список подзаголовков с якорями (необязательно)",
+        default="",
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "Статью"
@@ -343,3 +365,43 @@ class LinksRedirects(models.Model):
 
     def __str__(self):
         return f"{self.start_link}"
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=250, verbose_name="Имя автора")
+    spec = models.CharField(
+        max_length=300,
+        verbose_name="Специализация автора",
+        help_text="Не более 300 символов",
+    )
+    preview = models.CharField(
+        max_length=600,
+        verbose_name="Описание автора",
+        help_text="Не более 600 символов",
+    )
+    title = models.CharField(max_length=250, verbose_name="Title")
+    description = models.CharField(max_length=500, verbose_name="Meta-description")
+    keywords = models.CharField(
+        max_length=500, default="", verbose_name="Meta-keywords"
+    )
+    slug = models.SlugField(
+        max_length=100,
+        null=False,
+        db_index=True,
+        verbose_name="URL",
+        help_text="При создании поставьте любой символ. Поле заполнится автоматически.",
+    )
+    img_preview = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Фото автора",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )

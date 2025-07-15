@@ -551,11 +551,13 @@ footer .social {
     justify-content: center;
     gap: 16px;
 }
+
 .copy {
     font-size: 16px;
     color: #667582;
     text-align: center;
 }
+
 .row {
     display: -ms-flexbox;
     display: flex;
@@ -2150,4 +2152,12 @@ blockquote::before,
     .logged-in header#theme-header {
         top: 46px
     }
+}
+
+.link-menu {
+    color: #000;
+}
+
+.link-menu:hover {
+    color: #8BC34A;
 }

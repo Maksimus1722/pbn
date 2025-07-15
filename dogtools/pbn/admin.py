@@ -121,7 +121,15 @@ class ArticlesAdmin(admin.ModelAdmin):
         ("Мета-данные", {"fields": ("title", "description", "keywords")}),
         (
             "Содержимое",
-            {"fields": ("time_read", "img_preview", "text_preview", "text")},
+            {
+                "fields": (
+                    "time_read",
+                    "img_preview",
+                    "text_preview",
+                    "table_content",
+                    "text",
+                )
+            },
         ),
     )
     readonly_fields = ("last_mod", "page_view")
@@ -157,7 +165,16 @@ class CategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основное",
-            {"fields": ("last_mod", "sort", "name", "domain", "category_slug")},
+            {
+                "fields": (
+                    "last_mod",
+                    "sort",
+                    "name",
+                    "domain",
+                    "category_slug",
+                    "img_preview",
+                )
+            },
         ),
         ("Мета-данные", {"fields": ("title", "description", "keywords", "h1")}),
     )

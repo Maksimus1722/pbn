@@ -18,7 +18,7 @@
                   href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
                   type='text/css'
                   media='all' />
-            <link rel="stylesheet" href=" {% static 'pbn/first/css/style.css' %}">
+            <link rel="stylesheet" href=" {% static 'pbn/second/css/style.css' %}">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             {% if google_analytics %}
                 <!-- Google tag (gtag.js) -->
@@ -61,14 +61,9 @@
             <div class="overlay"></div>
             <div class="grid">
                 <header id="theme-header" role="banner">
-                    <div class="logo">
-                        <a href="/">
-                            <img class="hidden-xs"  src="/media/{{ logo }}" />
-                        </a>
-                        <span class="site-title visible-xl">
-                            <a style="color:black" href="/">{{ domain_domain }}</a>
-                        </span>
-                    </div>
+                    <a class="logo" href="/">
+                        <img class="hidden-xs"  src="/media/{{ logo }}" />
+                    </a>
                     <nav class="primary" id="primary">
                         <button class="mobile-menu-icon mobile-trigger mobile-trigger--slider">
                             <span class="mobile-trigger-box">
@@ -87,19 +82,6 @@
                                     <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
-                            <li id="menu-item-110950" class="menu-item">
-                                <a href="{% url "search" %}">
-                                    <svg width="24"
-                                         height="24"
-                                         viewBox="0 0 24 24"
-                                         fill="currentColor"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         style="margin:-5px auto">
-                                        <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                                        </path>
-                                    </svg>
-                                Поиск</a>
-                            </li>
                         </ul>
                     </nav>
                 </header>
@@ -120,10 +102,20 @@
                                     </li>
                                 {% endfor %}
                             </ul>
+                            <div class="social">
+                                <script src="https://yastatic.net/share2/share.js"></script>
+                                <div class="ya-share2"
+                                     data-curtain
+                                     data-size="s"
+                                     data-color-scheme="whiteblack"
+                                     data-services="vkontakte,odnoklassniki,telegram"></div>
+                            </div>
+                            <div class="copy">@2025 г. Все права защищены</div>
                         </div>
                     </div>
                 </footer>
-                <script type="text/javascript" src="{% static "/pbn/first/js/script.js" %}"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+                <script type="text/javascript" src="{% static "/pbn/second/js/script.js" %}"></script>
                 {% block scripts %}
                 {% endblock scripts %}
             </body>

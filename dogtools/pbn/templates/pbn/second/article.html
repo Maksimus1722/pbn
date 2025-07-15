@@ -1,0 +1,117 @@
+{% extends 'pbn/second/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="article-single">
+                    <ul class="breadcrumb theme"
+                        itemscope
+                        itemtype="http://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/">
+                                <span itemprop="name">Главная</span>
+                            </a>
+                            <meta itemprop="position" content="1" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="{% url "blog" %}">
+                                <span itemprop="name">Блог</span>
+                            </a>
+                            <meta itemprop="position" content="2" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="{% url "blog" %}{{ category_slug }}/">
+                                <span itemprop="name">{{ category_name|capfirst }}</span>
+                            </a>
+                            <meta itemprop="position" content="3" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">{{ name|capfirst }}</span>
+                            <meta itemprop="position" content="4" />
+                        </li>
+                    </ul>
+                    <h1 class="article-title">{{ name|capfirst }}</h1>
+                    <div class="article-meta">
+                        Опубликовано  {{ created|date:"d-m-Y" }} · время чтения {{ time_read }} мин · {{ page_view }} просмотров
+                    </div>
+                    <div class="post-content">
+                        <div class="author">
+                            <div class="author-avatar">
+                                <img src="./img/avatar.png" alt="">
+                            </div>
+                            <div class="author-meta">
+                                <div class="author-name">Sophia Bennett</div>
+                                <div class="author-post">Lead Software Engineer</div>
+                            </div>
+                        </div>
+                        {% if table_content %}
+                            <div class="post-content-inner">
+                                <div class="contents">
+                                    <h3>Содержание</h3>
+                                    {{ table_content|safe }}
+                                </div>
+                            {% endif %}
+                            {{ text|safe }}
+                        </div>
+                        <div class="after-post"></div>
+                    </div>
+                    <div class="related">
+                        <h2>Похожие статьи</h2>
+                        <div class="related-items">
+                            {% for article in simular_articles %}
+                                <div class="related-item">
+                                    <div class="related-item__text">
+                                        <div class="related-item__name">
+                                            <a href="/blog/{{ category.slug }}/" class="link-menu">{{ article.name|capfirst }}</a>
+                                        </div>
+                                        <div class="related-item__desc">{{ article.description }}</div>
+                                    </div>
+                                    <div class="related-item__img">
+                                        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                            <img src="/media/{{ article.img_preview }}" alt="{{ article.name }}">
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                {% include 'pbn/second/include/sitebar_category.html' %}
+                <div class="top">
+                    <h2>Популярные статьи</h2>
+                    <div class="top-items">
+                        {% for article in list_top_articles %}
+                            <div class="top-item">
+                                <div class="top-item__name">
+                                    <a href="/blog/{{ article.category_slug }}/{{ article.slug }}/"
+                                       class="link-menu">{{ article.name|capfirst }}</a>
+                                </div>
+                                <div class="top-item__views">{{ article.page_view }} просмотров</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
