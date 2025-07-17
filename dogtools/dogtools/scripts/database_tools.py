@@ -503,6 +503,7 @@ class ConnectDB:
                         list_table.c.name,
                         list_table.c.category_slug,
                         list_table.c.last_mod,
+                        list_table.c.img_preview,
                     )
                     .where(list_table.c.domain_id == domain_id)
                     .order_by(sa.asc(list_table.c.sort))
@@ -513,6 +514,7 @@ class ConnectDB:
                         "name": row.name,
                         "slug": row.category_slug,
                         "last_mod": row.last_mod,
+                        "img_preview": row.img_preview,
                     }
                     for row in rs
                 ]

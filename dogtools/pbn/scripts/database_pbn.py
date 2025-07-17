@@ -513,6 +513,7 @@ class ConnectDB:
                     {
                         "name": row.name,
                         "slug": row.category_slug,
+                        "img_preview": row.img_preview,
                     }
                     for row in rs
                 ]

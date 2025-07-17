@@ -4,7 +4,8 @@
         {% for category in list_category %}
             <div class="category-item">
                 <div class="category-item__photo">
-                    <img src="/media/{{ category.img_preview }}" alt="">
+                    <img src="/media/{{ category.img_preview }}"
+                         alt="{{ category.name|capfirst }}">
                 </div>
                 <a href="{% url "blog" %}{{ category.slug }}/"
                    class="category-item__name">{{ category.name|capfirst }}</a>
