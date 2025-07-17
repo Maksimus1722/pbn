@@ -50,7 +50,7 @@
                     </ul>
                     <h1 class="article-title">{{ name|capfirst }}</h1>
                     <div class="article-meta">
-                        Опубликовано  {{ created|date:"d-m-Y" }} · время чтения {{ time_read }} мин · {{ page_view }} просмотров
+                        Опубликовано  {{ created|date:"d-m-Y" }} · время чтения {{ time_read }} мин · просмотров {{ page_view }}
                     </div>
                     <div class="post-content">
                         {% if author_id %}
@@ -68,8 +68,8 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% if table_content %}
                             <div class="post-content-inner">
+                                {% if table_content %}
                                 <div class="contents">
                                     <h3>Содержание</h3>
                                     {{ table_content|safe }}
@@ -86,14 +86,13 @@
                                 <div class="related-item">
                                     <div class="related-item__text">
                                         <div class="related-item__name">
-                                            <a href="/blog/{{ category.slug }}/" class="link-menu">{{ article.name|capfirst }}</a>
+                                            <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                               class="link-menu">{{ article.name|capfirst }}</a>
                                         </div>
                                         <div class="related-item__desc">{{ article.description }}</div>
                                     </div>
                                     <div class="related-item__img">
-                                        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
-                                            <img src="/media/{{ article.img_preview }}" alt="{{ article.name }}">
-                                        </a>
+                                        <img src="/media/{{ article.img_preview }}" alt="{{ article.name }}">
                                     </div>
                                 </div>
                             {% endfor %}
@@ -109,10 +108,10 @@
                         {% for article in list_top_articles %}
                             <div class="top-item">
                                 <div class="top-item__name">
-                                    <a href="/blog/{{ article.category_slug }}/{{ article.slug }}/"
+                                    <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
                                        class="link-menu">{{ article.name|capfirst }}</a>
                                 </div>
-                                <div class="top-item__views">{{ article.page_view }} просмотров</div>
+                                <div class="top-item__views">просмотров {{ article.page_view }}</div>
                             </div>
                         {% endfor %}
                     </div>

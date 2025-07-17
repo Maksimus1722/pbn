@@ -277,7 +277,8 @@ class OtherPageAdmin(admin.ModelAdmin):
 
 
 class authorAdmin(admin.ModelAdmin):
-    list_display = ["name"]
+    list_display = ["name", "slug", "domain", "spec"]
+    list_editable = ["slug", "domain", "spec"]
     list_per_page = 20
     search_fields = [
         "name__istartswith",

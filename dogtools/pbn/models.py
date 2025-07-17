@@ -276,8 +276,9 @@ class Article(models.Model):
         Author,
         on_delete=models.PROTECT,
         verbose_name="Автор",
-        default="",
+        default=None,
         null=True,
+        blank=True,
     )
     title = models.CharField(max_length=250, verbose_name="Title")
     description = models.CharField(max_length=500, verbose_name="Meta-description")

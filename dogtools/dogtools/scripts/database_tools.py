@@ -249,7 +249,7 @@ class ConnectDB:
                     )
                     .where(
                         author_table.c.slug == slug,
-                        domain_table.c.domain == self.host,
+                        author_table.c.domain_id == domain_table.c.id,
                     )
                 )
                 rs = con.execute(query).fetchall()

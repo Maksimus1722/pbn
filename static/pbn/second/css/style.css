@@ -2025,6 +2025,7 @@ blockquote::before,
 
     .related-item__img {
         margin-top: 8px;
+        margin-left: 20px;
     }
 
     .related-item__img img {
