@@ -246,6 +246,7 @@ class ConnectDB:
                         article_table.c.time_read,
                         article_table.c.page_view,
                         article_table.c.table_content,
+                        article_table.c.author_id,
                         category_table.c.id.label("category_id"),
                         category_table.c.name.label("category_name"),
                         category_table.c.category_slug.label("category_slug"),
@@ -273,6 +274,7 @@ class ConnectDB:
                         domain_table.c.domain == self.host,
                         article_table.c.active == True,
                     )
+                    .order_by(sa.desc(article_table.c.created))
                 )
                 rs = con.execute(query).fetchone()
                 if not rs:
@@ -300,6 +302,7 @@ class ConnectDB:
                     "yandex_metrika": rs.yandex_metrika,
                     "yandex_webmaster": rs.yandex_webmaster,
                     "template": rs.template,
+                    "author_id": rs.author_id,
                 }
                 article_query = (
                     sa.select(article_table)
@@ -338,6 +341,8 @@ class ConnectDB:
                     }
                     for row in rs
                 ]
+            if data["author_id"]:
+                data["data_author"] = self._get_author_for_article(data["author_id"])
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
                 data.update(
@@ -438,6 +443,36 @@ class ConnectDB:
                     )
                 else:
                     data = {"valid": False}
+        except Exception as err:
+            data = {"valid": False}
+        finally:
+            return data
+
+    def _get_author_for_article(self, author_id: int) -> dict:
+        """Дополнительная функция для получения информации об авторе статьи, если задана инфа об авторе"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                author_table = meta.tables["pbn_author"]
+                query = sa.select(
+                    author_table.c.name,
+                    author_table.c.spec,
+                    author_table.c.slug,
+                    author_table.c.img_preview,
+                ).where(author_table.c.id == author_id)
+                rs = con.execute(query).fetchone()
+                if not rs:
+                    return {"valid": False}
+                data = {
+                    "name": rs.name,
+                    "spec": rs.spec,
+                    "slug": rs.slug,
+                    "img_preview": rs.img_preview,
+                    "valid": True,
+                }
+                return data
         except Exception as err:
             data = {"valid": False}
         finally:

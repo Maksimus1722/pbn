@@ -1,0 +1,43 @@
+{% extends 'pbn/second/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}/{{ slug }}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="article-single">
+                    <ul class="breadcrumb theme"
+                        itemscope
+                        itemtype="http://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/">
+                                <span itemprop="name">Главная</span>
+                            </a>
+                            <meta itemprop="position" content="1" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">{{ name|capfirst }}</span>
+                            <meta itemprop="position" content="2" />
+                        </li>
+                    </ul>
+                    <h1 class="article-title">{{ name|capfirst }}</h1>
+                    <div class="post-content">
+                        {{ text|safe }}
+                        <div class="after-post"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">{% include 'pbn/second/include/sitebar_category.html' %}</div>
+        </div>
+    </div>
+{% endblock content %}

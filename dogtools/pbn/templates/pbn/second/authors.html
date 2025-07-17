@@ -1,0 +1,63 @@
+{% extends 'pbn/second/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "list_authors" %}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="breadcrumb-navigation">
+            <ul class="breadcrumb theme"
+                itemscope
+                itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="/">
+                        <span itemprop="name">Главная</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <span itemprop="name">Авторы</span>
+                    <meta itemprop="position" content="2" />
+                </li>
+            </ul>
+            <h1>Авторы</h1>
+        </div>
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="articles " id="content">
+                    <div class="row grid-3">
+                        {% for author in list_authors %}
+                            <div class="col-xl-4 col-sm-6 col-small-6 col-xs-12">
+                                <article class="post-112258 post type-post status-publish format-standard has-post-thumbnail hentry category-5623">
+                                    <div class="post-thumb">
+                                        <img class="cover-image visible"
+                                             src="{{ author.img_preview }}"
+                                             alt="{{ author.name }}"
+                                             itemprop="image">
+                                    </div>
+                                    <div class="post-details">
+                                        <h2 class="post-title">
+                                            <a href="{% url "list_authors" %}{{ author.slug }}/"
+                                               class="article-title">{{ author.name|capfirst }}</a>
+                                        </h2>
+                                        <p>{{ author.spec|capfirst }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">{% include 'pbn/second/include/sitebar_category.html' %}</div>
+        </div>
+    </div>
+{% endblock content %}

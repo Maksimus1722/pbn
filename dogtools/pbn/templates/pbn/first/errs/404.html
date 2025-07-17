@@ -22,7 +22,7 @@
                     <ul>
                         {% for category in list_category %}
                             <li>
-                                <a href="/blog/{{ category.slug }}/"  aria-current="page">{{ category.name|capfirst }}</a>
+                                <a href="{% url "blog" %}{{ category.slug }}/"  aria-current="page">{{ category.name|capfirst }}</a>
                             </li>
                         {% endfor %}
                     </ul>

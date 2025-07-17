@@ -65,6 +65,43 @@ class OtherPage(View):
         return HttpResponseNotFound()
 
 
+class Author(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        page_slug = self.kwargs["slug"]
+        connect = ConnectDB(host)
+        data = connect.get_author(page_slug)
+        if data["valid"]:
+            return render(request, f"pbn/{data['template']}/author.html", context=data)
+        data = base_function_404(host, request)
+        if data["valid"]:
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
+        return HttpResponseNotFound()
+
+
+class ListAuthors(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        connect = ConnectDB(host)
+        data = connect.get_all_authors()
+        if data["valid"]:
+            return render(request, f"pbn/{data['template']}/authors.html", context=data)
+        data = base_function_404(host, request)
+        if data["valid"]:
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
+        return HttpResponseNotFound()
+
+
 class Robots(View):
     """Получение robots.txt"""
 

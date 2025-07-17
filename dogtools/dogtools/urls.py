@@ -36,8 +36,10 @@ urlpatterns = (
         path("sitemap.xml", view.Sitemap.as_view(), name="sitemap"),
         path("search/", view.SearchResults.as_view(), name="search"),
         path("blog/", include("pbn.urls")),
-        path("<slug:slug>/", view.OtherPage.as_view(), name="other_page"),
+        path("authors/", view.ListAuthors.as_view(), name="list_authors"),
+        path("authors/<slug:slug>/", view.Author.as_view(), name="author"),
         path("ckeditor/", include("ckeditor_uploader.urls")),
+        path("<slug:slug>/", view.OtherPage.as_view(), name="other_page"),
     ]
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )

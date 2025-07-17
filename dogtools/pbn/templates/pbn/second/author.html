@@ -1,0 +1,45 @@
+{% extends 'pbn/second/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "list_authors" %}{{ author_slug }}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="author-page">
+                    <div class="author-page-top">
+                        <div class="author-page__img">
+                            <img src="{{ author_img_preview|capfirst }}"
+                                 alt="{{ author_name|capfirst }}">
+                        </div>
+                        <div class="author-page__name">{{ author_name|capfirst }}</div>
+                        <div class="author-page__post">{{ spec }}</div>
+                        <div class="author-page__desc">{{ preview|safe }}</div>
+                    </div>
+                    <div class="articles">
+                        <h2>Статьи автора</h2>
+                        <div class="articles-items">
+                            {% for article in list_articles %}
+                                <div class="articles-item">
+                                    <div class="articles_img">
+                                        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                            <img src="{{ article.img_preview }}}" alt="{{ article.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="articles-text">
+                                        <div class="articles__title">{{ article.name|capfirst }}</div>
+                                        <div class="articles__desc">{{ article.category_name|capfirst }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

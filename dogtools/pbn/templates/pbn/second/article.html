@@ -53,15 +53,21 @@
                         Опубликовано  {{ created|date:"d-m-Y" }} · время чтения {{ time_read }} мин · {{ page_view }} просмотров
                     </div>
                     <div class="post-content">
-                        <div class="author">
-                            <div class="author-avatar">
-                                <img src="./img/avatar.png" alt="">
+                        {% if author_id %}
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="{{ data_author.img_preview }}"
+                                         alt="{{ data_author.name|capfirst }}">
+                                </div>
+                                <div class="author-meta">
+                                    <div class="author-name">
+                                        <a href="{% url "list_authors" %}{{ data_author.slug }}/"
+                                           class="link-menu">{{ data_author.name|capfirst }}</a>
+                                    </div>
+                                    <div class="author-post">{{ data_author.spec }}</div>
+                                </div>
                             </div>
-                            <div class="author-meta">
-                                <div class="author-name">Sophia Bennett</div>
-                                <div class="author-post">Lead Software Engineer</div>
-                            </div>
-                        </div>
+                        {% endif %}
                         {% if table_content %}
                             <div class="post-content-inner">
                                 <div class="contents">

@@ -104,6 +104,27 @@ class Domains(models.Model):
         default="first",
         verbose_name="Выбор шаблона",
     )
+    authors_title = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Title страницы авторов",
+        help_text="Заполнять, если такая страница есть в шаблоне",
+    )
+    authors_description = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Description страницы авторов",
+        help_text="Заполнять, если такая страница есть в шаблоне",
+    )
+    authors_keywords = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Keywords страницы авторов",
+        help_text="Заполнять, если такая страница есть в шаблоне",
+    )
 
     class Meta:
         verbose_name = "Домен"
@@ -179,6 +200,65 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
 
 
+class Author(models.Model):
+    name = models.CharField(max_length=250, verbose_name="Имя автора")
+    spec = models.CharField(
+        max_length=300,
+        verbose_name="Специализация автора",
+        help_text="Не более 300 символов",
+    )
+    preview = RichTextUploadingField(
+        verbose_name="Информация об авторе",
+    )
+    title = models.CharField(max_length=250, verbose_name="Title")
+    description = models.CharField(max_length=500, verbose_name="Meta-description")
+    keywords = models.CharField(
+        max_length=500, default="", verbose_name="Meta-keywords"
+    )
+    slug = models.SlugField(
+        max_length=100,
+        null=False,
+        db_index=True,
+        verbose_name="URL",
+        help_text="При создании поставьте любой символ. Поле заполнится автоматически.",
+    )
+    img_preview = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Фото автора",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Автора"
+        verbose_name_plural = "Авторы"
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)[:100]
+        super(Author, self).save(*args, **kwargs)
+
+    def get_url(self):
+        return reverse("author", args=[self.slug])
+
+    def __str__(self):
+        return f"{self.name} - {self.domain}"
+
+
 class Article(models.Model):
     name = models.CharField(max_length=250, verbose_name="Название")
     domain = models.ForeignKey(
@@ -191,6 +271,13 @@ class Article(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Категория",
         default="",
+    )
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.PROTECT,
+        verbose_name="Автор",
+        default="",
+        null=True,
     )
     title = models.CharField(max_length=250, verbose_name="Title")
     description = models.CharField(max_length=500, verbose_name="Meta-description")
@@ -365,43 +452,3 @@ class LinksRedirects(models.Model):
 
     def __str__(self):
         return f"{self.start_link}"
-
-
-class Author(models.Model):
-    name = models.CharField(max_length=250, verbose_name="Имя автора")
-    spec = models.CharField(
-        max_length=300,
-        verbose_name="Специализация автора",
-        help_text="Не более 300 символов",
-    )
-    preview = models.CharField(
-        max_length=600,
-        verbose_name="Описание автора",
-        help_text="Не более 600 символов",
-    )
-    title = models.CharField(max_length=250, verbose_name="Title")
-    description = models.CharField(max_length=500, verbose_name="Meta-description")
-    keywords = models.CharField(
-        max_length=500, default="", verbose_name="Meta-keywords"
-    )
-    slug = models.SlugField(
-        max_length=100,
-        null=False,
-        db_index=True,
-        verbose_name="URL",
-        help_text="При создании поставьте любой символ. Поле заполнится автоматически.",
-    )
-    img_preview = models.ImageField(
-        upload_to="static/pbn/img",
-        null=True,
-        verbose_name="Фото автора",
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=(
-                    "png",
-                    "jpg",
-                    "jpeg",
-                )
-            )
-        ],
-    )

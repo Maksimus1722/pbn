@@ -1,0 +1,23 @@
+{% extends 'pbn/second/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="article-single">
+                    <h1 class="article-title">Страница ошибки</h1>
+                    <div class="post-content">
+                        <p>Вы ввели неверный адрес страницы {{ url }}, проверьте корректность вводимого адреса</p>
+                        <div class="after-post"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">{% include 'pbn/second/include/sitebar_category.html' %}</div>
+        </div>
+    </div>
+{% endblock content %}

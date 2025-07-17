@@ -1,6 +1,14 @@
 from django.contrib import admin
 from django.core.cache import cache
-from .models import Domains, Article, Category, OtherPage, LinksMembrans, LinksRedirects
+from .models import (
+    Domains,
+    Article,
+    Category,
+    OtherPage,
+    LinksMembrans,
+    LinksRedirects,
+    Author,
+)
 
 
 admin.site.site_header = "Админ-панель для управления сайтами"
@@ -64,6 +72,16 @@ class DomainsAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            "Данные страницы авторов",
+            {
+                "fields": (
+                    "authors_title",
+                    "authors_description",
+                    "authors_keywords",
+                )
+            },
+        ),
     )
     inlines = [RedirectLinksInline, MembransLinksInline]
     readonly_fields = ("last_mod",)
@@ -114,6 +132,7 @@ class ArticlesAdmin(admin.ModelAdmin):
                     "name",
                     "domain",
                     "category",
+                    "author",
                     "slug",
                 )
             },
@@ -257,8 +276,33 @@ class OtherPageAdmin(admin.ModelAdmin):
         return form
 
 
+class authorAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    list_per_page = 20
+    search_fields = [
+        "name__istartswith",
+    ]
+    fieldsets = (
+        (
+            "Основное",
+            {"fields": ("name", "spec", "preview", "slug", "img_preview", "domain")},
+        ),
+        (
+            "Мета-данные",
+            {
+                "fields": (
+                    "title",
+                    "description",
+                    "keywords",
+                )
+            },
+        ),
+    )
+
+
 # Register your models here.
 admin.site.register(Domains, DomainsAdmin)
 admin.site.register(Article, ArticlesAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(OtherPage, OtherPageAdmin)
+admin.site.register(Author, authorAdmin)

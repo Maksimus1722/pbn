@@ -79,7 +79,7 @@
                         <ul id="primary" class="menu">
                             {% for category in list_category %}
                                 <li id="menu-item-110950" class="menu-item">
-                                    <a href="/blog/{{ category.slug }}/">{{ category.name|capfirst }}</a>
+                                    <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
                             {% for page in list_other_page %}
@@ -111,7 +111,7 @@
                             <ul id="primary" class="menu">
                                 {% for category in list_category %}
                                     <li id="menu-item-110950" class="menu-item">
-                                        <a href="/blog/{{ category.slug }}/">{{ category.name|capfirst }}</a>
+                                        <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                     </li>
                                 {% endfor %}
                                 {% for page in list_other_page %}
