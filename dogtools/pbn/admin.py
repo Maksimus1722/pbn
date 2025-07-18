@@ -286,7 +286,17 @@ class authorAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Основное",
-            {"fields": ("name", "spec", "preview", "slug", "img_preview", "domain")},
+            {
+                "fields": (
+                    "last_mod",
+                    "name",
+                    "spec",
+                    "preview",
+                    "slug",
+                    "img_preview",
+                    "domain",
+                )
+            },
         ),
         (
             "Мета-данные",
@@ -299,6 +309,7 @@ class authorAdmin(admin.ModelAdmin):
             },
         ),
     )
+    readonly_fields = ("last_mod",)
 
 
 # Register your models here.

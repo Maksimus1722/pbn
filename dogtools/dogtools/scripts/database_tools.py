@@ -1,5 +1,4 @@
 import sqlalchemy as sa, threading
-import datetime
 
 
 class ConnectDB:
@@ -250,6 +249,7 @@ class ConnectDB:
                     .where(
                         author_table.c.slug == slug,
                         author_table.c.domain_id == domain_table.c.id,
+                        article_table.c.active == True,
                     )
                 )
                 rs = con.execute(query).fetchall()
@@ -765,6 +765,31 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
+                author_table = meta.tables["pbn_author"]
+                query = (
+                    sa.select(
+                        author_table.c.slug,
+                        author_table.c.last_mod,
+                    )
+                    .select_from(
+                        author_table.join(
+                            domain_table,
+                            author_table.c.domain_id == domain_table.c.id,
+                        )
+                    )
+                    .where(
+                        domain_table.c.domain == self.host,
+                    )
+                    .order_by(sa.desc(author_table.c.id))
+                )
+                rs = con.execute(query).fetchall()
+                if rs:
+                    data["authors"] = True
+                    data["list_authors"] = [
+                        {"slug": row.slug, "last_mod": row.last_mod} for row in rs
+                    ]
+                else:
+                    data["authors"] = False
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
                 data.update(

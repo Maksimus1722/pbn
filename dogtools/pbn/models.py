@@ -242,10 +242,15 @@ class Author(models.Model):
         verbose_name="Домен",
         default="",
     )
+    last_mod = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Последнее обновление",
+    )
 
     class Meta:
         verbose_name = "Автора"
         verbose_name_plural = "Авторы"
+        ordering = ("name",)
 
     def save(self, *args, **kwargs):
         if not self.id:

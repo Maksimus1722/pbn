@@ -30,4 +30,18 @@
     <priority>0.5</priority>
     </url>
 {% endfor %}
+{% if authors %}
+<url>
+    <loc>https://{{ request.get_host }}{% url "list_authors" %}</loc>
+    <lastmod>{{ domain_last_mod|date:"Y-m-d" }}</lastmod>
+    <priority>0.5</priority>
+</url>
+{% for author in list_authors %}
+<url>
+    <loc>https://{{ request.get_host }}{% url "list_authors" %}{{author.slug}}/</loc>
+    <lastmod>{{ author.last_mod|date:"Y-m-d" }}</lastmod>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
+{% endif %}
 </urlset>
