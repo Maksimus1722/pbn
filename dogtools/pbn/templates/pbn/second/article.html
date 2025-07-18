@@ -1,11 +1,7 @@
 {% extends 'pbn/second/base.html' %}
 {% load static %}
-{% block index %}
-    <meta name="robots" content="index, follow" />
-{% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/
-{% endblock canonical %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="row">
@@ -68,8 +64,8 @@
                                 </div>
                             </div>
                         {% endif %}
-                            <div class="post-content-inner">
-                                {% if table_content %}
+                        <div class="post-content-inner">
+                            {% if table_content %}
                                 <div class="contents">
                                     <h3>Содержание</h3>
                                     {{ table_content|safe }}
@@ -92,7 +88,9 @@
                                         <div class="related-item__desc">{{ article.description }}</div>
                                     </div>
                                     <div class="related-item__img">
-                                        <img src="/media/{{ article.img_preview }}" alt="{{ article.name }}">
+                                        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                            <img src="/media/{{ article.img_preview }}" alt="{{ article.name }}">
+                                        </a>
                                     </div>
                                 </div>
                             {% endfor %}
