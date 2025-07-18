@@ -13,7 +13,7 @@
                 <div class="author-page">
                     <div class="author-page-top">
                         <div class="author-page__img">
-                            <img src="{{ author_img_preview|capfirst }}"
+                            <img src="/media/{{ author_img_preview}}"
                                  alt="{{ author_name|capfirst }}">
                         </div>
                         <div class="author-page__name">{{ author_name|capfirst }}</div>
@@ -27,7 +27,7 @@
                                 <div class="articles-item">
                                     <div class="articles_img">
                                         <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
-                                            <img src="{{ article.img_preview }}}" alt="{{ article.name }}">
+                                            <img src="/media/{{ article.img_preview }}}" alt="{{ article.name }}">
                                         </a>
                                     </div>
                                     <div class="articles-text">
