@@ -917,6 +917,7 @@ img {
     display: inline-block;
     margin: 0;
     text-align: left;
+    white-space: pre;
 }
 
 .menu a {
@@ -928,7 +929,7 @@ img {
 ul#primary>.menu-item>a,
 div#primary>ul>.page_item>a,
 div#primary>ul>.current_page_item>a {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 }
 
