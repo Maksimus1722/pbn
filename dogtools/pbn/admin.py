@@ -52,17 +52,31 @@ class DomainsAdmin(admin.ModelAdmin):
                     "logo",
                     "favicon",
                     "template",
-                    "google_analytics",
-                    "yandex_metrika",
-                    "yandex_webmaster",
+                )
+            },
+        ),
+        (
+            "Счетчики и вебмастера",
+            {"fields": ("yandex_webmaster", "yandex_metrika", "google_analytics")},
+        ),
+        (
+            "Заполнение главной страницы",
+            {
+                "fields": (
+                    "title",
+                    "description",
+                    "keywords",
                     "h1",
                     "main_text",
                 )
             },
         ),
-        ("Мета-данные", {"fields": ("title", "description", "keywords")}),
         (
-            "Данные главной страницы блога",
+            "Дополнительная информация в сквозных блоках",
+            {"fields": ("name_site", "info_footer")},
+        ),
+        (
+            "Данные главной страницы блога (используется во всех шаблонах для блога)",
             {
                 "fields": (
                     "blog_title",
@@ -73,7 +87,7 @@ class DomainsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Данные страницы авторов",
+            "Данные страницы авторов (используется в шаблонах: «Блог-2», «Блог-3»)",
             {
                 "fields": (
                     "authors_title",
@@ -97,6 +111,8 @@ class DomainsAdmin(admin.ModelAdmin):
             "blog_description",
             "blog_keywords",
             "blog_name",
+            "name_site",
+            "info_footer",
         ]
         for field_name in fields_to_widen:
             form.base_fields[field_name].widget.attrs.update(

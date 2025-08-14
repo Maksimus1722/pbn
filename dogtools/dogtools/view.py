@@ -1,9 +1,12 @@
 import re
 from django_filters.views import View
-from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import HttpResponsePermanentRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.http import HttpResponseNotFound
 from .scripts.database_tools import ConnectDB
 from .scripts.list_hosts import redirects_map
+
 
 ## Мета-данные страницы ошибки
 title = "Несуществующая страница"
@@ -160,15 +163,16 @@ class GeneralRedirect(View):
 
 class SearchResults(View):
     def get(self, request, *args, **kwargs):
-        host = re.sub(r":.*", "", self.request.get_host())
         text_search = request.GET.get("text_search")
-        connect = ConnectDB(host)
         if text_search:
-            data = connect.get_search_article(text_search)
-            data["text_search"] = text_search
-            return JsonResponse(data)
+            url = reverse("search") + f"?text={text_search}"
+            return HttpResponsePermanentRedirect(url)
         else:
-            data = connect.get_default_search()
+            host = re.sub(r":.*", "", self.request.get_host())
+            text = request.GET.get("text") if request.GET.get("text") else ""
+            connect = ConnectDB(host)
+            data = connect.get_search_article(text)
+            data["text_search"] = text
         if data["valid"]:
             data["title"] = f"Результаты поиска"
             return render(request, f"pbn/{data['template']}/search.html", context=data)

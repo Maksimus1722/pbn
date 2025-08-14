@@ -1,0 +1,142 @@
+{% load static %}
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="ru">
+        <head>
+            {% block index %}
+            {% endblock index %}
+            {% if yandex_webmaster %}<meta name="yandex-verification" content="{{ yandex_webmaster }}" />{% endif %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>{{ title }}</title>
+            <meta name="description" content="{{ description|default_if_none:"" }}" />
+            <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
+            <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
+            <link rel="icon" href="/media/{{ favicon }}">
+            <link rel='stylesheet'
+                  href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
+                  type='text/css'
+                  media='all' />
+            <link rel="stylesheet" href=" {% static 'pbn/blog_third/css/style.css' %}">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            {% if google_analytics %}
+                <!-- Google tag (gtag.js) -->
+                <script async
+                        src="https://www.googletagmanager.com/gtag/js?id={{google_analytics}}"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '{{google_analytics}}');
+                </script>
+            {% endif %}
+            {% if yandex_metrika %}
+                <!-- Yandex.Metrika counter -->
+                <script type="text/javascript">
+                (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+                (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+                ym({{yandex_metrika}}, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+                });
+                </script>
+                <noscript>
+                    <div>
+                        <img src="https://mc.yandex.ru/watch/{{ yandex_metrika }}"
+                             style="position:absolute;
+                                    left:-9999px"
+                             alt="" />
+                    </div>
+                </noscript>
+                <!-- /Yandex.Metrika counter -->
+            {% endif %}
+        </head>
+        <body class="home blog">
+            <div class="overlay"></div>
+            <div class="grid">
+                <header id="theme-header" role="banner">
+                    <a class="logo" href="/">
+                        <img class="hidden-xs"  src="/media/{{ logo }}" alt="{{ name_site }}" />
+                        {{ name_site }}
+                    </a>
+                    <nav class="primary" id="primary">
+                        <button class="mobile-menu-icon mobile-trigger mobile-trigger--slider">
+                            <span class="mobile-trigger-box">
+                                <span class="mobile-trigger-inner"></span>
+                                <span class="screen-reader-text">Меню</span>
+                            </span>
+                        </button>
+                        <ul id="primary" class="menu">
+                            {% for category in list_category %}
+                                <li id="menu-item-110950" class="menu-item">
+                                    <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
+                                </li>
+                            {% endfor %}
+                            {% for page in list_other_page %}
+                                <li id="menu-item-110950" class="menu-item">
+                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    <div class="header-search">
+                        <form id="form-search" action="{% url 'search' %}" method="GET">
+                            <input type="text"
+                                   name="text_search"
+                                   placeholder="Поиск..."
+                                   minlength="3"
+                                   required>
+                            <button style="border: 0px">
+                                <input class="button find" type="submit"  value="Найти">
+                            </button>
+                        </form>
+                    </div>
+                </header>
+                {% block content %}
+                {% endblock content %}
+                <footer id="footer" class="footer">
+                    <div class="grid">
+                        <div class="row" id="footer-widgets">
+                            <div class="col-xl-4">
+                                <div class="widgets-title">О сайте</div>
+                                <p>{{ info_footer }}</p>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="widgets-title">Рубрики</div>
+                                <ul>
+                                    {% for category in list_category %}
+                                        <li id="menu-item-110950" class="menu-item">
+                                            <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="widgets-title">Социальные сети</div>
+                                <div class="widgets-social">
+                                    <script src="https://yastatic.net/share2/share.js"></script>
+                                    <div class="ya-share2"
+                                         data-curtain
+                                         data-size="s"
+                                         data-color-scheme="whiteblack"
+                                         data-services="vkontakte,odnoklassniki,telegram"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="copy">© 2025 Информационный портал. Все права защищены.</div>
+                    </div>
+                </footer>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+                <script type="text/javascript"
+                        src="{% static "/pbn/blog_third/js/script.js" %}"></script>
+                {% block scripts %}
+                {% endblock scripts %}
+            </body>
+        </html>
+    {% endspaceless %}

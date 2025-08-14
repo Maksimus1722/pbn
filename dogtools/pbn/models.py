@@ -7,8 +7,9 @@ from django.core.validators import MinLengthValidator, FileExtensionValidator
 
 
 CHOICES_TEMPLATES = [
-    ("first", "first"),
-    ("second", "second"),
+    ("first", "Блог-1"),
+    ("second", "Блог-2"),
+    ("blog_third", "Блог-3"),
 ]
 
 
@@ -124,6 +125,20 @@ class Domains(models.Model):
         blank=True,
         verbose_name="Keywords страницы авторов",
         help_text="Заполнять, если такая страница есть в шаблоне",
+    )
+    info_footer = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Текст о сайте в футере",
+        help_text="Шаблоны: «Блог-3»",
+    )
+    name_site = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Название сайта в шапке",
+        help_text="Шаблоны: «Блог-3»",
     )
 
     class Meta:
