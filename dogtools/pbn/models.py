@@ -12,6 +12,20 @@ CHOICES_TEMPLATES = [
     ("blog_third", "Блог-3"),
 ]
 
+CHOICES_YEAR_START = [
+    ("2013", "2013"),
+    ("2014", "2014"),
+    ("2015", "2015"),
+    ("2016", "2016"),
+    ("2017", "2017"),
+    ("2018", "2018"),
+    ("2019", "2019"),
+    ("2020", "2021"),
+    ("2022", "2022"),
+    ("2023", "2023"),
+    ("2024", "2024"),
+]
+
 
 # Create your models here.
 class Domains(models.Model):
@@ -131,7 +145,7 @@ class Domains(models.Model):
         default="",
         blank=True,
         verbose_name="Текст о сайте в футере",
-        help_text="Шаблоны: «Блог-3»",
+        help_text="Шаблоны: «Блог-2», «Блог-3»",
     )
     name_site = models.CharField(
         max_length=100,
@@ -139,6 +153,25 @@ class Domains(models.Model):
         blank=True,
         verbose_name="Название сайта в шапке",
         help_text="Шаблоны: «Блог-3»",
+    )
+    year_start = models.CharField(
+        max_length=50,
+        choices=CHOICES_YEAR_START,
+        default="2015",
+        verbose_name="Год запуска проекта",
+    )
+    emal_start = models.CharField(
+        max_length=50,
+        default="info",
+        verbose_name="Имя ящика",
+        help_text="Для всех шаблонов. Например: info или help (домен подтянется сам)",
+    )
+    phone = models.CharField(
+        max_length=50,
+        default="",
+        null=True,
+        verbose_name="Телефон",
+        help_text="Для шаблонов:«Блог-3» и всех коммерческих. В удобочитаемом виде: +7-(495)-233-23-23",
     )
 
     class Meta:

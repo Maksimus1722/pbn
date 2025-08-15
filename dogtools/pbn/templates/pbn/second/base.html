@@ -14,7 +14,10 @@
             <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
             <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
             <link rel="icon" href="/media/{{ favicon }}">
-            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10' type='text/css'media='all' />
+            <link rel='stylesheet'
+                  href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
+                  type='text/css'
+                  media='all' />
             <link rel="stylesheet" href=" {% static 'pbn/second/css/style.css' %}">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             {% if google_analytics %}
@@ -107,7 +110,12 @@
                                      data-color-scheme="whiteblack"
                                      data-services="vkontakte,odnoklassniki,telegram"></div>
                             </div>
-                            <div class="copy">@2025 г. Все права защищены</div>
+                            <div class="copy">
+                                @ {{ year_start }} - {{ now_year }}  год. Копирование материалов запрещено - <a href="/">{{ request.get_host }}</a>.
+                            </div>
+                            <div class="copy">
+                                Связатьсься по всем вопросам: <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}
+                            </div>
                         </div>
                     </div>
                 </footer>

@@ -118,18 +118,25 @@
                                 </ul>
                             </div>
                             <div class="col-xl-4">
-                                <div class="widgets-title">Социальные сети</div>
-                                <div class="widgets-social">
+                                <div class="widgets-title">Контакты для связи</div>
+                                <p>
+                                    E-mail редакции: <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
+                                </p>
+                                <p>
+                                    Телефон: <a href="tel:{{ phone_link }}">{{ phone }}</a>
+                                </p>
+                                <p>
                                     <script src="https://yastatic.net/share2/share.js"></script>
                                     <div class="ya-share2"
+                                         style="margin-top:5px"
                                          data-curtain
-                                         data-size="s"
-                                         data-color-scheme="whiteblack"
-                                         data-services="vkontakte,odnoklassniki,telegram"></div>
-                                </div>
+                                         data-shape="round"
+                                         data-color-scheme="blackwhite"
+                                         data-services="messenger,vkontakte,odnoklassniki,telegram,whatsapp"></div>
+                                </p>
                             </div>
                         </div>
-                        <div class="copy">© 2025 Информационный портал. Все права защищены.</div>
+                        <div class="copy">©  {{ year_start }}-{{ now_year }} г. Информационный портал. Все права защищены.</div>
                     </div>
                 </footer>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

@@ -2136,3 +2136,8 @@ blockquote::before,
     border: none;
     cursor: pointer;
 }
+
+.extra-footer {
+    padding: 4px 15px;
+    font-size: 14px;
+}

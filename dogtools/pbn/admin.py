@@ -73,7 +73,22 @@ class DomainsAdmin(admin.ModelAdmin):
         ),
         (
             "Дополнительная информация в сквозных блоках",
-            {"fields": ("name_site", "info_footer")},
+            {
+                "fields": (
+                    "name_site",
+                    "info_footer",
+                    "year_start",
+                )
+            },
+        ),
+        (
+            "Контактная информация",
+            {
+                "fields": (
+                    "emal_start",
+                    "phone",
+                )
+            },
         ),
         (
             "Данные главной страницы блога (используется во всех шаблонах для блога)",
@@ -118,6 +133,13 @@ class DomainsAdmin(admin.ModelAdmin):
             form.base_fields[field_name].widget.attrs.update(
                 {
                     "style": "width: 60%;",
+                }
+            )
+        fields_to_small = ["emal_start"]
+        for field_name in fields_to_small:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 10%;",
                 }
             )
         return form

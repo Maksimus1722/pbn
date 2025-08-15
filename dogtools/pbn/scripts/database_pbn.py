@@ -1,4 +1,4 @@
-import sqlalchemy as sa, threading
+import sqlalchemy as sa, threading, datetime
 
 
 class ConnectDB:
@@ -43,6 +43,9 @@ class ConnectDB:
                         domain_table.c.template.label("template"),
                         domain_table.c.name_site.label("name_site"),
                         domain_table.c.info_footer.label("info_footer"),
+                        domain_table.c.year_start.label("year_start"),
+                        domain_table.c.emal_start.label("emal_start"),
+                        domain_table.c.phone.label("phone"),
                     )
                     .select_from(
                         article_table.join(
@@ -78,6 +81,12 @@ class ConnectDB:
                     "template": first_rs.template,
                     "name_site": first_rs.name_site,
                     "info_footer": first_rs.info_footer,
+                    "year_start": first_rs.year_start,
+                    "emal_start": first_rs.emal_start,
+                    "now_year": datetime.datetime.now().year,
+                    "phone": first_rs.phone,
+                    "phone_link": "+"
+                    + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "list_articles": [
                         {
                             "name": row.name,
@@ -143,6 +152,9 @@ class ConnectDB:
                         domain_table.c.template.label("template"),
                         domain_table.c.name_site.label("name_site"),
                         domain_table.c.info_footer.label("info_footer"),
+                        domain_table.c.year_start.label("year_start"),
+                        domain_table.c.emal_start.label("emal_start"),
+                        domain_table.c.phone.label("phone"),
                     )
                     .select_from(
                         article_table.join(
@@ -182,6 +194,12 @@ class ConnectDB:
                     "template": first_rs.template,
                     "name_site": first_rs.name_site,
                     "info_footer": first_rs.info_footer,
+                    "year_start": first_rs.year_start,
+                    "emal_start": first_rs.emal_start,
+                    "now_year": datetime.datetime.now().year,
+                    "phone": first_rs.phone,
+                    "phone_link": "+"
+                    + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "list_articles": [
                         {
                             "name": row.name,
@@ -268,6 +286,9 @@ class ConnectDB:
                         domain_table.c.template.label("template"),
                         domain_table.c.name_site.label("name_site"),
                         domain_table.c.info_footer.label("info_footer"),
+                        domain_table.c.year_start.label("year_start"),
+                        domain_table.c.emal_start.label("emal_start"),
+                        domain_table.c.phone.label("phone"),
                     )
                     .select_from(
                         article_table.join(
@@ -315,6 +336,12 @@ class ConnectDB:
                     "name_site": rs.name_site,
                     "info_footer": rs.info_footer,
                     "author_id": rs.author_id,
+                    "year_start": rs.year_start,
+                    "emal_start": rs.emal_start,
+                    "now_year": datetime.datetime.now().year,
+                    "phone": rs.phone,
+                    "phone_link": "+"
+                    + "".join(list(filter(lambda x: x.isdigit(), rs.phone))),
                 }
                 article_query = (
                     sa.select(article_table)
@@ -435,6 +462,8 @@ class ConnectDB:
                     domain_table.c.template.label("template"),
                     domain_table.c.name_site.label("name_site"),
                     domain_table.c.info_footer.label("info_footer"),
+                    domain_table.c.year_start.label("year_start"),
+                    domain_table.c.year_start.label("emal_start"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -447,6 +476,9 @@ class ConnectDB:
                     "template": rs.template,
                     "name_site": rs.name_site,
                     "info_footer": rs.info_footer,
+                    "year_start": first_rs.year_start,
+                    "emal_start": first_rs.emal_start,
+                    "now_year": datetime.datetime.now().year,
                 }
                 self._manage_get_category_articles(data["domain_id"])
                 if self.dict_category["valid"] and self.dict_other_page["valid"]:
