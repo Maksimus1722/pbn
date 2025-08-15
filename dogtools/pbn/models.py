@@ -170,6 +170,7 @@ class Domains(models.Model):
         max_length=50,
         default="",
         verbose_name="Телефон",
+        blank=True,
         help_text="Для шаблонов:«Блог-3» и всех коммерческих. В удобочитаемом виде: +7-(495)-233-23-23",
     )
 
