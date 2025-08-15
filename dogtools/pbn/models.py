@@ -169,7 +169,6 @@ class Domains(models.Model):
     phone = models.CharField(
         max_length=50,
         default="",
-        null=True,
         verbose_name="Телефон",
         help_text="Для шаблонов:«Блог-3» и всех коммерческих. В удобочитаемом виде: +7-(495)-233-23-23",
     )
