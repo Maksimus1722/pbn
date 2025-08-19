@@ -1486,17 +1486,17 @@ header#theme-header::after,
     gap: 12px;
 }
 
-.category-item-photo {
+.category-item__photo {
     width: 36px;
     height: 36px;
 }
 
-.category-item-photo svg {
+.category-item__photo svg {
     width: 36px;
     height: 36px;
 }
 
-.category-item-name {
+.category-item__name {
     display: block;
     font-size: 16px;
     color: #000000;
@@ -1520,13 +1520,13 @@ header#theme-header::after,
     margin-bottom: 27px;
 }
 
-.top-item-name {
+.top-item__name {
     font-size: 16px;
     font-weight: 500;
     color: #111827;
 }
 
-.top-item-views {
+.top-item__views {
     display: flex;
     color: #4B5563;
     font-size: 14px;
@@ -1546,13 +1546,13 @@ header#theme-header::after,
     margin-bottom: 20px;
 }
 
-.related-item-name {
+.related-item__name {
     color: #121417;
     font-weight: bold;
     font-size: 18px;
 }
 
-.related-item-desc {
+.related-item__desc {
     font-size: 14px;
     color: #6B7582;
 }
@@ -1562,7 +1562,7 @@ header#theme-header::after,
     grid-template-columns: 1fr 290px;
 }
 
-.related-item-cat {
+.related-item__cat {
     font-size: 14px;
     color: #6B7582;
 }
@@ -1586,7 +1586,7 @@ header#theme-header::after,
     border-radius: 8px;
 }
 
-.author-page-img {
+.author-page__img {
     min-width: 150px;
     width: 150px;
     height: 150px;
@@ -1595,18 +1595,18 @@ header#theme-header::after,
     text-align: center;
 }
 
-.author-page-name {
+.author-page__name {
     color: #111827;
     font-size: 30px;
     font-weight: bold;
 }
 
-.author-page-post {
+.author-page__post {
     font-size: 18px;
     color: #4B5563;
 }
 
-.author-page-desc {
+.author-page__desc {
     color: #374151;
     font-size: 16px;
 }
@@ -1617,7 +1617,7 @@ header#theme-header::after,
     gap: 16px;
 }
 
-.articles-category {
+.articles__category {
     display: inline-block;
     border: 1px #E4E4E7 solid;
     font-size: 12px;
@@ -1628,13 +1628,13 @@ header#theme-header::after,
     margin-bottom: 5px;
 }
 
-.articles-title {
+.articles__title {
     color: #111827;
     font-size: 16px;
     font-weight: 500;
 }
 
-.article-desc {
+.article__desc {
     color: #4B5563;
     font-size: 14px;
 }
@@ -1661,13 +1661,13 @@ header#theme-header::after,
     width: 80px;
 }
 
-.authors-name {
+.authors__name {
     color: #111827;
     font-size: 16px;
     font-weight: 500;
 }
 
-.authors-desc {
+.authors__desc {
     font-size: 14px;
     color: #4B5563;
 }
@@ -2170,11 +2170,11 @@ blockquote::before,
         margin-bottom: 20px;
     }
 
-    .related-item-img {
+    .related-item__img {
         margin-top: 8px;
     }
 
-    .related-item-img img {
+    .related-item__img img {
         width: 100%;
     }
 
