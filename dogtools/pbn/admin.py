@@ -57,7 +57,14 @@ class DomainsAdmin(admin.ModelAdmin):
         ),
         (
             "Счетчики и вебмастера",
-            {"fields": ("yandex_webmaster", "yandex_metrika", "google_analytics")},
+            {
+                "fields": (
+                    "yandex_webmaster",
+                    "google_webmaster",
+                    "yandex_metrika",
+                    "google_analytics",
+                )
+            },
         ),
         (
             "Заполнение главной страницы",

@@ -114,6 +114,13 @@ class Domains(models.Model):
         verbose_name="Номер Яндекс.Вебмастера",
         help_text="Например: ffbe325dc3c6cf09",
     )
+    google_webmaster = models.CharField(
+        max_length=150,
+        default="",
+        blank=True,
+        verbose_name="Номер Google Search Console",
+        help_text="Например: WQIWvovWZPf97NwMWKDEBnYOKZevVnd3YC0H6Sl5vNs",
+    )
     template = models.CharField(
         choices=CHOICES_TEMPLATES,
         max_length=150,
