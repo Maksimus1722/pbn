@@ -78,11 +78,6 @@
                                     <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
-                            {% for page in list_other_page %}
-                                <li id="menu-item-110950" class="menu-item">
-                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
-                                </li>
-                            {% endfor %}
                         </ul>
                     </nav>
                 </header>
@@ -97,6 +92,8 @@
                                         <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                     </li>
                                 {% endfor %}
+                            </ul>
+                            <ul id="primary" class="menu">
                                 {% for page in list_other_page %}
                                     <li id="menu-item-110950" class="menu-item">
                                         <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
@@ -120,6 +117,16 @@
                         </div>
                     </div>
                 </footer>
+                <div itemscope=""
+                     itemtype="http://schema.org/Organization"
+                     class
+                     DisplaNone>
+                    <meta itemprop="name" content="{{ name_site }}">
+                    <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                    <meta itemprop="addressLocality" content="{{ region }}">
+                    <meta itemprop="streetAddress" content="{{ street }}">
+                    <meta itemprop="logo" content="/media/{{ logo }}">
+                </div>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script type="text/javascript" src="{% static "/pbn/second/js/script.js" %}"></script>
                 {% block scripts %}

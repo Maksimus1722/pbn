@@ -181,6 +181,20 @@ class Domains(models.Model):
         blank=True,
         help_text="Для шаблонов:«Блог-3» и всех коммерческих. В удобочитаемом виде: +7-(495)-233-23-23",
     )
+    region = models.CharField(
+        max_length=50,
+        default="",
+        verbose_name="Город расположения",
+        blank=True,
+        help_text="Используется для микроразметки. Например: Москва",
+    )
+    street = models.CharField(
+        max_length=50,
+        default="",
+        verbose_name="Адрес (без города)",
+        blank=True,
+        help_text="Используется для микроразметки. Например: Полежавевская дом 1",
+    )
 
     class Meta:
         verbose_name = "Домен"

@@ -83,11 +83,6 @@
                                     <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
-                            {% for page in list_other_page %}
-                                <li id="menu-item-110950" class="menu-item">
-                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
-                                </li>
-                            {% endfor %}
                         </ul>
                     </nav>
                     <div class="header-search">
@@ -123,7 +118,14 @@
                                 </ul>
                             </div>
                             <div class="col-xl-4">
-                                <div class="widgets-title">Контакты для связи</div>
+                                <div class="widgets-title">Информация для читателей</div>
+                                <ul style="margin-bottom:10px">
+                                    {% for page in list_other_page %}
+                                        <li id="menu-item-110950" class="menu-item">
+                                            <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                                 <p>
                                     E-mail редакции: <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
                                 </p>
@@ -144,6 +146,17 @@
                         <div class="copy">©  {{ year_start }}-{{ now_year }} г. Информационный портал. Все права защищены.</div>
                     </div>
                 </footer>
+                <div itemscope=""
+                     itemtype="http://schema.org/Organization"
+                     class
+                     DisplaNone>
+                    <meta itemprop="name" content="{{ name_site }}">
+                    <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                    <meta itemprop="phone" content="{{ phone }}">
+                    <meta itemprop="addressLocality" content="{{ region }}">
+                    <meta itemprop="streetAddress" content="{{ street }}">
+                    <meta itemprop="logo" content="/media/{{ logo }}">
+                </div>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script type="text/javascript"
                         src="{% static "/pbn/blog_third/js/script.js" %}"></script>

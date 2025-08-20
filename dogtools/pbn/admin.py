@@ -93,6 +93,8 @@ class DomainsAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "emal_start",
+                    "region",
+                    "street",
                     "phone",
                 )
             },

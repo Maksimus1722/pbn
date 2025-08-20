@@ -49,6 +49,8 @@ class ConnectDB:
                         domain_table.c.year_start.label("year_start"),
                         domain_table.c.emal_start.label("emal_start"),
                         domain_table.c.phone.label("phone"),
+                        domain_table.c.region.label("region"),
+                        domain_table.c.street.label("street"),
                     )
                     .select_from(
                         article_table.join(
@@ -94,6 +96,8 @@ class ConnectDB:
                     "phone": first_rs.phone,
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
+                    "region": first_rs.region,
+                    "street": first_rs.street,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -170,6 +174,8 @@ class ConnectDB:
                         domain_table.c.year_start.label("year_start"),
                         domain_table.c.emal_start.label("emal_start"),
                         domain_table.c.phone.label("phone"),
+                        domain_table.c.region.label("region"),
+                        domain_table.c.street.label("street"),
                     )
                     .select_from(
                         otherpage_table.join(
@@ -210,6 +216,8 @@ class ConnectDB:
                     "phone": first_row.phone,
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_row.phone))),
+                    "region": first_row.region,
+                    "street": first_row.street,
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:
@@ -269,6 +277,8 @@ class ConnectDB:
                         domain_table.c.year_start.label("year_start"),
                         domain_table.c.emal_start.label("emal_start"),
                         domain_table.c.phone.label("phone"),
+                        domain_table.c.region.label("region"),
+                        domain_table.c.street.label("street"),
                         category_table.c.category_slug.label("category_slug"),
                         category_table.c.name.label("category_name"),
                     )
@@ -322,6 +332,8 @@ class ConnectDB:
                     "phone": first_rs.phone,
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
+                    "region": first_rs.region,
+                    "street": first_rs.street,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -384,6 +396,8 @@ class ConnectDB:
                         domain_table.c.year_start.label("year_start"),
                         domain_table.c.emal_start.label("emal_start"),
                         domain_table.c.phone.label("phone"),
+                        domain_table.c.region.label("region"),
+                        domain_table.c.street.label("street"),
                     )
                     .select_from(
                         author_table.join(
@@ -421,6 +435,8 @@ class ConnectDB:
                     "phone": first_rs.phone,
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
+                    "region": first_rs.region,
+                    "street": first_rs.street,
                     "list_authors": [
                         {
                             "name": row.name,
@@ -470,6 +486,8 @@ class ConnectDB:
                     domain_table.c.year_start.label("year_start"),
                     domain_table.c.emal_start.label("emal_start"),
                     domain_table.c.phone.label("phone"),
+                    domain_table.c.region.label("region"),
+                    domain_table.c.street.label("street"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -490,6 +508,8 @@ class ConnectDB:
                     "phone": rs.phone,
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), rs.phone))),
+                    "region": rs.region,
+                    "street": rs.street,
                 }
                 self._manage_get_category_articles(data["domain_id"])
                 if self.dict_category["valid"] and self.dict_other_page["valid"]:
@@ -669,6 +689,8 @@ class ConnectDB:
                         domain_table.c.year_start.label("year_start"),
                         domain_table.c.emal_start.label("emal_start"),
                         domain_table.c.phone.label("phone"),
+                        domain_table.c.region.label("region"),
+                        domain_table.c.street.label("street"),
                     )
                     .select_from(
                         article_table.join(
@@ -701,6 +723,8 @@ class ConnectDB:
                         domain_table.c.year_start,
                         domain_table.c.emal_start,
                         domain_table.c.phone,
+                        domain_table.c.region,
+                        domain_table.c.street,
                     ).where(domain_table.c.domain == self.host)
                     rs = con.execute(query).fetchone()
                     data = {
@@ -718,6 +742,8 @@ class ConnectDB:
                         "year_start": first_rs.year_start,
                         "emal_start": first_rs.emal_start,
                         "now_year": datetime.datetime.now().year,
+                        "region": first_rs.region,
+                        "street": first_rs.street,
                     }
                 else:
                     first_rs = rs[0]
@@ -739,6 +765,8 @@ class ConnectDB:
                         "year_start": first_rs.year_start,
                         "emal_start": first_rs.emal_start,
                         "now_year": datetime.datetime.now().year,
+                        "region": first_rs.region,
+                        "street": first_rs.street,
                         "list_articles": [
                             {
                                 "name": row.name,
@@ -791,6 +819,8 @@ class ConnectDB:
                     domain_table.c.year_start.label("year_start"),
                     domain_table.c.emal_start.label("emal_start"),
                     domain_table.c.phone.label("phone"),
+                    domain_table.c.region.label("region"),
+                    domain_table.c.street.label("street"),
                 ).where(
                     domain_table.c.domain == self.host,
                 )
@@ -816,6 +846,8 @@ class ConnectDB:
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "now_year": datetime.datetime.now().year,
+                    "region": first_rs.region,
+                    "street": first_rs.street,
                 }
             self._manage_get_category_articles(data["domain_id"])
             if self.dict_category["valid"] and self.dict_other_page["valid"]:

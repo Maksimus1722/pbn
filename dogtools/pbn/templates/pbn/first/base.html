@@ -83,11 +83,6 @@
                                     <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                 </li>
                             {% endfor %}
-                            {% for page in list_other_page %}
-                                <li id="menu-item-110950" class="menu-item">
-                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
-                                </li>
-                            {% endfor %}
                             <li id="menu-item-110950" class="menu-item">
                                 <a href="{% url "search" %}">
                                     <svg width="24"
@@ -115,6 +110,7 @@
                                         <a href="{% url "blog" %}{{ category.slug }}/">{{ category.name|capfirst }}</a>
                                     </li>
                                 {% endfor %}
+                                <li>|</li>
                                 {% for page in list_other_page %}
                                     <li id="menu-item-110950" class="menu-item">
                                         <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
@@ -137,6 +133,16 @@
                         </div>
                     </div>
                 </footer>
+                <div itemscope=""
+                     itemtype="http://schema.org/Organization"
+                     class
+                     DisplaNone>
+                    <meta itemprop="name" content="{{ name_site }}">
+                    <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                    <meta itemprop="addressLocality" content="{{ region }}">
+                    <meta itemprop="streetAddress" content="{{ street }}">
+                    <meta itemprop="logo" content="/media/{{ logo }}">
+                </div>
                 <script type="text/javascript" src="{% static "/pbn/first/js/script.js" %}"></script>
                 {% block scripts %}
                 {% endblock scripts %}
