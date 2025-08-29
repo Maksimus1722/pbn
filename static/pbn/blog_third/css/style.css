@@ -718,7 +718,7 @@ header#theme-header {
 .logo {
     display: flex;
     gap: 8px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #000000;
 }
@@ -994,7 +994,7 @@ img {
 ul#primary>.menu-item>a,
 div#primary>ul>.page_item>a,
 div#primary>ul>.current_page_item>a {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 }
 

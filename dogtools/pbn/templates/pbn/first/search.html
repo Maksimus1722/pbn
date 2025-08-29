@@ -1,8 +1,7 @@
 {% extends 'pbn/first/base.html' %}
 {% load static %}
-{% block index %}
-    <meta name="robots" content="noindex, nofollow" />
-{% endblock index %}
+{% block index %}<meta name="robots" content="noindex, nofollow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "search" %}{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="breadcrumb-navigation">

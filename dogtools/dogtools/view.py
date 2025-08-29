@@ -1,9 +1,8 @@
 import re
 from django_filters.views import View
-from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import render
+from django.http import HttpResponsePermanentRedirect, HttpResponseNotFound
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponseNotFound
 from .scripts.database_tools import ConnectDB
 from .scripts.list_hosts import redirects_map
 
@@ -174,7 +173,12 @@ class SearchResults(View):
             data = connect.get_search_article(text)
             data["text_search"] = text
         if data["valid"]:
-            data["title"] = f"Результаты поиска"
+            data.update(
+                {
+                    "title": f"Результаты поиска на сайте {host}",
+                    "description": f"Поиск на сайте {host} по ключевым фразам",
+                }
+            )
             return render(request, f"pbn/{data['template']}/search.html", context=data)
         else:
             data = base_function_404(host, request)

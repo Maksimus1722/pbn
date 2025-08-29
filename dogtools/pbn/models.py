@@ -160,7 +160,7 @@ class Domains(models.Model):
         default="",
         blank=True,
         verbose_name="Название сайта в шапке",
-        help_text="Шаблоны: «Блог-3»",
+        help_text="Для всех шаблонов",
     )
     year_start = models.CharField(
         max_length=50,

@@ -15,10 +15,7 @@
             <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
             <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
             <link rel="icon" href="/media/{{ favicon }}">
-            <link rel='stylesheet'
-                  href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10'
-                  type='text/css'
-                  media='all' />
+            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto%3A700%7CRoboto%3A400&#038;display=swap&#038;ver=5.8.10' type='text/css' media='all' />
             <link rel="stylesheet" href=" {% static 'pbn/first/css/style.css' %}">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             {% if google_analytics %}
@@ -119,16 +116,12 @@
                             </ul>
                         </div>
                         <div class="col-xl-12">
-                            <div class="extra-footer">
-                                © {{ year_start }}-{{ now_year }} год |  Все права защищены - <a href="/">{{ request.get_host }}</a> | E-mail редакции: <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
+                            <div class="extra-footer">© {{ year_start }}-{{ now_year }} год |  Все права защищены - <a href="/">{{ request.get_host }}</a> | E-mail редакции: <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
                             </div>
                             <div class="extra-footer">{{ info_footer }}</div>
                             <div class="extra-footer">
                                 <script src="https://yastatic.net/share2/share.js"></script>
-                                <div class="ya-share2"
-                                     data-curtain
-                                     data-shape="round"
-                                     data-services="messenger,vkontakte,odnoklassniki,telegram,viber,whatsapp"></div>
+                                <div class="ya-share2" data-curtain data-shape="round" data-services="messenger,vkontakte,odnoklassniki,telegram,viber,whatsapp"></div>
                             </div>
                         </div>
                     </div>

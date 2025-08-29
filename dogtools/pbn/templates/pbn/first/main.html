@@ -1,11 +1,7 @@
 {% extends 'pbn/first/base.html' %}
 {% load static %}
-{% block index %}
-    <meta name="robots" content="index, follow" />
-{% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}
-{% endblock canonical %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <h1>{{ h1|capfirst }}</h1>
