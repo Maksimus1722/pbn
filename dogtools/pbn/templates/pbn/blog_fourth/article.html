@@ -1,0 +1,183 @@
+{% extends 'pbn/blog_fourth/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="article-single">
+                    <ul class="breadcrumb theme"
+                        style='margin-bottom:0 px'
+                        itemscope
+                        itemtype="http://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="/">
+                                <span itemprop="name">Главная</span>
+                            </a>
+                            <meta itemprop="position" content="1" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="{% url "blog" %}">
+                                <span itemprop="name">Блог</span>
+                            </a>
+                            <meta itemprop="position" content="2" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <a itemprop="item" href="{% url "blog" %}{{ category_slug }}/">
+                                <span itemprop="name">{{ category_name|capfirst }}</span>
+                            </a>
+                            <meta itemprop="position" content="3" />
+                        </li>
+                        <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                        <li itemprop="itemListElement"
+                            itemscope
+                            itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">{{ name|capfirst }}</span>
+                            <meta itemprop="position" content="4" />
+                        </li>
+                    </ul>
+                    <h1 class="article-name">{{ name|capfirst }}</h1>
+                    <div class="article-meta">
+                        <div class="post-meta">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <a href="{% url "list_authors" %}{{ data_author.slug }}/">
+                                        <img src="/media/{{ data_author.img_preview }}"
+                                             alt="{{ data_author.name|capfirst }}"
+                                             title="{{ data_author.name|capfirst }}">
+                                    </a>
+                                </div>
+                                <div class="author-meta">
+                                    <div class="author-name">
+                                        Автор статьи:  <a href="{% url "list_authors" %}{{ data_author.slug }}/">{{ data_author.name|capfirst }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-meta-views">{{ created|date:"d F Y" }}</div>
+                            <div class="post-meta-time">
+                                <svg width="20"
+                                     height="20"
+                                     viewBox="0 0 20 20"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 0C4.47581 0 0 4.47581 0 10C0 15.5242 4.47581 20 10 20C15.5242 20 20 15.5242 20 10C20 4.47581 15.5242 0 10 0ZM10 18.0645C5.54435 18.0645 1.93548 14.4556 1.93548 10C1.93548 5.54435 5.54435 1.93548 10 1.93548C14.4556 1.93548 18.0645 5.54435 18.0645 10C18.0645 14.4556 14.4556 18.0645 10 18.0645ZM12.4919 13.8548L9.06855 11.3669C8.94355 11.2742 8.87097 11.129 8.87097 10.9758V4.35484C8.87097 4.08871 9.08871 3.87097 9.35484 3.87097H10.6452C10.9113 3.87097 11.129 4.08871 11.129 4.35484V10.0685L13.8226 12.0282C14.0403 12.1855 14.0847 12.4879 13.9274 12.7056L13.1694 13.75C13.0121 13.9637 12.7097 14.0121 12.4919 13.8548Z" fill="#303030" />
+                                </svg>
+                                {{ time_read }} мин.
+                            </div>
+                            <div class="post-meta-data">
+                                <svg width="31"
+                                     height="20"
+                                     viewBox="0 0 31 20"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M30.6423 8.6756C27.6077 3.47549 21.9481 0 15.5 0C9.04921 0 3.39086 3.47793 0.357709 8.6756C0.123513 9.07691 0 9.53422 0 10C0 10.4658 0.123513 10.9231 0.357709 11.3245C3.39231 16.5245 9.0519 20 15.5 20C21.9508 20 27.6091 16.5221 30.6423 11.3244C30.8765 10.9231 31 10.4658 31 10C31 9.5342 30.8765 9.07689 30.6423 8.6756ZM15.5 17.3913C11.4548 17.3913 8.18057 14.0855 8.18057 10C8.18057 5.91511 11.4542 2.6087 15.5 2.6087C19.5452 2.6087 22.8194 5.91446 22.8194 10C22.8194 14.0849 19.5458 17.3913 15.5 17.3913ZM21.0972 10C21.0972 13.1216 18.5913 15.6522 15.5 15.6522C12.4087 15.6522 9.90279 13.1216 9.90279 10C9.90279 9.03761 10.1413 8.13158 10.5613 7.33842L10.5613 7.34016C10.5613 8.62554 11.5931 9.6675 12.866 9.6675C14.1389 9.6675 15.1708 8.62549 15.1708 7.34016C15.1708 6.05478 14.1389 5.01277 12.866 5.01277L12.8643 5.01283C13.6497 4.58864 14.547 4.34783 15.5 4.34783C18.5913 4.34783 21.0972 6.87837 21.0972 10Z" fill="#303030" />
+                                </svg>
+                                просмотров {{ page_view }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-content-inner">
+                            {% if table_content %}
+                                <div class="contents">
+                                    <h3>Содержание статьи</h3>
+                                    {{ table_content|safe }}
+                                </div>
+                            {% endif %}
+                            {{ text|safe }}
+                        </div>
+                        <div class="top-articles">
+                            <h3>Топ статей</h3>
+                            <div class="top-items">
+                                {% for article in list_top_articles %}
+                                    <div class="top-item">
+                                        <div class="top-item-name">
+                                            <a class="link-top-article"
+                                               href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">{{ article.name|capfirst }}</a>
+                                        </div>
+                                        <div class="top-item-data">{{ article|date:"d F Y" }}</div>
+                                        <div class="top-item-views">
+                                            <svg width="23"
+                                                 height="15"
+                                                 viewBox="0 0 23 15"
+                                                 fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M22.7346 6.5067C20.4831 2.60662 16.2841 0 11.5 0C6.71393 0 2.5158 2.60845 0.265397 6.5067C0.0916389 6.80768 0 7.15066 0 7.50002C0 7.84938 0.0916389 8.19236 0.265397 8.49334C2.51688 12.3934 6.71593 15 11.5 15C16.2861 15 20.4842 12.3915 22.7346 8.4933C22.9084 8.19233 23 7.84935 23 7.5C23 7.15065 22.9084 6.80767 22.7346 6.5067ZM11.5 13.0435C8.49874 13.0435 6.06945 10.5641 6.06945 7.5C6.06945 4.43633 8.49827 1.95652 11.5 1.95652C14.5013 1.95652 16.9305 4.43584 16.9305 7.5C16.9305 10.5637 14.5017 13.0435 11.5 13.0435ZM15.6528 7.5C15.6528 9.84122 13.7935 11.7391 11.5 11.7391C9.20647 11.7391 7.34723 9.84122 7.34723 7.5C7.34723 6.77821 7.52416 6.09868 7.83582 5.50382L7.83578 5.50512C7.83578 6.46916 8.60137 7.25062 9.54576 7.25062C10.4902 7.25062 11.2557 6.46912 11.2557 5.50512C11.2557 4.54109 10.4902 3.75958 9.54576 3.75958L9.54448 3.75962C10.1272 3.44148 10.7929 3.26087 11.5 3.26087C13.7935 3.26087 15.6528 5.15878 15.6528 7.5Z" fill="#2563EB" />
+                                            </svg>
+                                            просмотров {{ article.page_view }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="articles " id="content">
+                        <h2>Похожие статьи</h2>
+                        <div class="row grid-4">
+                            {% for article in simular_articles %}
+                                <div class="col-xl-3 col-sm-6 col-small-6 col-xs-12">
+                                    <article class="post">
+                                        <div class="post-thumb">
+                                            <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                                <img class="cover-image visible"
+                                                     src="/media/{{ article.img_preview }}"
+                                                     alt="{{ article.name }}"
+                                                     title="{{ article.name }}" />
+                                            </a>
+                                        </div>
+                                        <div class="post-details">
+                                            <h2 class="post-name">
+                                                <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                                   class="article-name">{{ article.name|capfirst }}</a>
+                                            </h2>
+                                            <p>{{ article.description }}</p>
+                                        </div>
+                                        <div class="post-meta">
+                                            <div class="post-meta-data">{{ article.created|date:"d.m.y" }}</div>
+                                            <div class="post-meta-time">
+                                                <svg width="16"
+                                                     height="16"
+                                                     viewBox="0 0 16 16"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1.23077C4.26146 1.23077 1.23077 4.26146 1.23077 8C1.23077 11.7385 4.26146 14.7692 8 14.7692C11.7385 14.7692 14.7692 11.7385 14.7692 8C14.7692 4.26146 11.7385 1.23077 8 1.23077ZM0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#667582" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 3.07692C8.33987 3.07692 8.61539 3.35244 8.61539 3.69231V7.38462H12.3077C12.6476 7.38462 12.9231 7.66013 12.9231 8C12.9231 8.33987 12.6476 8.61539 12.3077 8.61539H8C7.66013 8.61539 7.38462 8.33987 7.38462 8V3.69231C7.38462 3.35244 7.66013 3.07692 8 3.07692Z" fill="#667582" />
+                                                </svg>
+                                                {{ article.time_read }} мин.
+                                            </div>
+                                            <div class="post-meta-views">
+                                                <svg width="24"
+                                                     height="16"
+                                                     viewBox="0 0 24 16"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.83431 3.83431C4.74137 1.92725 7.73394 0 12 0C16.2661 0 19.2586 1.92725 21.1657 3.83431C22.1169 4.78553 22.8028 5.73537 23.252 6.44875C23.477 6.80606 23.6437 7.10587 23.7555 7.31942C23.8115 7.42625 23.8538 7.51166 23.8829 7.57209C23.8975 7.60231 23.9087 7.62629 23.9167 7.6436L23.9263 7.66451L23.9293 7.67111L23.9303 7.67343L23.9307 7.67434C23.9307 7.67434 23.931 7.67509 23.2 8C23.931 8.32491 23.9307 8.32566 23.9307 8.32566L23.9303 8.32657L23.9293 8.32889L23.9263 8.33549L23.9167 8.3564C23.9087 8.37371 23.8975 8.39769 23.8829 8.42791C23.8538 8.48834 23.8115 8.57375 23.7555 8.68058C23.6437 8.89413 23.477 9.19394 23.252 9.55125C22.8028 10.2646 22.1169 11.2145 21.1657 12.1657C19.2586 14.0727 16.2661 16 12 16C7.73394 16 4.74137 14.0727 2.83431 12.1657C1.88309 11.2145 1.19718 10.2646 0.748014 9.55125C0.523039 9.19394 0.356317 8.89413 0.24446 8.68058C0.188502 8.57375 0.146183 8.48834 0.117089 8.42791C0.10254 8.39769 0.0912887 8.37371 0.083285 8.3564L0.073705 8.33549L0.0707272 8.32889L0.0696892 8.32657L0.0692825 8.32566C0.0692825 8.32566 0.0689507 8.32491 0.8 8C0.0689507 7.67509 0.0692825 7.67434 0.0692825 7.67434L0.0696892 7.67343L0.0707272 7.67111L0.073705 7.66451L0.083285 7.6436C0.0912887 7.62629 0.10254 7.60231 0.117089 7.57209C0.146183 7.51166 0.188502 7.42625 0.24446 7.31942C0.356317 7.10587 0.523039 6.80606 0.748014 6.44875C1.19718 5.73537 1.88309 4.78553 2.83431 3.83431ZM0.8 8L0.0689507 7.67509C-0.0229836 7.88194 -0.0229836 8.11806 0.0689507 8.32491L0.8 8ZM1.69449 8C1.78861 8.17629 1.92376 8.41569 2.10199 8.69875C2.50282 9.33537 3.11691 10.1855 3.96569 11.0343C5.65863 12.7273 8.26606 14.4 12 14.4C15.7339 14.4 18.3414 12.7273 20.0343 11.0343C20.8831 10.1855 21.4972 9.33537 21.898 8.69875C22.0762 8.41569 22.2114 8.17629 22.3055 8C22.2114 7.82371 22.0762 7.58431 21.898 7.30125C21.4972 6.66463 20.8831 5.81447 20.0343 4.96569C18.3414 3.27275 15.7339 1.6 12 1.6C8.26606 1.6 5.65863 3.27275 3.96569 4.96569C3.11691 5.81447 2.50282 6.66463 2.10199 7.30125C1.92376 7.58431 1.78861 7.82371 1.69449 8ZM23.2 8L23.931 8.32491C24.023 8.11806 24.023 7.88194 23.931 7.67509L23.2 8Z" fill="#667582" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4.8C10.2327 4.8 8.8 6.23269 8.8 8C8.8 9.76731 10.2327 11.2 12 11.2C13.7673 11.2 15.2 9.76731 15.2 8C15.2 6.23269 13.7673 4.8 12 4.8ZM7.2 8C7.2 5.34903 9.34903 3.2 12 3.2C14.651 3.2 16.8 5.34903 16.8 8C16.8 10.651 14.651 12.8 12 12.8C9.34903 12.8 7.2 10.651 7.2 8Z" fill="#667582" />
+                                                </svg>
+                                                {{ article.page_view }}
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

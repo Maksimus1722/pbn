@@ -30,6 +30,7 @@ class ConnectDB:
                         article_table.c.page_view,
                         article_table.c.time_read,
                         category_table.c.category_slug.label("category_slug"),
+                        category_table.c.name.label("category_name"),
                         domain_table.c.id.label("domain_id"),
                         domain_table.c.logo.label("logo"),
                         domain_table.c.favicon.label("favicon"),
@@ -103,6 +104,7 @@ class ConnectDB:
                             "text_preview": row.text_preview,
                             "page_view": row.page_view,
                             "time_read": row.time_read,
+                            "category_name": row.category_name,
                         }
                         for row in rs
                     ],
@@ -395,6 +397,8 @@ class ConnectDB:
                         "img_preview": row.img_preview,
                         "created": row.created,
                         "description": row.description,
+                        "page_view": row.page_view,
+                        "time_read": row.time_read,
                     }
                     for row in rs
                 ]

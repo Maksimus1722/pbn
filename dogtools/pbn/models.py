@@ -10,6 +10,7 @@ CHOICES_TEMPLATES = [
     ("first", "Блог-1"),
     ("second", "Блог-2"),
     ("blog_third", "Блог-3"),
+    ("blog_fourth", "Блог-4"),
 ]
 
 CHOICES_YEAR_START = [

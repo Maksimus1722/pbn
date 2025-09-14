@@ -1,0 +1,28 @@
+{% extends 'pbn/blog_fourth/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="article-single">
+                    <h1 class="article-title">Страница не найдена</h1>
+                    <div class="post-content">
+                        <p>
+                            Вы ввели некорретный адрес.
+                            <br>
+                            По адресу: {{ url }} на сайте {{ request.get_host }} ничего не найдено.
+                            <br>
+                            Проверьте правильность вводимой ссылки.
+                        </p>
+                        <div class="after-post"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

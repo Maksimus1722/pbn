@@ -1,0 +1,56 @@
+{% extends 'pbn/blog_fourth/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "list_authors" %}/
+{% endblock canonical %}
+{% block content %}
+    <div class="grid-inner">
+        <div class="breadcrumb-navigation">
+            <ul class="breadcrumb theme"
+                style='margin-bottom:0 px'
+                itemscope
+                itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="/">
+                        <span itemprop="name">Главная</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li>&nbsp;&nbsp;&#187;&nbsp;&nbsp;</li>
+                <li itemprop="itemListElement"
+                    itemscope
+                    itemtype="http://schema.org/ListItem">
+                    <span itemprop="name">Авторы</span>
+                    <meta itemprop="position" content="2" />
+                </li>
+            </ul>
+            <h1>Авторы блога - {{ name_site|capfirst }}</h1>
+        </div>
+        <div class="authors row grid-3">
+            {% for author in list_authors %}
+                <div class="col-xl-3 col-sm-6 col-small-6 col-xs-12">
+                    <div class="authors-item">
+                        <a href="{% url "list_authors" %}{{ author.slug }}/">
+                            <div class="authors_img">
+                                <img src="/media/{{ author.img_preview }}"
+                                     alt="{{ author.name }}"
+                                     title="{{ author.name }}">
+                            </a>
+                        </div>
+                        <div class="authors-text">
+                            <a href="{% url "list_authors" %}{{ author.slug }}/">
+                                <div class="authors-name">{{ author.name|capfirst }}</div>
+                            </a>
+                            <div class="authors-desc">{{ author.spec|capfirst }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
