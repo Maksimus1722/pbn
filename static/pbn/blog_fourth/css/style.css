@@ -1553,8 +1553,6 @@ header#theme-header::after,
 }
 
 .top ul li a {
-    display: flex;
-    gap: 20px;
     font-size: 16px;
     font-weight: 300;
     color: #000000;
@@ -2189,6 +2187,61 @@ blockquote::before,
 }
 
 @media (max-width:767px) {
+    .menu li {
+        padding: 0 20px;
+        font-weight: bold !important;
+    }
+
+    .article-meta .post-meta,
+    .top-item {
+        display: block;
+    }
+
+    .top-item-name {
+        border-right: 0px;
+    }
+
+    .author {
+        margin-bottom: 20px;
+    }
+
+    .menu.responsive-menu li.current-menu-item>a,
+    .menu.responsive-menu .sub-menu li.current-menu-item>a:hover,
+    .menu.responsive-menu .sub-menu li.current-menu-item>a:focus,
+    .menu.responsive-menu li.current_page_item>a,
+    .menu.responsive-menu .children li.current_page_item>a:hover,
+    .menu.responsive-menu .children li.current_page_item>a:focus,
+    .menu.responsive-menu li a,
+    .menu.responsive-menu li a:hover,
+    .menu.responsive-menu li a:focus {
+        padding: 0 0px;
+        font-weight: normal;
+    }
+
+    .responsive-menu {
+        top: 115px;
+        left: 0px !important;
+        max-width: 100%;
+    }
+
+    #primary {
+        justify-content: space-between;
+    }
+
+    .logo {
+        max-width: 170px;
+    }
+
+    .header-bottom {
+        margin-top: 0px !important;
+    }
+
+    .top,
+    .header_desc,
+    .header-top {
+        display: none !important;
+    }
+
     .articles-items {
         grid-template-columns: 1fr;
         padding: 0;
@@ -2230,7 +2283,7 @@ blockquote::before,
     }
 
     .grid-inner {
-        padding: 60px 20px 60px 20px
+        padding: 40px 20px 60px 20px
     }
 
     .grid {
