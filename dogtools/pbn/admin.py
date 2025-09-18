@@ -8,6 +8,10 @@ from .models import (
     LinksMembrans,
     LinksRedirects,
     Author,
+    MainSlider,
+    Service,
+    Price,
+    ConstructorTextService,
 )
 
 
@@ -22,6 +26,35 @@ class MembransLinksInline(admin.TabularInline):
 
 class RedirectLinksInline(admin.TabularInline):
     model = LinksRedirects
+    extra = 1
+
+
+class MainSliderInline(admin.StackedInline):
+    model = MainSlider
+    extra = 1
+
+
+class PriceInline(admin.TabularInline):
+    model = Price
+    extra = 1
+    fields = ["name", "price_name"]
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "name",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
+
+
+class ConstructorTextService(admin.StackedInline):
+    model = ConstructorTextService
     extra = 1
 
 
@@ -75,6 +108,9 @@ class DomainsAdmin(admin.ModelAdmin):
                     "keywords",
                     "h1",
                     "main_text",
+                    "extra_subtitle",
+                    "extra_text",
+                    "extra_picture",
                 )
             },
         ),
@@ -85,17 +121,20 @@ class DomainsAdmin(admin.ModelAdmin):
                     "name_site",
                     "info_footer",
                     "year_start",
+                    "text_policy",
                 )
             },
         ),
         (
-            "Контактная информация",
+            "Контактная информация (для всех коммерческих шаблонов)",
             {
                 "fields": (
                     "emal_start",
+                    "work_time",
                     "region",
                     "street",
                     "phone",
+                    "telegram",
                 )
             },
         ),
@@ -120,8 +159,18 @@ class DomainsAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            "Данные страницы услуги (используется в коммерческих шаблонах)",
+            {
+                "fields": (
+                    "service_title",
+                    "service_description",
+                    "service_text",
+                )
+            },
+        ),
     )
-    inlines = [RedirectLinksInline, MembransLinksInline]
+    inlines = [MainSliderInline, RedirectLinksInline, MembransLinksInline]
     readonly_fields = ("last_mod",)
 
     def get_form(self, request, obj=None, **kwargs):
@@ -137,6 +186,11 @@ class DomainsAdmin(admin.ModelAdmin):
             "blog_name",
             "name_site",
             "info_footer",
+            "authors_title",
+            "authors_description",
+            "authors_keywords",
+            "service_title",
+            "service_description",
         ]
         for field_name in fields_to_widen:
             form.base_fields[field_name].widget.attrs.update(
@@ -359,9 +413,64 @@ class authorAdmin(admin.ModelAdmin):
     readonly_fields = ("last_mod",)
 
 
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ["name", "sort", "domain", "slug"]
+    list_editable = ["sort"]
+    list_per_page = 20
+    search_fields = [
+        "name__istartswith",
+    ]
+    ordering = ["domain", "name"]
+    list_filter = [
+        "domain",
+    ]
+    fieldsets = (
+        (
+            "Основное",
+            {
+                "fields": (
+                    "sort",
+                    "name",
+                    "domain",
+                    "slug",
+                    "preview_picture",
+                )
+            },
+        ),
+        (
+            "Мета-данные",
+            {
+                "fields": (
+                    "title",
+                    "description",
+                    "keywords",
+                )
+            },
+        ),
+    )
+    inlines = [PriceInline, ConstructorTextService]
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        fields_to_widen = [
+            "name",
+            "title",
+            "description",
+            "keywords",
+        ]
+        for field_name in fields_to_widen:
+            form.base_fields[field_name].widget.attrs.update(
+                {
+                    "style": "width: 60%;",
+                }
+            )
+        return form
+
+
 # Register your models here.
 admin.site.register(Domains, DomainsAdmin)
 admin.site.register(Article, ArticlesAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(OtherPage, OtherPageAdmin)
 admin.site.register(Author, authorAdmin)
+admin.site.register(Service, ServiceAdmin)

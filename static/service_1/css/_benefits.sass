@@ -1,0 +1,25 @@
+$card-border: #d5dbe0
+$text-dark:  #2d3236
+$radius:     12px
+
+.section-benefits
+	.benefit-card
+		border: 1px solid $card-border
+		border-radius: $radius
+		background: #fff
+		padding: 2rem 1rem
+		transition: box-shadow .2s ease
+		&:hover
+			box-shadow: 0 6px 16px rgba(0,0,0,.07)
+		
+		.benefit-icon
+			img
+				width: 64px
+				height: 64px
+				object-fit: contain
+				border-radius: 12px
+		
+		.benefit-title
+			font-size: 20px
+			font-weight: 600
+			color: $text-dark

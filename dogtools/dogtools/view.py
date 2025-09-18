@@ -192,6 +192,45 @@ class SearchResults(View):
         return HttpResponseNotFound()
 
 
+class Services(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        connect = ConnectDB(host)
+        data = connect.get_services()
+        if data["valid"]:
+            return render(
+                request, f"pbn/{data['template']}/services.html", context=data
+            )
+        data = base_function_404(host, request)
+        if data["valid"]:
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
+        return HttpResponseNotFound()
+
+
+class OneService(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        page_slug = self.kwargs["slug"]
+        connect = ConnectDB(host)
+        data = connect.get_one_servise(page_slug)
+        if data["valid"]:
+            return render(request, f"pbn/{data['template']}/author.html", context=data)
+        data = base_function_404(host, request)
+        if data["valid"]:
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
+        return HttpResponseNotFound()
+
+
 def base_function_404(host, request) -> dict:
     """Получени кастомной 404 ошибки"""
     data = ConnectDB(host)

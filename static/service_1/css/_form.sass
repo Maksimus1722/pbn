@@ -1,0 +1,75 @@
+// Цвета и параметры
+$brand-blue: #0e83c7
+$muted: #5f6a72
+$input-border: #cbd5dc
+$radius: 10px
+
+.section-apply
+	position: relative
+	background-size: cover
+	background-position: center
+	overflow: hidden
+	
+	// Белая полупрозрачная маска поверх фона
+	.section-apply__overlay
+		position: absolute
+		inset: 0
+		background: rgba(255,255,255,.7)
+	
+	// Контент поверх маски
+	.container
+		position: relative
+		z-index: 1
+	
+	// Текст слева
+	.apply-lead
+		font-size: 20px
+		color: $muted
+	
+	// Форма
+	.apply-form
+		.form-label
+			font-weight: 600
+			color: #2a2f34
+		
+		.form-control
+			border-color: $input-border
+			border-radius: $radius
+			box-shadow: none
+			background: #fff
+			&:focus
+				border-color: darken($input-border, 12%)
+				box-shadow: 0 0 0 .2rem rgba(14,131,199,.15)
+		
+		textarea.form-control
+			min-height: 120px
+		
+		.form-text
+			color: $muted
+			a
+				color: $brand-blue
+				text-decoration: underline
+				&:hover
+					color: darken($brand-blue, 8%)
+		
+		.btn-primary
+			background-color: $brand-blue
+			border-color: $brand-blue
+			font-weight: 700
+			border-radius: $radius
+			padding: .9rem 1rem
+			&:hover,
+			&:focus
+				background-color: darken($brand-blue, 6%)
+				border-color: darken($brand-blue, 6%)
+
+// Адаптив
+@media (max-width: 991.98px)
+	.section-apply
+		.apply-lead
+			font-size: 18px
+
+@media (max-width: 575.98px)
+	.section-apply
+		.apply-lead
+			font-size: 16px

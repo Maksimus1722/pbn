@@ -39,6 +39,8 @@ urlpatterns = (
         path("authors/", view.ListAuthors.as_view(), name="list_authors"),
         path("authors/<slug:slug>/", view.Author.as_view(), name="author"),
         path("ckeditor/", include("ckeditor_uploader.urls")),
+        path("services/", view.Services.as_view(), name="services"),
+        path("services/<slug:slug>/", view.OneService.as_view(), name="one_service"),
         path("<slug:slug>/", view.OtherPage.as_view(), name="other_page"),
     ]
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

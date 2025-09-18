@@ -11,6 +11,7 @@ CHOICES_TEMPLATES = [
     ("second", "Блог-2"),
     ("blog_third", "Блог-3"),
     ("blog_fourth", "Блог-4"),
+    ("service_1", "Услуги-1"),
 ]
 
 CHOICES_YEAR_START = [
@@ -26,6 +27,13 @@ CHOICES_YEAR_START = [
     ("2022", "2022"),
     ("2023", "2023"),
     ("2024", "2024"),
+]
+
+
+TYPE_BLOCK = [
+    ("text", "Текст"),
+    ("picture_right", "Текст + картинка справа"),
+    ("picture_left", "Текст + картинка слева"),
 ]
 
 
@@ -182,6 +190,13 @@ class Domains(models.Model):
         blank=True,
         help_text="Для шаблонов:«Блог-3» и всех коммерческих. В удобочитаемом виде: +7-(495)-233-23-23",
     )
+    telegram = models.CharField(
+        max_length=100,
+        default="",
+        verbose_name="Телеграм",
+        blank=True,
+        help_text="Для всех коммерческих шаблонов. Формат: my_name",
+    )
     region = models.CharField(
         max_length=50,
         default="",
@@ -194,7 +209,70 @@ class Domains(models.Model):
         default="",
         verbose_name="Адрес (без города)",
         blank=True,
-        help_text="Используется для микроразметки. Например: Полежавевская дом 1",
+        help_text="Используется для микроразметки. Например: Полежаевская дом 1",
+    )
+    work_time = models.CharField(
+        max_length=50,
+        default="",
+        blank=True,
+        verbose_name="График работы",
+        help_text="Используется для всех коммерческих шаблонов",
+    )
+    extra_text = RichTextUploadingField(
+        default="",
+        blank=True,
+        verbose_name="Дополнительный текст на главной",
+        help_text="Используется для шаблонов: услуги-1",
+    )
+    extra_subtitle = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Подзаголовок 2-ого текста главной",
+        help_text="Используется для шаблонов: услуги-1",
+    )
+    extra_picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        blank=True,
+        verbose_name="Дополнительное изображение на главной",
+        help_text="Используется для шаблонов: услуги-1 (пропорции 3x2)",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    text_policy = RichTextUploadingField(
+        default="",
+        blank=True,
+        verbose_name="Текст страницы - Политика конфиденциальности",
+        help_text="Используется для всех коммерческих шаблонов",
+    )
+
+    service_title = models.CharField(
+        max_length=200,
+        default="",
+        blank=True,
+        verbose_name="Title для страницы: все услуги",
+        help_text="Используется для коммерческих шаблонов",
+    )
+    service_description = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Desription для страницы: все услуги",
+        help_text="Используется для коммерческих шаблонов",
+    )
+    service_text = RichTextUploadingField(
+        default="",
+        blank=True,
+        verbose_name="Текст страницы - все услуги",
+        help_text="Используется для всех коммерческих шаблонов",
     )
 
     class Meta:
@@ -477,6 +555,70 @@ class OtherPage(models.Model):
         return f"{self.name}"
 
 
+class Service(models.Model):
+    name = models.CharField(
+        max_length=250,
+        verbose_name="Название услуги",
+        help_text="Он же пойдет в H1 и в ссылку в меню",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    slug = models.SlugField(
+        max_length=100,
+        null=False,
+        db_index=True,
+        verbose_name="URL",
+        help_text="При создании поставьте любой символ. Поле заполнится автоматически.",
+    )
+    title = models.CharField(max_length=250, default="", verbose_name="Title")
+    description = models.CharField(
+        max_length=500,
+        default="",
+        verbose_name="Meta-description",
+    )
+    keywords = models.CharField(
+        max_length=250, default="", verbose_name="Meta-keywords"
+    )
+    preview_picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Картинка-превью",
+        help_text="размер 600x300",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+
+    class Meta:
+        verbose_name = "Услугу"
+        verbose_name_plural = "Услуги"
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)[:100]
+        super(Service, self).save(*args, **kwargs)
+
+    def get_url(self):
+        return reverse("service", args=[self.slug])
+
+    def __str__(self):
+        return f"{self.domain} | {self.name}"
+
+
 class LinksMembrans(models.Model):
     domain = models.ForeignKey(
         Domains,
@@ -529,3 +671,133 @@ class LinksRedirects(models.Model):
 
     def __str__(self):
         return f"{self.start_link}"
+
+
+class Price(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.PROTECT,
+        verbose_name="Услуга",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Название позиции",
+        help_text="Например: резка стали",
+        default="",
+    )
+    price_name = models.IntegerField(
+        verbose_name="Цена",
+        help_text="200",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Набор цен"
+        verbose_name_plural = "Позиция - цена"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class MainSlider(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Название слайда",
+        help_text="Например: Супер-технология по фильтрации воды",
+        default="",
+    )
+    text = models.CharField(
+        max_length=300,
+        verbose_name="Текстовый анонс",
+        help_text="Например: Дарим 30% скидку до конца месяца на фильтры для воды",
+        default="",
+    )
+    preview_picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Картинка-слайда",
+        help_text="размер 13500x900",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    link = models.CharField(
+        max_length=100,
+        verbose_name="Прозвольная ссылка",
+        help_text="Например: /service/name1",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Слайдер"
+        verbose_name_plural = "Слайдер (коммерческий шаблон 1)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ConstructorTextService(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.PROTECT,
+        verbose_name="Услуга",
+    )
+    type_block = models.CharField(
+        max_length=100,
+        choices=TYPE_BLOCK,
+        default="text",
+        verbose_name="Тип блока",
+    )
+    sort = models.IntegerField(
+        default=10,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    place_price = models.BooleanField(
+        default=True, verbose_name="Расположить до блока цен"
+    )
+    picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        blank=True,
+        verbose_name="Картинка-блока",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    subtitle = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Подзаголовок H2-блока",
+    )
+    text = RichTextUploadingField(verbose_name="Текст", default="", blank=True)
+
+    class Meta:
+        verbose_name = "Блок"
+        verbose_name_plural = "Блок"
+
+    def __str__(self):
+        return f"{self.subtitle}"

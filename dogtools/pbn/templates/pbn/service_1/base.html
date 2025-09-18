@@ -1,0 +1,184 @@
+{% load static %}
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="ru">
+        <head>
+            {% block index %}
+            {% endblock index %}
+            {% if yandex_webmaster %}<meta name="yandex-verification" content="{{ yandex_webmaster }}" />{% endif %}
+            {% if google_webmaster %}<meta name="google-site-verification" content="{{ google_webmaster }}" />{% endif %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>{{ title }}</title>
+            <meta name="description" content="{{ description|default_if_none:"" }}" />
+            <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
+            <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
+            <link rel="icon" href="/media/{{ favicon }}">
+            <link rel="stylesheet" href=" {% static 'service_1/css/style.css' %}">
+            <script src={% static 'service_1/js/bootstrap.js' %}></script>
+            <script src={% static 'service_1/js/common.js' %}></script>
+            {% if google_analytics %}
+                <!-- Google tag (gtag.js) -->
+                <script async
+                        src="https://www.googletagmanager.com/gtag/js?id={{google_analytics}}"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '{{google_analytics}}');
+                </script>
+            {% endif %}
+            {% if yandex_metrika %}
+                <!-- Yandex.Metrika counter -->
+                <script type="text/javascript">
+                (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+                (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+                ym({{yandex_metrika}}, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+                });
+                </script>
+                <noscript>
+                    <div>
+                        <img src="https://mc.yandex.ru/watch/{{ yandex_metrika }}"
+                             style="position:absolute;
+                                    left:-9999px"
+                             alt="" />
+                    </div>
+                </noscript>
+                <!-- /Yandex.Metrika counter -->
+            {% endif %}
+        </head>
+        <body>
+            <main id="app" class="application">
+                <div class="top-bar">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <!-- Левая часть -->
+                            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                                <i class="bi bi-calendar-event"></i>
+                                График работы: {{ work_time }}
+                            </div>
+                            <!-- Правая часть -->
+                            <div class="col-md-6 text-center text-md-end d-flex right">
+                                <div class="contact">
+                                    <a href="mailto:{{ emal_start }}@{{ request.get_host }}"><i class="bi bi-envelope"></i> {{ emal_start }}@{{ request.get_host }}</a>
+                                    <a href="tel:{{ phone_link }}"><i class="bi bi-telephone"></i> {{ phone }}</a>
+                                </div>
+                                <div class="social">
+                                    <a href="https://wa.me/{{ phone_link }}" target="_blank"><i class="bi bi-whatsapp text-success"></i></a>
+                                    <a href="https://t.me/{{ telegram }}" target="_blank"><i class="bi bi-telegram text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <header class="site-header">
+                    <div class="container">
+                        <nav class="navbar navbar-expand-lg px-0">
+                            <div class="header-inner w-100">
+                                <!-- ЛОГО -->
+                                <a class="brand-logo" href="/">
+                                    <img src="/media/{{ logo }}" alt="{{ name_site }}" title="{{ name_site }}">
+                                </a>
+                                <!-- Бургер (виден только на md/lg<) -->
+                                <button class="navbar-toggler ms-auto"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainNav"
+                                        aria-controls="mainNav"
+                                        aria-expanded="false"
+                                        aria-label="Переключить навигацию">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <!-- МЕНЮ -->
+                                <div class="collapse navbar-collapse center-nav" id="mainNav">
+                                    <ul class="navbar-nav gap-lg-4 gap-2 mx-lg-auto">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle"
+                                               href="#"
+                                               id="servicesDropdown"
+                                               role="button"
+                                               data-bs-toggle="dropdown"
+                                               aria-expanded="false">Услуги</a>
+                                            <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                                                {% for service in list_services %}
+                                                    <li>
+                                                        <a class="dropdown-item" href="{% url "services" %}{{ service.slug }}/">{{ service.name }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url "blog" %}">Статьи</a>
+                                        </li>
+                                        {% for page in list_other_page %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!-- /МЕНЮ -->
+                            </div>
+                        </nav>
+                    </div>
+                </header>
+                {% block content %}
+                {% endblock content %}
+                <footer class="site-footer py-5">
+                    <div class="container">
+                        <div class="row g-4 align-items-start">
+                            <!-- Лого + копирайт -->
+                            <div class="col-12 col-lg-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="/media/{{ logo }}"
+                                         alt="{{ name_site }}"
+                                         title="{{ name_site }}"
+                                         class="footer-logo me-3">
+                                </div>
+                                <div class="footer-copy">© {{ now_year }} г - {{ name_site|capfirst }} | Все права защищены.</div>
+                            </div>
+                            <!-- Колонка "Компания" -->
+                            <div class="col-6 col-lg-4">
+                                <h3 class="footer-title">О компании</h3>
+                                <ul class="footer-links">
+                                    {% for page in list_other_page %}
+                                        <li>
+                                            <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <!-- Колонка "Услуги" -->
+                            <div class="col-6 col-lg-4">
+                                <h3 class="footer-title">Услуги</h3>
+                                <ul class="footer-links">
+                                    {% for service in list_services %}
+                                        <li>
+                                            <a href="{% url "services" %}{{ service.slug }}/">{{ service.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Низ футера -->
+                        <div class="footer-bottom text-center mt-4">
+                            <a href="#" class="privacy-link">Политика конфиденциальности</a>
+                        </div>
+                    </div>
+                </footer>
+            </main>
+            {% block scripts %}
+            {% endblock scripts %}
+        </body>
+    </html>
+{% endspaceless %}
