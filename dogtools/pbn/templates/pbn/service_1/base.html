@@ -3,8 +3,7 @@
     <!DOCTYPE html>
     <html lang="ru">
         <head>
-            {% block index %}
-            {% endblock index %}
+            {% block index %}{% endblock index %}
             {% if yandex_webmaster %}<meta name="yandex-verification" content="{{ yandex_webmaster }}" />{% endif %}
             {% if google_webmaster %}<meta name="google-site-verification" content="{{ google_webmaster }}" />{% endif %}
             <meta charset="utf-8">
@@ -17,6 +16,7 @@
             <link rel="stylesheet" href=" {% static 'service_1/css/style.css' %}">
             <script src={% static 'service_1/js/bootstrap.js' %}></script>
             <script src={% static 'service_1/js/common.js' %}></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             {% if google_analytics %}
                 <!-- Google tag (gtag.js) -->
                 <script async
@@ -118,7 +118,7 @@
                                             </ul>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{% url "blog" %}">Статьи</a>
+                                            <a class="nav-link" href="{% url "blog" %}">{{ name_info }}</a>
                                         </li>
                                         {% for page in list_other_page %}
                                             <li class="nav-item">
@@ -134,6 +134,7 @@
                 </header>
                 {% block content %}
                 {% endblock content %}
+                {% include "pbn/service_1/include/form.html" %}
                 <footer class="site-footer py-5">
                     <div class="container">
                         <div class="row g-4 align-items-start">
@@ -172,13 +173,23 @@
                         </div>
                         <!-- Низ футера -->
                         <div class="footer-bottom text-center mt-4">
-                            <a href="#" class="privacy-link">Политика конфиденциальности</a>
+                            <a href="{% url "policy" %}" class="privacy-link">Политика конфиденциальности</a>
                         </div>
                     </div>
                 </footer>
+                <div itemscope=""
+                     itemtype="http://schema.org/Organization"
+                     class
+                     DisplaNone>
+                    <meta itemprop="name" content="{{ name_site }}">
+                    <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                    <meta itemprop="phone" content="{{ phone }}">
+                    <meta itemprop="addressLocality" content="{{ region }}">
+                    <meta itemprop="streetAddress" content="{{ street }}">
+                    <meta itemprop="logo" content="/media/{{ logo }}">
+                </div>
             </main>
-            {% block scripts %}
-            {% endblock scripts %}
+            <script src={% static 'service_1/js/extra.js' %}></script>
         </body>
     </html>
 {% endspaceless %}

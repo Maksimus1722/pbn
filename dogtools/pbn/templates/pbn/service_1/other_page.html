@@ -1,26 +1,25 @@
 {% extends 'pbn/service_1/base.html' %}
 {% load static %}
-{% block index %}<meta name="robots" content="index, follow" />
-{% endblock index %}
-{% block canonical %}https://{{ request.get_host }}{% url "services" %}{% endblock canonical %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
     <section class="breadcrumb my-6">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="global-title mb-3">Услуги</h1>
+                    <h1 class="global-title mb-3">{{ h1 }}</h1>
                     <div class="breads">
                         <ul itemscope itemtype="http://schema.org/BreadcrumbList">
                             <li itemprop="itemListElement"
                                 itemscope
                                 itemtype="http://schema.org/ListItem">
-                                <a href="/" itemprop="item"><span itemprop="name">Главная</span></a>
+                                <a itemprop="item" href="/"><span itemprop="name">Главная</span></a>
                                 <meta itemprop="position" content="1" />
                             </li>
                             <li itemprop="itemListElement"
                                 itemscope
                                 itemtype="http://schema.org/ListItem">
-                                <span itemprop="name">Услуги</span>
+                                <span itemprop="name">{{ name }}</span>
                                 <meta itemprop="position" content="2" />
                             </li>
                         </ul>
@@ -29,10 +28,9 @@
             </div>
         </div>
     </section>
-    {% include "pbn/service_1/include/our_service.html" %}
     <section class="seo mb-5">
         <div class="container">
-            <div class="seo__block">{{ service_text|safe }}</div>
+            <div class="seo__block">{{ text|safe }}</div>
         </div>
     </section>
 {% endblock content %}

@@ -1,0 +1,57 @@
+{% extends 'pbn/service_1/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{% endblock canonical %}
+{% block content %}
+    <section class="breadcrumb my-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="global-title mb-3">{{ h1 }}</h1>
+                    <div class="breads">
+                        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/"><span itemprop="name">Главная</span></a>
+                                <meta itemprop="position" content="1" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <span itemprop="name">{{ name_info }}</span>
+                                <meta itemprop="position" content="2" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-articles py-5 mb-5">
+        <div class="container">
+            <div class="row g-4">
+                {% for article in list_articles %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="card news-card h-100">
+                            <div class="news-thumb ratio ratio-6x9">
+                                <img src="/media/{{ article.img_preview }}"
+                                     class="img-fluid"
+                                     alt="{{ article.name }}"
+                                     title="{{ article.name }}" />
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <div class="news-date mb-2">{{ article.created|date:"d.m.y" }}</div>
+                                <h3 class="news-title h4 mb-3">{{ article.name }}</h3>
+                                <p class="news-excerpt mb-4">{{ article.text_preview|safe }}</p>
+                                <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                   class="btn btn-primary w-100 mt-auto">Подробнее</a>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

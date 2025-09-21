@@ -35,7 +35,7 @@
                                                class="link-top bold">{{ article.name|capfirst }}</a>
                                         </div>
                                         <div class="articles__desc">
-                                          {{ article.text_preview }}
+                                          {{ article.text_preview|safe }}
                                         </div>
                                         <div class="post-meta">
                                             <div class="post-meta__views">

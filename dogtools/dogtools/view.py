@@ -1,6 +1,10 @@
 import re
 from django_filters.views import View
-from django.http import HttpResponsePermanentRedirect, HttpResponseNotFound
+from django.http import (
+    HttpResponsePermanentRedirect,
+    HttpResponseNotFound,
+    JsonResponse,
+)
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .scripts.database_tools import ConnectDB
@@ -219,7 +223,32 @@ class OneService(View):
         connect = ConnectDB(host)
         data = connect.get_one_servise(page_slug)
         if data["valid"]:
-            return render(request, f"pbn/{data['template']}/author.html", context=data)
+            return render(request, f"pbn/{data['template']}/service.html", context=data)
+        data = base_function_404(host, request)
+        if data["valid"]:
+            return render(
+                request,
+                f"pbn/{data['template']}/errs/404.html",
+                status=404,
+                context=data,
+            )
+        return HttpResponseNotFound()
+
+
+class Policy(View):
+    def get(self, request, *args, **kwargs):
+        host = re.sub(r":.*", "", self.request.get_host())
+        connect = ConnectDB(host)
+        data = connect.get_info_main_page()
+        if data["valid"]:
+            data.update(
+                {
+                    "title": "Политика конфиденциальности",
+                    "description": "Текст политики конфиденциальности и согласия на обработку данных",
+                    "keywords": "",
+                }
+            )
+            return render(request, f"pbn/{data['template']}/policy.html", context=data)
         data = base_function_404(host, request)
         if data["valid"]:
             return render(

@@ -3,9 +3,7 @@
 {% block index %}
     <meta name="robots" content="index, follow" />
 {% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}{% url "list_authors" %}/
-{% endblock canonical %}
+{% block canonical %}https://{{ request.get_host }}{% url "list_authors" %}{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="breadcrumb-navigation">

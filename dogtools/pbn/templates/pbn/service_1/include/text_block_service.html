@@ -1,0 +1,50 @@
+{% if text_block.type_block == "text" %}
+    <section class="seo mb-5">
+        <div class="container">
+            {% if text_block.subtitle %}
+                <div class="col-md-12">
+                    <h2 class="global-title">{{ text_block.subtitle }}</h2>
+                </div>
+            {% endif %}
+            <div class="seo__block">
+                <p>{{ text_block.text|safe }}</p>
+            </div>
+        </div>
+    </section>
+{% elif text_block.type_block == "picture_left" %}
+    <section class="repeater mb-5">
+        <div class="container">
+            <div class="row">
+                {% if text_block.subtitle %}
+                    <div class="col-md-12">
+                        <h2 class="global-title">{{ text_block.subtitle }}</h2>
+                    </div>
+                {% endif %}
+                <div class="col-md-6">
+                    <div class="border">
+                        <img src="/media/{{ text_block.picture }}" alt="{{ text_block.subtitle }}" />
+                    </div>
+                </div>
+                <div class="col-md-6">{{ text_block.text|safe }}</div>
+            </div>
+        </div>
+    </section>
+{% elif text_block.type_block == "picture_right" %}
+    <section class="repeater mb-5">
+        <div class="container">
+            <div class="row">
+                {% if text_block.subtitle %}
+                    <div class="col-md-12">
+                        <h2 class="global-title">{{ text_block.subtitle }}</h2>
+                    </div>
+                {% endif %}
+                <div class="col-md-6">{{ text_block.text|safe }}</div>
+                <div class="col-md-6">
+                    <div class="border">
+                        <img src="/media/{{ text_block.picture }}" alt="{{ text_block.subtitle }}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}

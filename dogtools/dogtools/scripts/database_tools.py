@@ -60,6 +60,8 @@ class ConnectDB:
                         domain_table.c.extra_text.label("extra_text"),
                         domain_table.c.extra_subtitle.label("extra_subtitle"),
                         domain_table.c.extra_picture.label("extra_picture"),
+                        domain_table.c.text_policy.label("text_policy"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         article_table.join(
@@ -112,6 +114,8 @@ class ConnectDB:
                     "extra_text": first_rs.extra_text,
                     "extra_subtitle": first_rs.extra_subtitle,
                     "extra_picture": first_rs.extra_picture,
+                    "text_policy": first_rs.text_policy,
+                    "name_info": first_rs.name_info,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -129,13 +133,18 @@ class ConnectDB:
                     "list_top_arcicle": [],
                 }
             data["list_sliders"] = self._get_main_sliders(data["domain_id"])
-            self._manage_get_otherpage_services(data["domain_id"]),
-            if self.dict_other_page["valid"] and self.list_services["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
                         "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -178,6 +187,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         otherpage_table.join(
@@ -220,14 +232,22 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), first_row.phone))),
                     "region": first_row.region,
                     "street": first_row.street,
+                    "work_time": first_row.work_time,
+                    "telegram": first_row.telegram,
+                    "name_info": first_row.name_info,
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -282,6 +302,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                         category_table.c.category_slug.label("category_slug"),
                         category_table.c.name.label("category_name"),
                     )
@@ -337,6 +360,9 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "region": first_rs.region,
                     "street": first_rs.street,
+                    "work_time": first_rs.work_time,
+                    "telegram": first_rs.telegram,
+                    "name_info": first_rs.name_info,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -352,13 +378,18 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -402,6 +433,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         author_table.join(
@@ -441,6 +475,9 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "region": first_rs.region,
                     "street": first_rs.street,
+                    "work_time": first_rs.work_time,
+                    "telegram": first_rs.telegram,
+                    "name_info": first_rs.name_info,
                     "list_authors": [
                         {
                             "name": row.name,
@@ -451,13 +488,18 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -492,6 +534,9 @@ class ConnectDB:
                     domain_table.c.phone.label("phone"),
                     domain_table.c.region.label("region"),
                     domain_table.c.street.label("street"),
+                    domain_table.c.work_time.label("work_time"),
+                    domain_table.c.telegram.label("telegram"),
+                    domain_table.c.name_info.label("name_info"),
                 ).where(domain_table.c.domain == self.host)
                 rs = con.execute(query).fetchone()
                 data = {
@@ -514,18 +559,26 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), rs.phone))),
                     "region": rs.region,
                     "street": rs.street,
+                    "work_time": rs.work_time,
+                    "telegram": rs.telegram,
+                    "name_info": rs.name_info,
                 }
-                self._manage_get_category_articles(data["domain_id"])
-                if self.dict_category["valid"] and self.dict_other_page["valid"]:
-                    data.update(
-                        {
-                            "valid": True,
-                            "list_category": self.dict_category["list_category"],
-                            "list_other_page": self.dict_other_page["list_other_page"],
-                        }
-                    )
-                else:
-                    data = {"valid": False}
+                self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
+                data.update(
+                    {
+                        "valid": True,
+                        "list_services": self.list_services["list_services"],
+                        "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
+                    }
+                )
+            else:
+                data = {"valid": False}
         except Exception as err:
             data = {"valid": False}
         finally:
@@ -706,12 +759,18 @@ class ConnectDB:
                             for row in rs
                         ],
                     }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
-                        "list_category": self.dict_category["list_category"],
+                        "valid": True,
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -774,12 +833,18 @@ class ConnectDB:
                     "region": first_rs.region,
                     "street": first_rs.street,
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
-                        "list_category": self.dict_category["list_category"],
+                        "valid": True,
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -864,13 +929,18 @@ class ConnectDB:
                     ]
                 else:
                     data["authors"] = False
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -880,7 +950,8 @@ class ConnectDB:
         finally:
             return data
 
-    def get_services(self):
+    def get_services(self) -> dict:
+        """Список всех услуг"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -909,6 +980,7 @@ class ConnectDB:
                     domain_table.c.service_title.label("service_title"),
                     domain_table.c.service_description.label("service_description"),
                     domain_table.c.service_text.label("service_text"),
+                    domain_table.c.name_info.label("name_info"),
                 ).where(
                     domain_table.c.domain == self.host,
                 )
@@ -942,26 +1014,31 @@ class ConnectDB:
                     "title": first_rs.service_title,
                     "description": first_rs.service_description,
                     "service_text": first_rs.service_text,
+                    "name_info": first_rs.name_info,
                 }
-            self._manage_get_otherpage_services(data["domain_id"]),
-            if self.dict_other_page["valid"] and self.list_services["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
                         "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
                 data = {"valid": False}
-
         except Exception as err:
             data = {"valid": False}
         finally:
             return data
 
-    def get_one_servise(self, slug: str):
-        """Получаем информацию о конкретном авторе"""
+    def get_one_servise(self, slug: str) -> dict:
+        """Конкретная страница услуги"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -989,12 +1066,15 @@ class ConnectDB:
                         domain_table.c.street.label("street"),
                         domain_table.c.work_time.label("work_time"),
                         domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                         service_table.c.id,
                         service_table.c.name,
                         service_table.c.slug,
                         service_table.c.title,
                         service_table.c.description,
                         service_table.c.keywords,
+                        service_table.c.name_table_price,
+                        service_table.c.value_table_price,
                     )
                     .select_from(
                         service_table.join(
@@ -1031,12 +1111,18 @@ class ConnectDB:
                     "phone_link": "+"
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "region": first_rs.region,
+                    "street": first_rs.street,
+                    "work_time": first_rs.work_time,
+                    "telegram": first_rs.telegram,
+                    "name_info": first_rs.name_info,
                     "service_id": first_rs.id,
                     "service_name": first_rs.name,
                     "title": first_rs.title,
                     "description": first_rs.description,
                     "keywords": first_rs.keywords,
                     "service_slug": first_rs.slug,
+                    "name_table_price": first_rs.name_table_price,
+                    "value_table_price": first_rs.value_table_price,
                 }
             self._manage_get_price_text_service(data["service_id"])
             if self.list_text_block["valid"] and self.list_prices["valid"]:
@@ -1045,15 +1131,23 @@ class ConnectDB:
                         "valid": True,
                         "list_text_block": self.list_text_block["list_text_block"],
                         "list_prices": self.list_prices["list_prices"],
+                        "count_price": self.list_prices["count_price"],
+                        "max_price": self.list_prices["max_price"],
+                        "min_price": self.list_prices["min_price"],
                     }
                 )
-                self._manage_get_otherpage_services(data["domain_id"])
-                if self.list_services["valid"] and self.dict_other_page["valid"]:
+                self._manage_get_otherpage_services_category(data["domain_id"]),
+                if (
+                    self.dict_other_page["valid"]
+                    and self.list_services["valid"]
+                    and self.dict_category["valid"]
+                ):
                     data.update(
                         {
                             "valid": True,
                             "list_services": self.list_services["list_services"],
                             "list_other_page": self.dict_other_page["list_other_page"],
+                            "list_category": self.dict_category["list_category"],
                         }
                     )
                 else:
@@ -1138,27 +1232,8 @@ class ConnectDB:
             ]
             return list_prices
 
-    def _manage_get_category_articles(self, domain_id: int) -> dict:
-        """Получение списка категорий и списка других страниц в 2 потокока - дочерная функция"""
-        thr1 = threading.Thread(
-            target=self._get_all_category_host,
-            args=[
-                domain_id,
-            ],
-        )
-        thr2 = threading.Thread(
-            target=self._get_all_other_page_host,
-            args=[
-                domain_id,
-            ],
-        )
-        thr1.start()
-        thr2.start()
-        thr1.join()
-        thr2.join()
-
-    def _manage_get_otherpage_services(self, domain_id: int) -> dict:
-        """Получение списка категорий и списка других страниц в 2 потокока - дочерная функция"""
+    def _manage_get_otherpage_services_category(self, domain_id: int) -> dict:
+        """Получение списка категорий, списка услуг и списка других страниц в 3 потокока - дочерная функция"""
         thr1 = threading.Thread(
             target=self._get_all_service,
             args=[
@@ -1171,10 +1246,18 @@ class ConnectDB:
                 domain_id,
             ],
         )
+        thr3 = threading.Thread(
+            target=self._get_all_category_host,
+            args=[
+                domain_id,
+            ],
+        )
         thr1.start()
         thr2.start()
+        thr3.start()
         thr1.join()
         thr2.join()
+        thr3.join()
 
     def _get_all_category_host(self, domain_id: int) -> dict:
         """Получение всех категорий хоста"""
@@ -1272,7 +1355,7 @@ class ConnectDB:
             self.list_services = {"valid": False}
 
     def _manage_get_price_text_service(self, service_id: int) -> dict:
-        """"""
+        """Управляющая функция для 2-ух потоков: получение текстовых блоков и таблицы цен"""
         thr1 = threading.Thread(
             target=self._get_prices,
             args=[
@@ -1290,7 +1373,8 @@ class ConnectDB:
         thr1.join()
         thr2.join()
 
-    def _get_prices(self, service_id):
+    def _get_prices(self, service_id: int) -> dict:
+        """Получение всех цен для конкретной услуги"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -1316,7 +1400,14 @@ class ConnectDB:
                     }
                     for row in rs
                 ]
-            self.list_prices = {"valid": True, "list_prices": list_prices}
+            list_max_min_price = [el["price_name"] for el in list_prices]
+            self.list_prices = {
+                "valid": True,
+                "list_prices": list_prices,
+                "count_price": len(list_prices),
+                "max_price": max(list_max_min_price),
+                "min_price": min(list_max_min_price),
+            }
         except:
             self.list_prices = {"valid": False}
 

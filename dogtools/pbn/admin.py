@@ -36,7 +36,7 @@ class MainSliderInline(admin.StackedInline):
 
 class PriceInline(admin.TabularInline):
     model = Price
-    extra = 1
+    extra = 0
     fields = ["name", "price_name"]
 
     def get_form(self, request, obj=None, **kwargs):
@@ -55,7 +55,7 @@ class PriceInline(admin.TabularInline):
 
 class ConstructorTextService(admin.StackedInline):
     model = ConstructorTextService
-    extra = 1
+    extra = 0
 
 
 class DomainsAdmin(admin.ModelAdmin):
@@ -139,7 +139,7 @@ class DomainsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Данные главной страницы блога (используется во всех шаблонах для блога)",
+            "Данные главной страницы блога (используется во всех шаблонах)",
             {
                 "fields": (
                     "blog_title",
@@ -150,7 +150,7 @@ class DomainsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Данные страницы авторов (используется в шаблонах: «Блог-2», «Блог-3»)",
+            "Данные страницы авторов (используется в шаблонах: «Блог-2», «Блог-3», «Услуги-1»)",
             {
                 "fields": (
                     "authors_title",
@@ -168,6 +168,10 @@ class DomainsAdmin(admin.ModelAdmin):
                     "service_text",
                 )
             },
+        ),
+        (
+            "Названия инфо-раздела на коммереческих шаблонах",
+            {"fields": ("name_info",)},
         ),
     )
     inlines = [MainSliderInline, RedirectLinksInline, MembransLinksInline]
@@ -191,6 +195,7 @@ class DomainsAdmin(admin.ModelAdmin):
             "authors_keywords",
             "service_title",
             "service_description",
+            "extra_subtitle",
         ]
         for field_name in fields_to_widen:
             form.base_fields[field_name].widget.attrs.update(
@@ -444,6 +449,15 @@ class ServiceAdmin(admin.ModelAdmin):
                     "title",
                     "description",
                     "keywords",
+                )
+            },
+        ),
+        (
+            "Заголовки столбцов цен",
+            {
+                "fields": (
+                    "name_table_price",
+                    "value_table_price",
                 )
             },
         ),

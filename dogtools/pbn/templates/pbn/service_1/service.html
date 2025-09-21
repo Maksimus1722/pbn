@@ -1,0 +1,95 @@
+{% extends 'pbn/service_1/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "services" %}{{ service_slug }}/{% endblock canonical %}
+{% block content %}
+    <section class="breadcrumb my-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="global-title mb-3">{{ service_name }}</h1>
+                    <div class="breads">
+                        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/"> <span itemprop="name">Главная</span></a>
+                                <meta itemprop="position" content="1" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="{% url "services" %}"><span itemprop="name">Услуги</span></a>
+                                <meta itemprop="position" content="2" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <span itemprop="name">{{ service_name }}</span>
+                                <meta itemprop="position" content="3" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% for text_block in list_text_block %}
+        {% if text_block.place_price %}
+            {% include "pbn/service_1/include/text_block_service.html" %}
+        {% endif %}
+    {% endfor %}
+    <section class="section-prices py-4 mb-4">
+        <div class="container">
+            <h2 class="global-title">Цены на услугу - {{ service_name|lower }}</h2>
+            <div class="table-responsive">
+                <table class="table price-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                {% if  name_table_price %}
+                                    {{ name_table_price }}
+                                {% else %}
+                                    Наименование
+                                {% endif %}
+                            </th>
+                            <th scope="col">
+                                {% if  value_table_price %}
+                                    {{ value_table_price }}
+                                {% else %}
+                                    Цена
+                                {% endif %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for price  in list_prices %}
+                            <tr>
+                                <td>{{ price.name }}</td>
+                                <td>{{ price.price_name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {% for text_block in list_text_block %}
+        {% if not text_block.place_price %}
+            {% include "pbn/service_1/include/text_block_service.html" %}
+        {% endif %}
+    {% endfor %}
+    {% include "pbn/service_1/include/our_service.html" %}
+    <div itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="name" content="{{ service_name }}">
+        <div itemtype="http://schema.org/AggregateOffer"
+             itemscope=""
+             itemprop="offers">
+            <meta content="{{ count_price }}" itemprop="offerCount">
+            <meta content="{{ max_price }}" itemprop="highPrice">
+            <meta content="{{ min_price }}" itemprop="lowPrice">
+            <meta content="RUB" itemprop="priceCurrency">
+        </div>
+    </div>
+{% endblock content %}

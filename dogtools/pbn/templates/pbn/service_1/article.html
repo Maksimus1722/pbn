@@ -1,0 +1,124 @@
+{% extends 'pbn/service_1/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/{% endblock canonical %}
+{% block content %}
+    <section class="breadcrumb my-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="global-title mb-3">{{ name|capfirst }}</h1>
+                    <div class="breads">
+                        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/"><span itemprop="name">Главная</span></a>
+                                <meta itemprop="position" content="1" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="{% url "blog" %}"><span itemprop="name">{{ name_info }}</span></a>
+                                <meta itemprop="position" content="2" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="{% url "blog" %}{{ category_slug }}/"><span itemprop="name">{{ category_name|capfirst }}</span></a>
+                                <meta itemprop="position" content="3" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <span itemprop="name">{{ name|capfirst }}</span>
+                                <meta itemprop="position" content="4" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="article-page py-4 py-md-5"
+             itemscope
+             itemtype="http://schema.org/Article">
+        <meta itemprop="headline" content="{{ name|capfirst }}">
+        <meta itemprop="author" content="{{ data_author.name|capfirst }}">
+        <meta itemprop="publisher" content="{{ request.get_host }}">
+        <div class="container">
+            <!-- Мета: дата / просмотры / автор -->
+            <div class="d-flex flex-wrap align-items-center gap-3 mb-4 small text-muted">
+                <div class="d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-event"></i>
+                    <span>{{ created|date:"d F Y" }}</span>
+                </div>
+                <div class="vr d-none d-sm-inline"></div>
+                <div class="d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-clock"></i>
+                    <span>{{ time_read }} мин чтения</span>
+                </div>
+                <div class="vr d-none d-sm-inline"></div>
+                <div class="d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-eye"></i>
+                    <span>просмотров {{ page_view }}</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="author-avatar rounded-circle overflow-hidden flex-shrink-0"
+                     style="width:60px;
+                            height:60px">
+                    <a href="{% url "list_authors" %}{{ data_author.slug }}/">
+                        <img src="/media/{{ data_author.img_preview }}"
+                             alt="{{ data_author.name|capfirst }}"
+                             title="{{ data_author.name|capfirst }}"
+                             class="w-100 h-100 object-fit-cover">
+                    </a>
+                </div>
+                <div>
+                    <div class="fw-semibold">{{ data_author.name|capfirst }}</div>
+                    <div class="text-muted small">{{ data_author.spec|capfirst }}</div>
+                </div>
+            </div>
+            <!-- Содержание статьи -->
+            <section class="toc-card card border-0 shadow-sm mb-4">
+                {% if table_content %}
+                    <div class="card-header bg-transparent px-4 py-3">
+                        <h2 class="h5 m-0">Содержание статьи</h2>
+                    </div>
+                    <div class="card-body pt-2 pb-4 px-4">{{ table_content|safe }}</div>
+                {% endif %}
+            </section>
+            <!-- Контент статьи -->
+            <article class="article-content" itemprop="articleBody">{{ text|safe }}</article>
+        </div>
+    </section>
+    <section class="section-articles py-5 mb-5">
+        <div class="container">
+            <div class="d-flex align-items-baseline justify-content-between mb-4">
+                <h2 class="section-title mb-0">Похожие статьи</h2>
+            </div>
+            <div class="row g-4">
+                {% for article in simular_articles %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="card news-card h-100">
+                            <div class="news-thumb ratio ratio-16x9">
+                                <img src="/media/{{ article.img_preview }}"
+                                     class="img-fluid"
+                                     alt="{{ article.name }}"
+                                     title="{{ article.name }}">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <div class="news-date mb-2">{{ article.created|date:"d.m.y" }}</div>
+                                <h3 class="news-title h4 mb-3">{{ article.name|capfirst }}</h3>
+                                <p class="news-excerpt mb-4">{{ article.description }}</p>
+                                <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                   class="btn btn-primary w-100 mt-auto">Подробнее</a>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

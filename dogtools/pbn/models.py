@@ -274,6 +274,13 @@ class Domains(models.Model):
         verbose_name="Текст страницы - все услуги",
         help_text="Используется для всех коммерческих шаблонов",
     )
+    name_info = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Название инфо-раздела в коммерческих шаблонах",
+        help_text="Используется для коммерческих шаблонов (новости, статьи, публикации и т.д.)",
+    )
 
     class Meta:
         verbose_name = "Домен"
@@ -602,6 +609,20 @@ class Service(models.Model):
             )
         ],
     )
+    name_table_price = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Название столбца с услугами",
+        help_text="Например: Наименование",
+    )
+    value_table_price = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Наименование столбца с ценами на услуги",
+        help_text="Например: Стоимость руб за м2",
+    )
 
     class Meta:
         verbose_name = "Услугу"
@@ -685,6 +706,7 @@ class Price(models.Model):
         help_text="Например: резка стали",
         default="",
     )
+
     price_name = models.IntegerField(
         verbose_name="Цена",
         help_text="200",
@@ -726,7 +748,7 @@ class MainSlider(models.Model):
         upload_to="static/pbn/img",
         null=True,
         verbose_name="Картинка-слайда",
-        help_text="размер 13500x900",
+        help_text="размер 1350x900",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=(

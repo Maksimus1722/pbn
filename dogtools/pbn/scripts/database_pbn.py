@@ -50,6 +50,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         article_table.join(
@@ -94,6 +97,9 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "region": first_rs.region,
                     "street": first_rs.street,
+                    "work_time": first_rs.work_time,
+                    "telegram": first_rs.telegram,
+                    "name_info": first_rs.name_info,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -109,13 +115,18 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -166,6 +177,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         article_table.join(
@@ -214,6 +228,9 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), first_rs.phone))),
                     "region": first_rs.region,
                     "street": first_rs.street,
+                    "work_time": first_rs.work_time,
+                    "telegram": first_rs.telegram,
+                    "name_info": first_rs.name_info,
                     "list_articles": [
                         {
                             "name": row.name,
@@ -228,13 +245,18 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -306,6 +328,9 @@ class ConnectDB:
                         domain_table.c.phone.label("phone"),
                         domain_table.c.region.label("region"),
                         domain_table.c.street.label("street"),
+                        domain_table.c.work_time.label("work_time"),
+                        domain_table.c.telegram.label("telegram"),
+                        domain_table.c.name_info.label("name_info"),
                     )
                     .select_from(
                         article_table.join(
@@ -362,6 +387,9 @@ class ConnectDB:
                     + "".join(list(filter(lambda x: x.isdigit(), rs.phone))),
                     "region": rs.region,
                     "street": rs.street,
+                    "work_time": rs.work_time,
+                    "telegram": rs.telegram,
+                    "name_info": rs.name_info,
                 }
                 article_query = (
                     sa.select(article_table)
@@ -404,13 +432,18 @@ class ConnectDB:
                 ]
             if data["author_id"]:
                 data["data_author"] = self._get_author_for_article(data["author_id"])
-            self._manage_get_category_articles(data["domain_id"])
-            if self.dict_category["valid"] and self.dict_other_page["valid"]:
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
                 data.update(
                     {
                         "valid": True,
-                        "list_category": self.dict_category["list_category"],
+                        "list_services": self.list_services["list_services"],
                         "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
                     }
                 )
             else:
@@ -509,17 +542,22 @@ class ConnectDB:
                     "region": rs.region,
                     "street": rs.street,
                 }
-                self._manage_get_category_articles(data["domain_id"])
-                if self.dict_category["valid"] and self.dict_other_page["valid"]:
-                    data.update(
-                        {
-                            "valid": True,
-                            "list_category": self.dict_category["list_category"],
-                            "list_other_page": self.dict_other_page["list_other_page"],
-                        }
-                    )
-                else:
-                    data = {"valid": False}
+            self._manage_get_otherpage_services_category(data["domain_id"]),
+            if (
+                self.dict_other_page["valid"]
+                and self.list_services["valid"]
+                and self.dict_category["valid"]
+            ):
+                data.update(
+                    {
+                        "valid": True,
+                        "list_services": self.list_services["list_services"],
+                        "list_other_page": self.dict_other_page["list_other_page"],
+                        "list_category": self.dict_category["list_category"],
+                    }
+                )
+            else:
+                data = {"valid": False}
         except Exception as err:
             data = {"valid": False}
         finally:
@@ -555,9 +593,10 @@ class ConnectDB:
         finally:
             return data
 
-    def _manage_get_category_articles(self, domain_id):
+    def _manage_get_otherpage_services_category(self, domain_id: int) -> dict:
+        """Получение списка категорий, списка услуг и списка других страниц в 3 потокока - дочерная функция"""
         thr1 = threading.Thread(
-            target=self._get_all_category_host,
+            target=self._get_all_service,
             args=[
                 domain_id,
             ],
@@ -568,10 +607,18 @@ class ConnectDB:
                 domain_id,
             ],
         )
+        thr3 = threading.Thread(
+            target=self._get_all_category_host,
+            args=[
+                domain_id,
+            ],
+        )
         thr1.start()
         thr2.start()
+        thr3.start()
         thr1.join()
         thr2.join()
+        thr3.join()
 
     def _get_all_category_host(self, domain_id):
         try:
@@ -621,3 +668,36 @@ class ConnectDB:
             self.dict_other_page = {"valid": True, "list_other_page": list_pages}
         except:
             self.dict_other_page = {"valid": False}
+
+    def _get_all_service(self, domain_id):
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                service_table = meta.tables["pbn_service"]
+                query = (
+                    sa.select(
+                        service_table.c.name,
+                        service_table.c.sort,
+                        service_table.c.preview_picture,
+                        service_table.c.slug,
+                    )
+                    .select_from(service_table)
+                    .where(
+                        service_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(service_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_services = [
+                    {
+                        "name": row.name,
+                        "preview_picture": row.preview_picture,
+                        "slug": row.slug,
+                    }
+                    for row in rs
+                ]
+            self.list_services = {"valid": True, "list_services": list_services}
+        except:
+            self.list_services = {"valid": False}
