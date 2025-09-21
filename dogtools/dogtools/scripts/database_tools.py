@@ -147,6 +147,20 @@ class ConnectDB:
                         "list_category": self.dict_category["list_category"],
                     }
                 )
+                for category in data["list_category"]:
+                    top_article_category = []
+                    for article in data["list_articles"]:
+                        if (
+                            article["category_slug"] == category["slug"]
+                            and len(top_article_category) < 3
+                        ):
+                            top_article_category.append(article)
+                    data["list_top_arcicle"].append(
+                        {
+                            "name_category": category["name"],
+                            "top_article_category": top_article_category,
+                        }
+                    )
             else:
                 data = {"valid": False}
         except Exception as err:
