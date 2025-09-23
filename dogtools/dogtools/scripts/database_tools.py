@@ -1203,6 +1203,8 @@ class ConnectDB:
                 }
                 for row in rs
             ]
+            for i, el in enumerate(list_sliders):
+                list_sliders[i]["active"] = True if i == 0 else False
             return list_sliders
 
     def _get_price_service(self, service_id):

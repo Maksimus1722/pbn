@@ -1,12 +1,16 @@
 {% extends 'pbn/service_1/base.html' %}
 {% load static %}
-{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
-{% block canonical %}https://{{ request.get_host }}{% endblock canonical %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}
+{% endblock canonical %}
 {% block content %}
     <section id="mainCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
         <div class="carousel-inner">
             {% for slider in list_sliders %}
-                <div class="carousel-item active">
+                <div class="carousel-item {% if slider.active %}active{% endif %}">
                     <div class="carousel-bg"
                          style="background-image:url('/media/{{ slider.preview_picture }}')"></div>
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-center">
