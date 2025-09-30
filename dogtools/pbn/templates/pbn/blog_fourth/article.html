@@ -1,16 +1,12 @@
 {% extends 'pbn/blog_fourth/base.html' %}
 {% load static %}
-{% block index %}
-    <meta name="robots" content="index, follow" />
-{% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/
-{% endblock canonical %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="row">
             <div class="col-xl-12">
-                <div class="article-single">
+                <div class="article-single" itemscope itemtype="http://schema.org/Article">
                     <ul class="breadcrumb theme"
                         style='margin-bottom:0 px'
                         itemscope
@@ -49,7 +45,7 @@
                             <meta itemprop="position" content="4" />
                         </li>
                     </ul>
-                    <h1 class="article-name">{{ name|capfirst }}</h1>
+                    <h1 class="article-name" itemprop="headline">{{ name|capfirst }}</h1>
                     <div class="article-meta">
                         <div class="post-meta">
                             <div class="author">
@@ -62,11 +58,15 @@
                                 </div>
                                 <div class="author-meta">
                                     <div class="author-name">
-                                        Автор статьи:  <a href="{% url "list_authors" %}{{ data_author.slug }}/">{{ data_author.name|capfirst }}</a>
+                                        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                            Автор статьи:  <a href="https://{{ request.get_host }}{% url "list_authors" %}{{ data_author.slug }}/" itemprop="url"><span itemprop="name">{{ data_author.name|capfirst }}</span></a>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="post-meta-views">{{ created|date:"d F Y" }}</div>
+                            <div class="post-meta-views"
+                                 itemprop="datePublished"
+                                 datetime="{{ created|date:"c" }}">{{ created|date:"d F Y" }}</div>
                             <div class="post-meta-time">
                                 <svg width="20"
                                      height="20"
@@ -97,7 +97,7 @@
                                     {{ table_content|safe }}
                                 </div>
                             {% endif %}
-                            {{ text|safe }}
+                            <div itemprop="articleBody">{{ text|safe }}</div>
                         </div>
                         <div class="top-articles">
                             <h3>Топ статей</h3>

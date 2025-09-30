@@ -1,12 +1,16 @@
 {% extends 'pbn/second/base.html' %}
 {% load static %}
-{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
-{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/{% endblock canonical %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{{ slug }}/
+{% endblock canonical %}
 {% block content %}
     <div class="grid-inner">
         <div class="row">
             <div class="col-xl-8">
-                <div class="article-single">
+                <div class="article-single" itemscope itemtype="http://schema.org/Article">
                     <ul class="breadcrumb theme"
                         itemscope
                         itemtype="http://schema.org/BreadcrumbList">
@@ -44,8 +48,9 @@
                             <meta itemprop="position" content="4" />
                         </li>
                     </ul>
-                    <h1 class="article-title">{{ name|capfirst }}</h1>
+                    <h1 class="article-title" itemprop="headline">{{ name|capfirst }}</h1>
                     <div class="article-meta">
+                        <meta itemprop="datePublished" content="{{ created|date:"c" }}">
                         Опубликовано  {{ created|date:"d-m-Y" }} · время чтения {{ time_read }} мин · просмотров {{ page_view }}
                     </div>
                     <div class="post-content">
@@ -56,9 +61,13 @@
                                          alt="{{ data_author.name|capfirst }}">
                                 </div>
                                 <div class="author-meta">
-                                    <div class="author-name">
-                                        <a href="{% url "list_authors" %}{{ data_author.slug }}/"
-                                           class="link-menu">{{ data_author.name|capfirst }}</a>
+                                    <div class="author-name"
+                                         itemprop="author"
+                                         itemscope
+                                         itemtype="http://schema.org/Person">
+                                        <a href="https://{{ request.get_host }}{% url "list_authors" %}{{ data_author.slug }}/"
+                                           class="link-menu"
+                                           itemprop="url"><span itemprop="name">{{ data_author.name|capfirst }}</span></a>
                                     </div>
                                     <div class="author-post">{{ data_author.spec }}</div>
                                 </div>
@@ -71,7 +80,7 @@
                                     {{ table_content|safe }}
                                 </div>
                             {% endif %}
-                            {{ text|safe }}
+                            <div itemprop="articleBody">{{ text|safe }}</div>
                         </div>
                         <div class="after-post"></div>
                     </div>
