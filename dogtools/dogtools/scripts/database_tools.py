@@ -943,6 +943,28 @@ class ConnectDB:
                     ]
                 else:
                     data["authors"] = False
+                service_table = meta.tables["pbn_service"]
+                query = (
+                    sa.select(
+                        service_table.c.slug,
+                    )
+                    .select_from(
+                        service_table.join(
+                            domain_table,
+                            service_table.c.domain_id == domain_table.c.id,
+                        )
+                    )
+                    .where(
+                        domain_table.c.domain == self.host,
+                    )
+                    .order_by(sa.desc(service_table.c.id))
+                )
+                rs = con.execute(query).fetchall()
+                if rs:
+                    data["service"] = True
+                    data["list_service"] = [{"slug": row.slug} for row in rs]
+                else:
+                    data["service"] = False
             self._manage_get_otherpage_services_category(data["domain_id"]),
             if (
                 self.dict_other_page["valid"]

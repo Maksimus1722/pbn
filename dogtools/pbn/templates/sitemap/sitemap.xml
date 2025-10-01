@@ -44,4 +44,18 @@
 </url>
 {% endfor %}
 {% endif %}
+{% if service %}
+<url>
+    <loc>https://{{ request.get_host }}{% url "services" %}</loc>
+    <lastmod>{{ domain_last_mod|date:"Y-m-d" }}</lastmod>
+    <priority>0.5</priority>
+</url>
+{% for service in list_service %}
+<url>
+    <loc>https://{{ request.get_host }}{% url "services" %}{{service.slug}}/</loc>
+    <lastmod>{{ domain_last_mod|date:"Y-m-d" }}</lastmod>
+    <priority>1</priority>
+</url>
+{% endfor %}
+{% endif %}
 </urlset>
