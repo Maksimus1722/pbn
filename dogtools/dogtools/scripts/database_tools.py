@@ -1120,7 +1120,7 @@ class ConnectDB:
                     )
                     .where(
                         service_table.c.slug == slug,
-                        service_table.c.domain_id == domain_table.c.id,
+                        domain_table.c.domain == self.host,
                     )
                 )
                 rs = con.execute(query).fetchall()
