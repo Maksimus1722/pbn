@@ -1,0 +1,72 @@
+#mainCarousel
+	position: relative
+	
+	.carousel-inner,
+	.carousel-item
+		height: 80vh
+		min-height: 480px
+	
+	.carousel-bg
+		position: absolute
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+		background-size: cover
+		background-position: center
+		z-index: 1
+		
+		&::after
+			content: ''
+			position: absolute
+			top: 0
+			left: 0
+			right: 0
+			bottom: 0
+			background: rgba(0,0,0,.3)  // затемнение 30%
+
+	.carousel-caption
+		position: relative
+		z-index: 2
+		max-width: 900px
+		display: grid !important
+		align-content: center
+		height: 100%
+		margin: 0 auto
+		left: 0
+		right: 0
+
+		
+		h1
+			font-size: 2.5rem
+		
+		p
+			font-size: 1.25rem
+	
+	// стрелки скрыты по умолчанию
+	.carousel-control-prev,
+	.carousel-control-next
+		opacity: 0
+		transition: opacity .3s
+		background: rgba(0,0,0,.4)
+		width: 50px
+		height: 50px
+		border-radius: .25rem
+		top: 50%
+		transform: translateY(-50%)
+	
+	&:hover
+		.carousel-control-prev,
+		.carousel-control-next
+			opacity: 1
+			
+	.btn-primary
+		background: #fff
+		color: #333
+		font-weight: 600
+		padding: 15px 5px
+		min-width: 200px
+		
+	.btn-outline-light
+		padding: 15px 5px
+		min-width: 200px

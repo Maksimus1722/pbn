@@ -1,0 +1,44 @@
+$brand-blue: #D3D3D3
+$title-blue: #D3D3D3
+$text-dark:  #2c2f33
+
+.section-prices
+	.section-title
+		font-size: 32px
+		font-weight: 700
+		margin-bottom: 1.5rem
+		color: #333
+		
+.table-responsive
+	max-width: 900px
+	margin: 0 auto
+	border: 1px solid #333
+	border-radius: 10px
+
+.price-table
+	width: 100%
+	border-collapse: collapse
+	
+	thead
+		background: $brand-blue
+		color: #333 !important
+		th
+			font-weight: 700
+			font-size: 18px
+			padding: .75rem 1rem
+			border: none
+			color: #333 !important
+		th
+			background-color: transparent
+	
+	tbody
+		tr
+			border-bottom: 1px solid $title-blue
+			td
+				padding: .75rem 1rem
+				font-size: 17px
+				color: $text-dark
+				border: none
+				
+		tr:nth-child(even)
+			background: #f9f9f9

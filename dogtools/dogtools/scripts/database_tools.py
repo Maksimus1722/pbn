@@ -133,6 +133,12 @@ class ConnectDB:
                     "list_top_arcicle": [],
                 }
             data["list_sliders"] = self._get_main_sliders(data["domain_id"])
+            list_template_actions = {"service_2"}
+            list_template_galery = {"service_2"}
+            if data["template"] in list_template_actions:
+                data["list_actions"] = self._get_actions(data["domain_id"])
+            if data["template"] in list_template_galery:
+                data["list_galery"] = self._get_galery(data["domain_id"])
             self._manage_get_otherpage_services_category(data["domain_id"]),
             if (
                 self.dict_other_page["valid"]
@@ -1111,6 +1117,9 @@ class ConnectDB:
                         service_table.c.keywords,
                         service_table.c.name_table_price,
                         service_table.c.value_table_price,
+                        service_table.c.action_name,
+                        service_table.c.action_text,
+                        service_table.c.action_value,
                     )
                     .select_from(
                         service_table.join(
@@ -1159,7 +1168,15 @@ class ConnectDB:
                     "service_slug": first_rs.slug,
                     "name_table_price": first_rs.name_table_price,
                     "value_table_price": first_rs.value_table_price,
+                    "action_name": first_rs.action_name,
+                    "action_text": first_rs.action_text,
+                    "action_value": first_rs.action_value,
+                    "action_date_end": datetime.datetime.now()
+                    + datetime.timedelta(days=10),
                 }
+            list_template_question = {"service_2"}
+            if data["template"] in list_template_question:
+                data["list_question"] = self._get_question(data["service_id"])
             self._manage_get_price_text_service(data["service_id"])
             if self.list_text_block["valid"] and self.list_prices["valid"]:
                 data.update(
@@ -1486,3 +1503,104 @@ class ConnectDB:
             self.list_text_block = {"valid": True, "list_text_block": list_text_block}
         except:
             self.list_text_block = {"valid": False}
+
+    def _get_actions(self, domain_id: int) -> dict:
+        """"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                action_table = meta.tables["pbn_actions"]
+                query = (
+                    sa.select(
+                        action_table.c.name,
+                        action_table.c.picture,
+                        action_table.c.sort,
+                    )
+                    .select_from(action_table)
+                    .where(
+                        action_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(action_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_actions = [
+                    {
+                        "name": row.name,
+                        "picture": row.picture,
+                        "date_end": datetime.datetime.now()
+                        + datetime.timedelta(days=10),
+                    }
+                    for row in rs
+                ]
+        except:
+            list_actions = []
+        finally:
+            return list_actions
+
+    def _get_galery(self, domain_id: int) -> dict:
+        """"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                galery_table = meta.tables["pbn_galery"]
+                query = (
+                    sa.select(
+                        galery_table.c.picture,
+                        galery_table.c.sort,
+                    )
+                    .select_from(galery_table)
+                    .where(
+                        galery_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(galery_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_galery = [
+                    {
+                        "picture": row.picture,
+                    }
+                    for row in rs
+                ]
+                for i, el in enumerate(list_galery):
+                    list_galery[i]["active"] = True if i == 0 else False
+        except:
+            list_galery = []
+        finally:
+            return list_galery
+
+    def _get_question(self, service_id: int) -> dict:
+        """"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                questions_table = meta.tables["pbn_questions"]
+                query = (
+                    sa.select(
+                        questions_table.c.question,
+                        questions_table.c.answer,
+                        questions_table.c.sort,
+                    )
+                    .select_from(questions_table)
+                    .where(
+                        questions_table.c.service_id == service_id,
+                    )
+                    .order_by(sa.asc(questions_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_questions = [
+                    {
+                        "question": row.question,
+                        "answer": row.answer,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_questions = []
+        finally:
+            return list_questions

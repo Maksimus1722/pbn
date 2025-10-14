@@ -1,0 +1,158 @@
+{% extends 'pbn/service_2/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "services" %}{{ service_slug }}/
+{% endblock canonical %}
+{% block content %}
+    <!--  Крошки  -->
+    <section class="breadcrumb mb-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breads">
+                        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/"> <span itemprop="name">Главная</span></a>
+                                <meta itemprop="position" content="1" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="{% url "services" %}"><span itemprop="name">Услуги</span></a>
+                                <meta itemprop="position" content="2" />
+                            </li>
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <span itemprop="name">{{ service_name }}</span>
+                                <meta itemprop="position" content="3" />
+                            </li>
+                        </ul>
+                    </div>
+                    <h1 class="section-title mb-3 fw-bold">
+                        {{ service_name }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Текстовые блоки до цен  -->
+    {% for text_block in list_text_block %}
+        {% if text_block.place_price %}
+            {% include "pbn/service_2/include/text_block_service.html" %}
+        {% endif %}
+    {% endfor %}
+    <!-- Promo  -->
+    <section class="promo-offer">
+        <div class="container">
+            <div class="promo-offer__card">
+                <div class="promo-offer__left">
+                    <div class="promo-offer__disc">
+                        <div class="promo-offer__disc-num">{{ action_value }}%</div>
+                        <div class="promo-offer__disc-note">скидка</div>
+                    </div>
+                </div>
+                <div class="promo-offer__right">
+                    <div class="promo-offer__badge">
+                        <span class="promo-offer__badge-ico" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 3l1.6 3.6L17 8.2l-3.4 1.6L12 13l-1.6-3.2L7 8.2l3.4-1.6L12 3zM5 14l1 2.2L8.2 17 6 18l-1 2-1-2-2.2-1L4 16.2 5 14zm14 0l1 2.2L21.2 17 19 18l-1 2-1-2-2.2-1L18 16.2 19 14z" fill="#222" />
+                            </svg>
+                        </span>
+                        <span>Специальное предложение</span>
+                    </div>
+                    <h2 class="section-title mb-3 fw-bold">{{ action_name }}</h2>
+                    <p class="promo-offer__text">{{ action_text|safe }}</p>
+                    <div class="promo-offer__meta">
+                        <span class="promo-offer__meta-ico" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="13" r="8.5" stroke="#2c2c2c" />
+                                <path d="M12 7v6l4 2" stroke="#2c2c2c" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 3h6" stroke="#2c2c2c" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span>Действует до {{ action_date_end|date:"d.m.y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Цены на услуги  -->
+    <section class="section-prices py-4 mb-4">
+        <div class="container">
+            <h2 class="section-title fw-bold text-center mb-4">Цены на услугу - {{ service_name|lower }}</h2>
+            <div class="table-responsive">
+                <table class="table price-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                {% if  name_table_price %}
+                                    {{ name_table_price }}
+                                {% else %}
+                                    Наименование
+                                {% endif %}
+                            </th>
+                            <th scope="col">
+                                {% if  value_table_price %}
+                                    {{ value_table_price }}
+                                {% else %}
+                                    Цена
+                                {% endif %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for price  in list_prices %}
+                            <tr>
+                                <td>{{ price.name }}</td>
+                                <td>{{ price.price_name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!--  Текстовые блоки после цен  -->
+    {% for text_block in list_text_block %}
+        {% if not text_block.place_price %}
+            {% include "pbn/service_2/include/text_block_service.html" %}
+        {% endif %}
+    {% endfor %}
+    <!--  FAQ  -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title fw-bold text-center mb-4">Вопросы по услуге {{ service_name|lower }}</h2>
+            <div class="faq-wrapper">
+                <div class="accordion faq-accordion" id="faqAccordion">
+                    <!-- 1 -->
+                    {% for question in list_question %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne"
+                                        aria-expanded="true"
+                                        aria-controls="collapseOne">{{ question.question|capfirst }}</button>
+                            </h2>
+                            <div id="collapseOne"
+                                 class="accordion-collapse collapse show"
+                                 aria-labelledby="headingOne"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">{{ question.answer|safe }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Наши услуги  -->
+    {% include "pbn/service_2/include/our_service.html" %}
+{% endblock content %}

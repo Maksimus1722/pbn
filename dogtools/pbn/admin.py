@@ -12,6 +12,9 @@ from .models import (
     Service,
     Price,
     ConstructorTextService,
+    Actions,
+    Galery,
+    Questions,
 )
 
 
@@ -55,6 +58,21 @@ class PriceInline(admin.TabularInline):
 
 class ConstructorTextService(admin.StackedInline):
     model = ConstructorTextService
+    extra = 0
+
+
+class ActionsDomains(admin.StackedInline):
+    model = Actions
+    extra = 0
+
+
+class GaleryDomains(admin.StackedInline):
+    model = Galery
+    extra = 0
+
+
+class QuestionService(admin.StackedInline):
+    model = Questions
     extra = 0
 
 
@@ -174,7 +192,13 @@ class DomainsAdmin(admin.ModelAdmin):
             {"fields": ("name_info",)},
         ),
     )
-    inlines = [MainSliderInline, RedirectLinksInline, MembransLinksInline]
+    inlines = [
+        MainSliderInline,
+        RedirectLinksInline,
+        MembransLinksInline,
+        ActionsDomains,
+        GaleryDomains,
+    ]
     readonly_fields = ("last_mod",)
 
     def get_form(self, request, obj=None, **kwargs):
@@ -461,8 +485,18 @@ class ServiceAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            "Акция",
+            {
+                "fields": (
+                    "action_name",
+                    "action_text",
+                    "action_value",
+                )
+            },
+        ),
     )
-    inlines = [PriceInline, ConstructorTextService]
+    inlines = [PriceInline, ConstructorTextService, QuestionService]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

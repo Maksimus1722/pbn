@@ -1,0 +1,92 @@
+// ===== Variables =====
+$blue-600:    #333
+$blue-500:    #333
+$blue-400:    #333
+$muted:       #6b7680
+$ink:         #2b2f33
+$paper:       #f8fbff
+$border:      #dfe7ef
+$radius:      12px
+
+// ===== Base =====
+.article-page
+	
+	a
+		color: #333 !important
+		
+	.author-avatar
+		width: 48px
+		height: 48px
+		background: #e9eef3
+	
+	.article-content
+		blockquote
+			padding: 25px
+			border-left: 10px solid #333
+			color: $muted
+		
+		p
+			color: $muted
+			line-height: 1.75
+			margin-bottom: 1.25rem
+			a
+				color: $blue-500
+				text-decoration: underline
+				&:hover
+					color: darken($blue-500, 8%)
+		
+		.section-title
+			color: $blue-600
+			font-weight: 700
+			margin-bottom: 1rem
+
+// ===== ToC card =====
+.toc-card
+	border-radius: $radius
+	overflow: hidden
+	background: #F9FAFB
+	
+	.card-header
+		background-color: $paper
+		border-bottom: 1px solid $border
+		h2
+			color: $ink
+			font-weight: 700
+			line-height: 1.2
+	.card-body
+		.toc-list
+			counter-reset: toc
+			list-style: none
+			padding-left: 0
+			display: grid
+			row-gap: .5rem
+			li
+				counter-increment: toc
+				position: relative
+				padding-left: 2.25rem
+				min-height: 1.5rem
+				&::before
+					content: counter(toc) "."
+					position: absolute
+					left: 0
+					top: 0
+					color: $blue-600
+					font-weight: 700
+				a
+					color: $blue-600
+					text-decoration: none
+					&:hover
+						text-decoration: underline
+
+// ===== Utilities =====
+.object-fit-cover
+	object-fit: cover
+
+// ===== Responsive =====
+@media (max-width: 575.98px)
+	.article-page
+		.author-avatar
+			width: 40px
+			height: 40px
+		.toc-card .card-header h2
+			font-size: 1.0625rem

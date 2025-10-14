@@ -1,0 +1,94 @@
+// vars
+$brand-blue: #2b9ad6
+$link-blue:  #1f87c5
+$title-blue: #167ec1
+$muted:      #6b7680
+$card-border:#cfd8df
+$radius:     12px
+
+.section-articles
+	.section-title
+		color: $title-blue
+		font-weight: 700
+		line-height: 1.15
+	
+	.all-news-link
+		color: $link-blue
+		font-weight: 600
+		text-decoration: none
+		.arrow
+			margin-left: .5rem
+		&:hover
+			text-decoration: underline
+	
+	// карточка
+	.news-card
+		border: 1px solid $card-border
+		border-radius: $radius
+		overflow: hidden
+		transition: box-shadow .2s ease
+		&:hover
+			box-shadow: 0 6px 16px rgba(0,0,0,.08)
+		
+		.news-thumb
+			overflow: hidden
+			// скругление верхних углов у изображения
+			border-top-left-radius: $radius
+			border-top-right-radius: $radius
+			img
+				width: 100%
+				height: 100%
+				object-fit: cover
+				display: block
+		
+		.card-body
+			padding: 1.25rem
+		
+		.news-date
+			color: #9aa5ad
+			font-size: 14px
+		
+		.news-title
+			margin: 0
+			font-weight: 700
+			text-align: center
+			color: #2b2f33
+		
+		.news-excerpt
+			color: $muted
+			text-align: center
+			margin: 0
+		
+		// кнопка "Подробнее" как на макете
+		.btn-primary
+			background-color: $brand-blue
+			border-color: $brand-blue
+			font-weight: 600
+			padding: .8rem 1rem
+			border-radius: 10px
+			&:hover,
+			&:focus
+				background-color: darken($brand-blue, 6%)
+				border-color: darken($brand-blue, 6%)
+		
+		// вариант со ссылкой в центре (для средней карточки)
+		.news-more-link
+			display: inline-block
+			align-self: center
+			color: $link-blue
+			font-weight: 600
+			text-decoration: underline
+			padding: .25rem .5rem
+			border-radius: 6px
+			&:hover
+				color: darken($link-blue, 8%)
+
+@media (max-width: 991.98px)
+	.section-articles
+		.section-title
+			font-size: 34px
+
+@media (max-width: 575.98px)
+	.section-articles
+		.section-title
+			font-size: 28px

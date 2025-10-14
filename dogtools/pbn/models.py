@@ -12,6 +12,7 @@ CHOICES_TEMPLATES = [
     ("blog_third", "Блог-3"),
     ("blog_fourth", "Блог-4"),
     ("service_1", "Услуги-1"),
+    ("service_2", "Услуги-2"),
 ]
 
 CHOICES_YEAR_START = [
@@ -623,6 +624,24 @@ class Service(models.Model):
         verbose_name="Наименование столбца с ценами на услуги",
         help_text="Например: Стоимость руб за м2",
     )
+    action_name = models.CharField(
+        max_length=300,
+        default="",
+        blank=True,
+        verbose_name="Заголовок акции для услуги",
+        help_text="Шаблоны: коммерческий-2",
+    )
+    action_text = RichTextUploadingField(
+        verbose_name="Текст-акции",
+        default="",
+        help_text="Шаблоны: коммерческий-2",
+        blank=True,
+    )
+    action_value = models.IntegerField(
+        default=10,
+        verbose_name="Величина скидки",
+        help_text="Шаблоны: коммерческий-2",
+    )
 
     class Meta:
         verbose_name = "Услугу"
@@ -823,3 +842,112 @@ class ConstructorTextService(models.Model):
 
     def __str__(self):
         return f"{self.subtitle}"
+
+
+class Actions(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Заголовок Акции",
+        help_text="Например: Выгода до 20% на ручную мойку",
+        default="",
+    )
+    picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Картинка-",
+        help_text="размер 1312x736",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+
+    class Meta:
+        verbose_name = "вариант акции"
+        verbose_name_plural = "Акция (шаблоны: коммерческий-2)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Galery(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Название картинки",
+        help_text="Не отображается на сайте",
+        default="",
+    )
+    picture = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Картинка-",
+        help_text="размер 1312x736",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+
+    class Meta:
+        verbose_name = "вариант картинки"
+        verbose_name_plural = "Картинки галерии (шаблоны: коммерческий-2)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Questions(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.PROTECT,
+        verbose_name="Услуга",
+    )
+    question = models.CharField(
+        max_length=300,
+        verbose_name="Вопрос",
+        help_text="Например: как починить автомобиль?",
+        default="",
+    )
+    answer = RichTextUploadingField(verbose_name="Ответ", default="", blank=True)
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+
+    class Meta:
+        verbose_name = "Вопрос-ответ"
+        verbose_name_plural = "Вопрос - ответ"
+
+    def __str__(self):
+        return f"{self.question}"

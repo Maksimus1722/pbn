@@ -1,0 +1,72 @@
+// Цвета и базовые переменные
+$blue-600: #167ec1
+$text:     #2b2f33
+$muted:    #6b7680
+$border:   #cfd8df
+$radius:   14px
+$thumb-r:  12px
+
+.related-articles
+	.related-title
+		color: $blue-600
+		font-weight: 700
+		line-height: 1.15
+	
+	.rel-card
+		position: relative
+		border: 1px solid $border
+		border-radius: $radius
+		background: #fff
+		padding: 16px
+		gap: 18px
+		transition: box-shadow .2s ease
+		&:hover
+			box-shadow: 0 6px 16px rgba(0,0,0,.08)
+		
+		.rel-thumb
+			width: 224px
+			max-width: 224px
+			min-width: 224px
+			border-radius: $thumb-r
+			overflow: hidden
+			img
+				width: 100%
+				height: 100%
+				object-fit: cover
+				display: block
+		
+		.rel-body
+			text-align: center
+			.rel-title
+				font-size: 1.125rem
+				line-height: 1.3
+				font-weight: 700
+				color: $text
+				margin: 4px 0 10px
+			.rel-excerpt
+				color: $muted
+				line-height: 1.6
+		
+		.rel-date
+			color: #98a3ad
+			font-size: .95rem
+			text-align: center
+
+// Планшет и ниже: складываем в колонку, делаем превью на всю ширину
+@media (max-width: 991.98px)
+	.related-articles
+		.rel-card
+			padding-bottom: 52px // чтобы дата не наезжала на контент
+			.rel-thumb
+				width: 100%
+				max-width: none
+				min-width: 0
+			.rel-body
+				text-align: left
+				.rel-title
+					text-align: left
+
+@media (max-width: 575.98px)
+	.related-articles
+		.related-title
+			font-size: 1.75rem

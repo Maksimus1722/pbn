@@ -1,0 +1,21 @@
+<!--  Услуги  -->
+<section class="section-services py-4 mb-4">
+    <div class="container">
+        <div class="row g-4">
+            {% for service  in list_services %}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <article class="service-card h-100 pb-3">
+                        <div class="service-thumb ratio ratio-16x9">
+                            <img src="/media/{{ service.preview_picture }}"
+                                 alt="{{ service.name }}"
+                                 title="{{ service.name }}">
+                        </div>
+                        <h3 class="service-title">{{ service.name }}</h3>
+                        <a class="d-block text-center text-black-50 text-decoration-none"
+                           href="{% url "services" %}{{ service.slug }}/">Подробнее ➞</a>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
