@@ -404,9 +404,9 @@ class ConnectDB:
             list_templates_extra_authors = {"service_2"}
             if data["template"] in list_templates_extra_authors:
                 data["count_articles"] = len(data["list_articles"])
-                # data["count_articles"] = sum(
-                #    [x["page_view"] for x in data["list_articles"]]
-                # )
+                data["sum_view_articles"] = sum(
+                    [x["page_view"] for x in data["list_articles"]]
+                )
             self._manage_get_otherpage_services_category(data["domain_id"]),
             if (
                 self.dict_other_page["valid"]
