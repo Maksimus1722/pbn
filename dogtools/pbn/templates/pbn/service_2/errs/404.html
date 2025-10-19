@@ -1,6 +1,8 @@
 {% extends 'pbn/service_2/base.html' %}
 {% load static %}
-{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
 {% block canonical %}
 {% endblock canonical %}
 {% block content %}
@@ -15,7 +17,9 @@
                     <br>
                     Проверьте правильность вводимой ссылки.
                 </p>
+                <p>
+                    Ошибка: {{ err }}
+                </div>
             </div>
-        </div>
-    </section>
-{% endblock content %}
+        </section>
+    {% endblock content %}

@@ -428,9 +428,9 @@ class ConnectDB:
                     }
                 )
             else:
-                data = {"valid": False}
+                data = {"valid": False, "err":"Проблема при сборе категорий"}
         except Exception as err:
-            data = {"valid": False}
+            data = {"valid": False, "err": err}
         finally:
             return data
 

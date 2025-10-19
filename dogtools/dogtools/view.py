@@ -79,8 +79,10 @@ class Author(View):
         data = connect.get_author(page_slug)
         if data["valid"]:
             return render(request, f"pbn/{data['template']}/author.html", context=data)
+        err = data["err"]
         data = base_function_404(host, request)
         if data["valid"]:
+            data["err"] = err
             return render(
                 request,
                 f"pbn/{data['template']}/errs/404.html",
