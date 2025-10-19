@@ -409,6 +409,9 @@ class OtherPageAdmin(admin.ModelAdmin):
 class authorAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "domain", "spec"]
     list_editable = ["slug", "domain", "spec"]
+    list_filter = [
+        "domain",
+    ]
     list_per_page = 20
     search_fields = [
         "name__istartswith",
@@ -425,6 +428,7 @@ class authorAdmin(admin.ModelAdmin):
                     "slug",
                     "img_preview",
                     "domain",
+                    "expirense",
                 )
             },
         ),

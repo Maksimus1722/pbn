@@ -1,11 +1,7 @@
 {% extends 'pbn/service_2/base.html' %}
 {% load static %}
-{% block index %}
-    <meta name="robots" content="index, follow" />
-{% endblock index %}
-{% block canonical %}
-    https://{{ request.get_host }}{% url "services" %}{{ service_slug }}/
-{% endblock canonical %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "services" %}{{ service_slug }}/{% endblock canonical %}
 {% block content %}
     <!--  Крошки  -->
     <section class="breadcrumb mb-6">
@@ -129,23 +125,36 @@
         <div class="container">
             <h2 class="section-title fw-bold text-center mb-4">Вопросы по услуге {{ service_name|lower }}</h2>
             <div class="faq-wrapper">
-                <div class="accordion faq-accordion" id="faqAccordion">
+                <div class="accordion faq-accordion"
+                     id="faqAccordion"
+                     itemscope
+                     itemtype="https://schema.org/FAQPage">
                     <!-- 1 -->
                     {% for question in list_question %}
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
+                        <div class="accordion-item"
+                             itemscope
+                             itemprop="mainEntity"
+                             itemtype="https://schema.org/Question">
+                            <h2 class="accordion-header"
+                                id="heading{{ forloop.counter }}"
+                                itemprop="name">
                                 <button class="accordion-button"
                                         type="button"
                                         data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne"
-                                        aria-expanded="true"
-                                        aria-controls="collapseOne">{{ question.question|capfirst }}</button>
+                                        data-bs-target="#collapse{{ forloop.counter }}"
+                                        aria-expanded="{% if question.active %}true{% else %}false{% endif %}"
+                                        aria-controls="collapse{{ forloop.counter }}">
+                                    {{ question.question|capfirst }}
+                                </button>
                             </h2>
-                            <div id="collapseOne"
-                                 class="accordion-collapse collapse show"
-                                 aria-labelledby="headingOne"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">{{ question.answer|safe }}</div>
+                            <div id="collapse{{ forloop.counter }}"
+                                 class="accordion-collapse collapse {% if question.active %}show{% endif %}"
+                                 aria-labelledby="heading{{ forloop.counter }}"
+                                 data-bs-parent="#faqAccordion"
+                                 itemscope
+                                 itemprop="acceptedAnswer"
+                                 itemtype="https://schema.org/Answer">
+                                <div class="accordion-body"  itemprop="text">{{ question.answer|safe }}</div>
                             </div>
                         </div>
                     {% endfor %}
@@ -155,4 +164,15 @@
     </section>
     <!--  Наши услуги  -->
     {% include "pbn/service_2/include/our_service.html" %}
+    <div itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="name" content="{{ service_name }}">
+        <div itemtype="http://schema.org/AggregateOffer"
+             itemscope=""
+             itemprop="offers">
+            <meta content="{{ count_price }}" itemprop="offerCount">
+            <meta content="{{ max_price }}" itemprop="highPrice">
+            <meta content="{{ min_price }}" itemprop="lowPrice">
+            <meta content="RUB" itemprop="priceCurrency">
+        </div>
+    </div>
 {% endblock content %}

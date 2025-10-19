@@ -1,4 +1,5 @@
 import sqlalchemy as sa, threading, datetime
+from functools import reduce
 
 
 class ConnectDB:
@@ -306,6 +307,7 @@ class ConnectDB:
                         author_table.c.preview.label("preview"),
                         author_table.c.img_preview.label("author_img_preview"),
                         author_table.c.id.label("author_id"),
+                        author_table.c.expirense.label("expirense"),
                         domain_table.c.logo.label("logo"),
                         domain_table.c.favicon.label("favicon"),
                         domain_table.c.id.label("domain_id"),
@@ -372,6 +374,7 @@ class ConnectDB:
                     "preview": first_rs.preview,
                     "author_img_preview": first_rs.author_img_preview,
                     "author_slug": first_rs.author_slug,
+                    "expirense": first_rs.expirense,
                     "year_start": first_rs.year_start,
                     "emal_start": first_rs.emal_start,
                     "now_year": datetime.datetime.now().year,
@@ -398,6 +401,16 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
+            list_templates_extra_authors = {"service_2"}
+            if data["template"] in list_templates_extra_authors:
+                data["count_articles"] = len(data["list_articles"])
+                if data["count_articles"] > 1:
+                    data["sum_view_articles"] = reduce(
+                        lambda x, y: x["page_view"] + y["page_view"],
+                        data["list_articles"],
+                    )
+                else:
+                    data["sum_view_articles"] = data["list_articles"][0]["page_view"]
             self._manage_get_otherpage_services_category(data["domain_id"]),
             if (
                 self.dict_other_page["valid"]
@@ -1177,6 +1190,8 @@ class ConnectDB:
             list_template_question = {"service_2"}
             if data["template"] in list_template_question:
                 data["list_question"] = self._get_question(data["service_id"])
+                for i, el in enumerate(data["list_question"]):
+                    el["active"] = True if i == 0 else False
             self._manage_get_price_text_service(data["service_id"])
             if self.list_text_block["valid"] and self.list_prices["valid"]:
                 data.update(

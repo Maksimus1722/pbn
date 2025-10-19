@@ -1,0 +1,113 @@
+{% extends 'pbn/service_2/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "list_authors" %}{{ author_slug }}/{% endblock canonical %}
+{% block content %}
+    <!--  Крошки  -->
+    <section class="breadcrumb mb-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breads">
+                        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+                            <li itemprop="itemListElement"
+                                itemscope
+                                itemtype="http://schema.org/ListItem">
+                                <a itemprop="item" href="/"><span itemprop="name">Главная</span></a>
+                                <meta itemprop="position" content="1" />
+                            </li>
+                            <li>
+                                <a itemprop="item" href="{% url "list_authors" %}"><span itemprop="name">Авторы</span></a>
+                                <meta itemprop="position" content="2" />
+                            </li>
+                            <li>
+                                <span itemprop="name">{{ author_name|capfirst }}</span>
+                                <meta itemprop="position" content="3" />
+                            </li>
+                        </ul>
+                    </div>
+                    <h1 class="section-title mb-3 fw-bold">{{ author_name|capfirst }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Инфо об авторе  -->
+    <section class="repeater mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="ratio ratio-1x1">
+                        <img src="/media/{{ author_img_preview }}"
+                             alt="{{ author_name|capfirst }}"
+                             title="{{ author_name|capfirst }}" />
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <div class="card card-body p-5 bg-light-subtle shadow">
+                                    <h6>
+                                        <strong>Должность</strong>
+                                    </h6>
+                                    <p>{{ spec|safe }}</p>
+                                    <h6>
+                                        <strong>Об авторе</strong>
+                                    </h6>
+                                    <p>{{ preview|safe }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card card-body p-2 bg-light-subtle shadow text-center">
+                                    <h5 class="fs-1 fw-bold">{{ count_articles }}</h5>
+                                    <p>Статей</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card card-body p-2 bg-light-subtle shadow text-center">
+                                    <h5 class="fs-1 fw-bold">{{ sum_view_articles }}</h5>
+                                    <p>Прочтений</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card card-body p-2 bg-light-subtle shadow text-center">
+                                    <h5 class="fs-1 fw-bold">{{ expirense }}</h5>
+                                    <p>Лет опыта</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Статьи автора  -->
+    <section class="related-articles py-4 py-md-5">
+        <div class="container">
+            <h2 class="section-title fw-bold text-center mb-4">Статьи автора</h2>
+            <div class="row g-4 g-xl-5">
+                {% for article in list_articles %}
+                    <div class="col-12 col-lg-6">
+                        <article class="rel-card d-flex flex-column flex-md-row align-items-stretch h-100">
+                            <div class="rel-left">
+                                <div class="rel-thumb ratio ratio-16x9 flex-shrink-0 mt-5">
+                                    <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+                                        <img src="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                             alt="{{ article.name }}"
+                                             title="{{ article.name }}"
+                                             class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="rel-body d-flex flex-column justify-content-center text-start">
+                                <div class="rel-date mt-2 text-start">{{ article.created|date:"d M Y" }}</div>
+                                <h3 class="rel-title">{{ article.name|capfirst }}</h3>
+                                <p class="rel-excerpt mb-0" style="font-size: 12px">{{ article.text_preview|safe }}</p>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

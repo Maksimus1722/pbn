@@ -399,6 +399,9 @@ class Author(models.Model):
         verbose_name="Домен",
         default="",
     )
+    expirense = models.IntegerField(
+        default=1, verbose_name="Опыт автора", help_text="Для шаблонов: коммерческий-2"
+    )
     last_mod = models.DateTimeField(
         auto_now=True,
         verbose_name="Последнее обновление",

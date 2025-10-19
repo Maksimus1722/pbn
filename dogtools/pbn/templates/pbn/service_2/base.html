@@ -103,7 +103,7 @@
                                 <div class="collapse navbar-collapse center-nav" id="mainNav">
                                     <ul class="navbar-nav gap-lg-4 gap-2">
                                         <li class="nav-item">
-                                            <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                                            <a class="nav-link active" aria-current="page" href="/">Главная</a>
                                         </li>
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle"
@@ -196,7 +196,19 @@
                         </div>
                     </div>
                 </footer>
+                <div itemscope=""
+                     itemtype="http://schema.org/Organization"
+                     class
+                     DisplaNone>
+                    <meta itemprop="name" content="{{ name_site }}">
+                    <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                    <meta itemprop="phone" content="{{ phone }}">
+                    <meta itemprop="addressLocality" content="{{ region }}">
+                    <meta itemprop="streetAddress" content="{{ street }}">
+                    <meta itemprop="logo" content="/media/{{ logo }}">
+                </div>
             </main>
+            <script src={% static 'service_2/js/extra.js' %}></script>
         </body>
     </html>
 {% endspaceless %}
