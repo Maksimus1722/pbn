@@ -1,5 +1,4 @@
 import sqlalchemy as sa, threading, datetime
-from functools import reduce
 
 
 class ConnectDB:

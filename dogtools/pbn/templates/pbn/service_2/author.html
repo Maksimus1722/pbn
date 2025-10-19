@@ -92,7 +92,7 @@
                             <div class="rel-left">
                                 <div class="rel-thumb ratio ratio-16x9 flex-shrink-0 mt-5">
                                     <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
-                                        <img src="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+                                        <img src="/media/{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
                                              alt="{{ article.name }}"
                                              title="{{ article.name }}"
                                              class="img-fluid">
