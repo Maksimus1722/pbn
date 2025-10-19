@@ -409,6 +409,8 @@ class ConnectDB:
                         lambda x, y: x["page_view"] + y["page_view"],
                         data["list_articles"],
                     )
+                elif data["count_articles"] == 0:
+                    data["sum_view_articles"] = 0
                 else:
                     data["sum_view_articles"] = data["list_articles"][0]["page_view"]
             self._manage_get_otherpage_services_category(data["domain_id"]),
