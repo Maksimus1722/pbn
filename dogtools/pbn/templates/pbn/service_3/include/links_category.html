@@ -1,0 +1,14 @@
+    <section class="section blog-categories-section">
+        <div class="section-container">
+            <div class="blog-categories">
+                <a href="{% url "blog" %}">
+                    <button class="category-button" data-category="all">Все статьи</button>
+                </a>
+                {% for category in list_category %}
+                    <a href="{% url "blog" %}{{ category.slug }}/">
+                        <button class="category-button">{{ category.name|capfirst }}</button>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>

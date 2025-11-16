@@ -1,0 +1,24 @@
+<section class="section testimonials">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Отзывы клиентов</h2>
+            <p class="section-subtitle">Что говорят о нас наши партнеры</p>
+        </div>
+        <div class="testimonials-grid">
+            {% for review in list_review %}
+                <div class="testimonial-card">
+                    <p class="testimonial-text">{{ review.text|safe }}</p>
+                    <div class="testimonial-author">
+                        <img src="/media/{{ review.image }}"
+                             alt="{{ review.author }}"
+                             class="author-avatar">
+                        <div class="author-info">
+                            <h4>{{ review.author }}</h4>
+                            <p>{{ review.post }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+<section class="section services" id="services">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Наши услуги</h2>
+            <p class="section-subtitle">{{ main_text|safe }}</p>
+        </div>
+        <div class="services-grid">
+            {% for service in list_services %}
+                <div class="service-card">
+                    <a href="{% url "services" %}{{ service.slug }}/">
+                        <div class="service-icon">{{ service.icon_preview }}</div>
+                        <h3>{{ service.name }}</h3>
+                        <p>{{ service.text_preview }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

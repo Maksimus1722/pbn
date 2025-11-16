@@ -15,6 +15,11 @@ from .models import (
     Actions,
     Galery,
     Questions,
+    BenifitsCompany,
+    Cases,
+    Review,
+    HowWork,
+    DescriptionService,
 )
 
 
@@ -73,6 +78,31 @@ class GaleryDomains(admin.StackedInline):
 
 class QuestionService(admin.StackedInline):
     model = Questions
+    extra = 0
+
+
+class BenifitsCompanyDomains(admin.StackedInline):
+    model = BenifitsCompany
+    extra = 0
+
+
+class CasesDomains(admin.StackedInline):
+    model = Cases
+    extra = 0
+
+
+class ReviewDomain(admin.StackedInline):
+    model = Review
+    extra = 0
+
+
+class HowworkDomain(admin.StackedInline):
+    model = HowWork
+    extra = 0
+
+
+class DescriptionServiceService(admin.StackedInline):
+    model = DescriptionService
     extra = 0
 
 
@@ -198,6 +228,10 @@ class DomainsAdmin(admin.ModelAdmin):
         MembransLinksInline,
         ActionsDomains,
         GaleryDomains,
+        BenifitsCompanyDomains,
+        CasesDomains,
+        ReviewDomain,
+        HowworkDomain,
     ]
     readonly_fields = ("last_mod",)
 
@@ -467,6 +501,9 @@ class ServiceAdmin(admin.ModelAdmin):
                     "domain",
                     "slug",
                     "preview_picture",
+                    "text_preview",
+                    "icon_preview",
+                    "one_text",
                 )
             },
         ),
@@ -500,7 +537,12 @@ class ServiceAdmin(admin.ModelAdmin):
             },
         ),
     )
-    inlines = [PriceInline, ConstructorTextService, QuestionService]
+    inlines = [
+        PriceInline,
+        ConstructorTextService,
+        QuestionService,
+        DescriptionServiceService,
+    ]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

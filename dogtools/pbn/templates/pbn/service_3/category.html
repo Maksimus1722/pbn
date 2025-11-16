@@ -1,0 +1,54 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "blog" %}{{ category_slug }}/{% endblock canonical %}
+{% block content %}
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs-wrapper">
+        <div class="section-container">
+            <nav class="breadcrumbs"
+                 aria-label="Хлебные крошки"
+                 class="breadcrumbs"
+                 aria-label="Хлебные крошки"
+                 itemscope
+                 itemtype="http://schema.org/BreadcrumbList">
+                <span itemprop="itemListElement"
+                      itemscope
+                      itemtype="http://schema.org/ListItem"><a href="/" itemprop="item"><span itemprop="name">Главная</span></a>
+            <meta itemprop="position" content="1" />
+        </span>
+        <span class="separator">/</span>
+        <span itemprop="itemListElement"
+              itemscope
+              itemtype="http://schema.org/ListItem"><a href="{% url "blog" %}" itemprop="item"><span itemprop="name">Блог</span></a>
+    <meta itemprop="position" content="2" />
+</span>
+<span class="separator">/</span>
+<span class="current"
+      itemprop="itemListElement"
+      itemscope
+      itemtype="http://schema.org/ListItem"><span itemprop="name">{{ category_name|capfirst }}</span>
+<meta itemprop="position" content="3" />
+</span>
+</nav>
+</div>
+</div>
+<!-- Заголовок -->
+<section class="page-header">
+    <div class="page-header-container">
+        <h1>{{ h1 }}</h1>
+    </div>
+</section>
+<!-- Ссылки на рубрики блога -->
+{% include "pbn/service_3/include/links_category.html" %}
+<!-- Статьи -->
+<section class="section blog-preview">
+    <div class="section-container">
+        <div class="blog-preview-grid">
+            {% for article in list_articles %}
+                {% include "pbn/service_3/include/articles.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock content %}

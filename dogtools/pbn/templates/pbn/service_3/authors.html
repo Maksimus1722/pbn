@@ -1,0 +1,64 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "list_authors" %}
+{% endblock canonical %}
+{% block content %}
+    <!-- Крошки -->
+    <div class="breadcrumbs-wrapper">
+        <div class="section-container">
+            <nav class="breadcrumbs" aria-label="Хлебные крошки">
+                <a href="/">Главная</a>
+                <span class="separator">/</span>
+                <a href="{% url "blog" %}">Блог</a>
+                <span class="separator">/</span>
+                <span class="current">Авторы</span>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-container">
+            <h1>Наши авторы</h1>
+        </div>
+    </section>
+    <!-- Authors Grid -->
+    <section class="section authors-section">
+        <div class="section-container">
+            <div class="authors-grid">
+                <!-- Author 1 -->
+                {% for author in list_authors %}
+                    <div class="author-card">
+                        <div class="author-card-header">
+                            <a href="{% url "list_authors" %}{{ author.slug }}/">
+                                <img src="/media/{{ author.img_preview }}"
+                                     alt="{{ author.name }}"
+                                     class="author-card-avatar">
+                            </a>
+                        </div>
+                        <div class="author-card-content">
+                            <h3 class="author-card-name">{{ author.name }}</h3>
+                            <p class="author-card-position">{{ author.spec }}</p>
+                            <p class="author-card-bio">{{ author.preview |safe }}</p>
+                            <a href="{% url "list_authors" %}{{ author.slug }}/"
+                               class="author-card-button">Статьи автора</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2>Хотите стать автором?</h2>
+                <p>Если у вас есть экспертиза и желание делиться знаниями, мы будем рады видеть вас в нашей команде авторов</p>
+                <a href="#contact" class="button-primary">Связаться с нами</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

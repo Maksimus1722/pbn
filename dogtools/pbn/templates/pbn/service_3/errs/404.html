@@ -1,0 +1,24 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+{% endblock canonical %}
+{% block content %}
+    <section class="section service-description">
+        <div class="section-container">
+            <h1>
+                Страница не найдена
+            </h2>
+            <p>
+                Вы ввели некорретный адрес.
+                <br>
+                По адресу: {{ url }} на сайте {{ request.get_host }} ничего не найдено.
+                <br>
+                Проверьте правильность вводимой ссылки.
+            </p>
+            <p>Ошибка: {{ err }}</p>
+        </div>
+    </section>
+{% endblock content %}

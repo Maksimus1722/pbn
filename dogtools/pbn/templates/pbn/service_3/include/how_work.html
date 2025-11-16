@@ -1,0 +1,17 @@
+<section class="section process">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Как мы работаем</h2>
+            <p class="section-subtitle">Прозрачный процесс от первой встречи до достижения результата</p>
+        </div>
+        <div class="process-steps">
+            {% for step in list_howwork %}
+                <div class="process-step">
+                    <div class="step-number">{{ forloop.counter }}</div>
+                    <h3>{{ step.name }}</h3>
+                    <p>{{ step.text|safe }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

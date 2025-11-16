@@ -13,6 +13,7 @@ CHOICES_TEMPLATES = [
     ("blog_fourth", "Блог-4"),
     ("service_1", "Услуги-1"),
     ("service_2", "Услуги-2"),
+    ("service_3", "Услуги-3"),
 ]
 
 CHOICES_YEAR_START = [
@@ -632,18 +633,40 @@ class Service(models.Model):
         default="",
         blank=True,
         verbose_name="Заголовок акции для услуги",
-        help_text="Шаблоны: коммерческий-2",
+        help_text="Шаблоны: коммерческий-2,3",
     )
     action_text = RichTextUploadingField(
         verbose_name="Текст-акции",
         default="",
-        help_text="Шаблоны: коммерческий-2",
+        help_text="Шаблоны: коммерческий-2,3",
         blank=True,
     )
     action_value = models.IntegerField(
         default=10,
         verbose_name="Величина скидки",
-        help_text="Шаблоны: коммерческий-2",
+        help_text="Шаблоны: коммерческий-2,3",
+    )
+    icon_preview = models.CharField(
+        max_length=100,
+        default="",
+        blank=True,
+        verbose_name="Символ UTF-8",
+        help_text="Шаблоны: коммерческий-3 (например  🎉)",
+    )
+
+    text_preview = models.CharField(
+        max_length=500,
+        default="",
+        blank=True,
+        verbose_name="Превью-текст для услуги",
+        help_text="Шаблоны: коммерческий-3",
+    )
+
+    one_text = RichTextUploadingField(
+        verbose_name="Единственный текстовый блок",
+        default="",
+        help_text="Шаблоны: коммерческий-3",
+        blank=True,
     )
 
     class Meta:
@@ -954,3 +977,218 @@ class Questions(models.Model):
 
     def __str__(self):
         return f"{self.question}"
+
+
+class BenifitsCompany(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    name = models.CharField(
+        max_length=300,
+        verbose_name="Название",
+        help_text="Например: Экспертиза",
+        default="",
+    )
+    text = models.CharField(
+        max_length=150,
+        verbose_name="Описание преимущества",
+        default="",
+        blank=True,
+        help_text="Например: 10 лет опыта в сфере строительства (не более 150 символов)",
+    )
+
+    icon = models.CharField(
+        max_length=100,
+        verbose_name="Символов UTF-8",
+        help_text="Например:  🎉",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Преимущество"
+        verbose_name_plural = "Преимущества (коммерческие шаблоны: 3)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Cases(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    name = models.CharField(
+        max_length=300,
+        verbose_name="Название",
+        help_text="Например: Оптимизация бизнес процессов",
+        default="",
+    )
+    text = models.CharField(
+        max_length=150,
+        verbose_name="Описание кейса",
+        default="",
+        blank=True,
+        help_text="Например: Реализовали комплексный проект по автоматизации розничной сети из 50+ магазинов с интеграцией всех систем.",
+    )
+    category_case = models.CharField(
+        max_length=150,
+        verbose_name="Категория кейса",
+        default="",
+        blank=True,
+        help_text="Например: Трансформация",
+    )
+    image = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Картинка кейса",
+        help_text="размер 440x320",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+
+    class Meta:
+        verbose_name = "Кейсы"
+        verbose_name_plural = "Кейс (коммерческие шаблоны: 3)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Review(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    author = models.CharField(
+        max_length=300,
+        verbose_name="Автор",
+        help_text="Например: Иван Иванов",
+        default="",
+    )
+    post = models.CharField(
+        max_length=150,
+        verbose_name="Должность",
+        default="",
+        blank=True,
+        help_text="Например: Операционный директор СЕО-Импульс.",
+    )
+    text = RichTextUploadingField(verbose_name="Текст отзыва", default="", blank=True)
+    image = models.ImageField(
+        upload_to="static/pbn/img",
+        null=True,
+        verbose_name="Фото автора",
+        help_text="размер 56x56",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=(
+                    "png",
+                    "jpg",
+                    "jpeg",
+                )
+            )
+        ],
+    )
+
+    class Meta:
+        verbose_name = "Отзывы"
+        verbose_name_plural = "Отзыв (коммерческие шаблоны: 3)"
+
+    def __str__(self):
+        return f"{self.author}"
+
+
+class HowWork(models.Model):
+    domain = models.ForeignKey(
+        Domains,
+        on_delete=models.PROTECT,
+        verbose_name="Домен",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    name = models.CharField(
+        max_length=300,
+        verbose_name="Названи этапа",
+        help_text="Например: Анализ",
+        default="",
+    )
+    text = models.CharField(
+        max_length=150,
+        verbose_name="Описание этапа",
+        default="",
+        blank=True,
+        help_text="Например: Изучаем ваш бизнес, цели и текущую ситуацию",
+    )
+
+    class Meta:
+        verbose_name = "Шаг"
+        verbose_name_plural = "Шаги (коммерческие шаблоны: 3)"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class DescriptionService(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.PROTECT,
+        verbose_name="Услуга",
+    )
+    sort = models.IntegerField(
+        default=100,
+        verbose_name="Сортировка",
+        help_text="Чем ближе к нулю,тем выше",
+    )
+    name = models.CharField(
+        max_length=300,
+        verbose_name="Тезис",
+        help_text="Например: Стратегический анализ",
+        default="",
+    )
+    text = RichTextUploadingField(
+        verbose_name="Описание тезиса",
+        default="",
+        help_text="Например: Комплексные программы обучения для повышения квалификации сотрудников и развития команды.",
+        blank=True,
+    )
+    icon = models.CharField(
+        max_length=100,
+        verbose_name="Символов UTF-8",
+        help_text="Например:  🎉",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "Тезис"
+        verbose_name_plural = "Тезисы (коммерческие шаблоны: 3)"
+
+    def __str__(self):
+        return f"{self.name}"

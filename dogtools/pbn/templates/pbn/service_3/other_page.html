@@ -1,0 +1,39 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}/{{ slug }}/
+{% endblock canonical %}
+{% block content %}
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs-wrapper">
+        <div class="section-container">
+            <nav class="breadcrumbs"
+                 aria-label="Хлебные крошки"
+                 itemscope
+                 itemtype="http://schema.org/BreadcrumbList">
+                <span itemprop="itemListElement"
+                      itemscope
+                      itemtype="http://schema.org/ListItem"><a href="/" itemprop="item"><span itemprop="name">Главная</span></a>
+            <meta itemprop="position" content="1" />
+        </span>
+        <span class="separator">/</span>
+        <span class="current"
+              itemprop="itemListElement"
+              itemscope
+              itemtype="http://schema.org/ListItem"><span itemprop="name">{{ name }}</span>
+        <meta itemprop="position" content="2" />
+    </span>
+</nav>
+</div>
+</div>
+<!-- Текстовый блок -->
+<section class="section service-description">
+    <h1>{{ h1 }}</h1>
+    <div class="section-container">{{ text|safe }}</div>
+</section>
+<!-- Наши услуги -->
+{% include "pbn/service_3/include/services.html" %}
+{% endblock content %}

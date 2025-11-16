@@ -1,0 +1,80 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}
+    <meta name="robots" content="index, follow" />
+{% endblock index %}
+{% block canonical %}
+    https://{{ request.get_host }}{% url "list_authors" %}{{ author_slug }}/
+{% endblock canonical %}
+{% block content %}
+    <!-- Крошки -->
+    <div class="breadcrumbs-wrapper">
+        <div class="section-container">
+            <nav class="breadcrumbs" aria-label="Хлебные крошки">
+                <a href="/">Главная</a>
+                <span class="separator">/</span>
+                <a href="{% url "blog" %}">Блог</a>
+                <span class="separator">/</span>
+                <a href="{% url "list_authors" %}">Авторы</a>
+                <span class="separator">/</span>
+                <span class="current">{{ author_name|capfirst }}</span>
+            </nav>
+        </div>
+    </div>
+    <!-- Профайл автора-->
+    <section class="author-profile">
+        <div class="section-container">
+            <div class="author-profile-content">
+                <div class="author-profile-header">
+                    <img src="/media/{{ author_img_preview }}"
+                         alt="{{ author_name|capfirst }}"
+                         title="{{ author_name|capfirst }}"
+                         class="author-profile-avatar">
+                    <div class="author-profile-info">
+                        <h1 class="author-profile-name">{{ author_name|capfirst }}</h1>
+                        <p class="author-profile-position">{{ spec|capfirst }}</p>
+                        <div class="author-profile-stats">
+                            <div class="profile-stat">
+                                <span class="stat-number">{{ count_articles }}</span>
+                                <span class="stat-label">Статьи</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="stat-number">{{ sum_view_articles }}</span>
+                                <span class="stat-label">Читателей</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="stat-number">{{ expirense }}</span>
+                                <span class="stat-label">Лет опыта</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="author-profile-bio">
+                    <h2>О себе</h2>
+                    {{ preview|safe }}
+                    <div class="author-expertise">
+                        <div class="expertise-tags">
+                            {% for category in list_category %}
+                                <a href="{% url "blog" %}{{ category.slug }}/"><span class="expertise-tag">{{ category.name|capfirst }}</span></a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Стстьи автора -->
+    <section class="section author-articles">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Статьи автора</h2>
+                <p class="section-subtitle">Все публикации - {{ author_name|capfirst }}</p>
+            </div>
+            <div class="blog-grid" id="authorBlogGrid">
+                {% for article in list_articles %}
+                    {% include "pbn/service_3/include/articles.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

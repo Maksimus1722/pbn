@@ -467,6 +467,7 @@ class ConnectDB:
                         article_table.c.name,
                         article_table.c.slug,
                         article_table.c.page_view,
+                        article_table.c.created,
                         category_table.c.category_slug.label("category_slug"),
                     )
                     .select_from(
@@ -492,6 +493,7 @@ class ConnectDB:
                         "slug": row.slug,
                         "category_slug": row.category_slug,
                         "page_view": row.page_view,
+                        "created": row.created,
                     }
                     for row in rs
                 ]

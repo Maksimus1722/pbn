@@ -1,0 +1,21 @@
+<article class="blog-card">
+    <div class="blog-card-image">
+        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/">
+            <img src="/media/{{ article.img_preview }}"
+                 alt="{{ article.name }}"
+                 query="{{ article.name }}">
+        </a>
+    </div>
+    <div class="blog-card-content">
+        <div class="blog-category">{{ article.category_name }}</div>
+        <a href="{% url "blog" %}{{ article.category_slug }}/{{ article.slug }}/"
+           style="text-decoration:none">
+            <h3 class="blog-card-title">{{ article.name }}</h3>
+        </a>
+        <p class="blog-card-excerpt">{{ article.text_preview|safe }}.</p>
+        <div class="blog-card-meta">
+            <span class="blog-date">📅 {{ article.created|date:"d.m.y" }}</span>
+            <span class="blog-views">👁 {{ article.page_view }}</span>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,179 @@
+{% load static %}
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="ru">
+        <head>
+            {% block index %}
+            {% endblock index %}
+            {% if yandex_webmaster %}<meta name="yandex-verification" content="{{ yandex_webmaster }}" />{% endif %}
+            {% if google_webmaster %}<meta name="google-site-verification" content="{{ google_webmaster }}" />{% endif %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>{{ title }}</title>
+            <meta name="description" content="{{ description|default_if_none:"" }}" />
+            <meta name="keywords" content="{{ keywords|default_if_none:"" }}" />
+            <link rel="canonical" href="{% block canonical %}{% endblock canonical %}" />
+            <link rel="icon" href="/media/{{ favicon }}">
+            <link rel="stylesheet" href=" {% static 'service_3/css/main.css' %}">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            {% if google_analytics %}
+                <!-- Google tag (gtag.js) -->
+                <script async
+                        src="https://www.googletagmanager.com/gtag/js?id={{google_analytics}}"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '{{google_analytics}}');
+                </script>
+            {% endif %}
+            {% if yandex_metrika %}
+                <!-- Yandex.Metrika counter -->
+                <script type="text/javascript">
+                (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+                (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+                ym({{yandex_metrika}}, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+                });
+                </script>
+                <noscript>
+                    <div>
+                        <img src="https://mc.yandex.ru/watch/{{ yandex_metrika }}"
+                             style="position:absolute;
+                                    left:-9999px"
+                             alt="" />
+                    </div>
+                </noscript>
+                <!-- /Yandex.Metrika counter -->
+            {% endif %}
+        </head>
+        <body>
+            <header class="header" id="header">
+                <div class="header-container">
+                    <a href="/" class="logo">{{ name_site }}</a>
+                    <nav class="nav" id="nav">
+                        <ul class="nav-links">
+                            <li>
+                                <a href="{% url "services" %}">Услуги</a>
+                            </li>
+                            {% for page in list_other_page %}
+                                <li>
+                                    <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                </li>
+                            {% endfor %}
+                            <li>
+                                <a href="{% url "blog" %}">{{ name_info }}</a>
+                            </li>
+                        </ul>
+                        <div class="contact-info">
+                            <a href="tel:{{ phone_link }}">{{ phone }}</a>
+                            <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
+                        </div>
+                        <a href="#contact" class="cta-button">Получить консультацию</a>
+                    </nav>
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Меню">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </header>
+            {% block content %}
+            {% endblock content %}
+            <section class="section cta-section" id="contact">
+                <div class="section-container">
+                    <div class="cta-content">
+                        <h2>Остались вопросы?</h2>
+                        <p>Оставьте заявку, и наш специалист свяжется с вами в течение часа</p>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Ваше имя</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Телефон</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Сообщение</label>
+                                <textarea id="message" name="message" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <footer class="footer">
+                <div class="footer-container">
+                    <div class="footer-content">
+                        <div class="footer-about">
+                            <h3>{{ name_site }}</h3>
+                            <p>{{ info_footer }}</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Компания</h4>
+                            <ul>
+                                {% for page in list_other_page %}
+                                    <li>
+                                        <a href="/{{ page.slug }}/">{{ page.name|capfirst }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Услуги</h4>
+                            <ul>
+                                {% for service in list_services %}
+                                    <li>
+                                        <a href="{% url "services" %}{{ service.slug }}/">{{ service.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Контакты</h4>
+                            <ul>
+                                <li>
+                                    <a href="tel:{{ phone_link }}">{{ phone }}</a>
+                                </li>
+                                <li>
+                                    <a href="mailto:{{ emal_start }}@{{ request.get_host }}">{{ emal_start }}@{{ request.get_host }}</a>
+                                </li>
+                                <li>{{ region }},{{ street }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; {{ now_year }} {{ name_site }}. Все права защищены.</p>
+                    </div>
+                </div>
+            </footer>
+            <div itemscope=""
+                 itemtype="http://schema.org/Organization"
+                 class
+                 DisplaNone>
+                <meta itemprop="name" content="{{ name_site }}">
+                <meta itemprop="email" content="{{ emal_start }}@{{ request.get_host }}">
+                <meta itemprop="phone" content="{{ phone }}">
+                <meta itemprop="addressLocality" content="{{ region }}">
+                <meta itemprop="streetAddress" content="{{ street }}">
+                <meta itemprop="logo" content="/media/{{ logo }}">
+            </div>
+        </body>
+        <script src={% static 'service_3/js/blog-detail.js' %}></script>
+        <script src={% static 'service_3/js/blog.js' %}></script>
+        <script src={% static 'service_3/js/main.js' %}></script>
+    </html>
+{% endspaceless %}

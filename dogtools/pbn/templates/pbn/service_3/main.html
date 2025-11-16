@@ -1,0 +1,50 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% endblock canonical %}
+{% block content %}
+    <!-- Главный экран с картинкой -->
+    <section class="hero">
+        <img src="images/hero-bg.jpg"
+             alt="Modern abstract business background with flowing lines"
+             class="hero-background">
+        <div class="hero-container">
+            {% for slider in list_sliders|slice:":1" %}
+                <div class="hero-content">
+                    <h1>{{ slider.name }}</h1>
+                    <p>{{ slider.text }}</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="button-primary">Консультация</a>
+                        <a href="{{ slider.link }}" class="button-secondary">Подробнее</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- Наши услуги -->
+    {% include "pbn/service_3/include/services.html" %}
+    <!-- Почему мы -->
+    {% include "pbn/service_3/include/why_we.html" %}
+    <!-- Кейсы -->
+    {% include "pbn/service_3/include/case.html" %}
+    <!-- Отзывы -->
+    {% include "pbn/service_3/include/reviews.html" %}
+    <!-- Как мы работаем -->
+    {% include "pbn/service_3/include/how_work.html" %}
+    <!-- Статьи -->
+    <section class="section blog-preview">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Полезные статьи</h2>
+            </div>
+            <div class="blog-preview-grid">
+                {% for article in list_articles|slice:":6" %}
+                    {% include "pbn/service_3/include/articles.html" %}
+                {% endfor %}
+            </div>
+            <div style="text-align: center; margin-top: 48px;">
+                <a href="{% url "blog" %}" class="button-primary">Все статьи</a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

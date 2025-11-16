@@ -1,0 +1,319 @@
+{% extends 'pbn/service_3/base.html' %}
+{% load static %}
+{% block index %}<meta name="robots" content="index, follow" />{% endblock index %}
+{% block canonical %}https://{{ request.get_host }}{% url "services" %}{{ service_slug }}/{% endblock canonical %}
+{% block content %}
+    <!--  Крошки  -->
+    <div class="breadcrumbs-wrapper">
+        <div class="section-container">
+            <nav class="breadcrumbs"
+                 aria-label="Навигация"
+                 itemscope
+                 itemtype="http://schema.org/BreadcrumbList">
+                <span itemprop="itemListElement"
+                      itemscope
+                      itemtype="http://schema.org/ListItem">
+                    <a href="/" itemprop="item"><span itemprop="name">Главная</span></a>
+                    <meta itemprop="position" content="1" />
+                </span>
+                <span class="separator">/</span>
+                <span itemprop="itemListElement"
+                      itemscope
+                      itemtype="http://schema.org/ListItem"><a href="{% url "services" %}" itemprop="item"><span itemprop="name">Каталог услуг</span></a>
+            <meta itemprop="position" content="2" />
+        </span>
+        <span class="separator">/</span>
+        <span itemprop="itemListElement"
+              itemscope
+              itemtype="http://schema.org/ListItem"><span class="current" itemprop="name">{{ service_name }}</span>
+        <meta itemprop="position" content="3" />
+    </span>
+</nav>
+</div>
+</div>
+<!-- Главный экран услуг -->
+<section class="service-hero"
+         style="background: linear-gradient(135deg, var(--accent) 0%, #2c3e50 100%);
+                position: relative;
+                overflow: hidden">
+    <div class="section-container"
+         style="position: relative;
+                z-index: 2;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px">
+        <div class="service-hero-content" style="padding: 80px 0;">
+            <div class="service-hero-text"
+                 style="text-align: center;
+                        max-width: 800px;
+                        margin: 0 auto">
+                <h1 style="font-size: 48px;
+                           margin-bottom: 20px;
+                           color: #fff;
+                           text-shadow: 0 2px 4px rgba(0,0,0,0.3)">{{ service_name }}</h1>
+                <p class="service-lead"
+                   style="font-size: 20px;
+                          line-height: 1.6;
+                          margin-bottom: 50px;
+                          color: #fff;
+                          text-shadow: 0 1px 2px rgba(0,0,0,0.2)">{{ text_preview }}</p>
+                <div class="service-hero-buttons" style="margin-top: 50px;">
+                    <a href="#contact"
+                       class="button-primary"
+                       style="background: var(--accent);
+                              color: var(--white);
+                              padding: 16px 36px;
+                              border-radius: 6px;
+                              text-decoration: none;
+                              font-weight: 600;
+                              font-size: 16px;
+                              transition: all 0.2s ease;
+                              display: inline-block;
+                              margin: 0 10px">Заказать услугу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('images/hero-bg.jpg') center/cover;
+                opacity: 0.1;
+                z-index: 1"></div>
+</section>
+<!-- Промо-баннер -->
+<section class="promo-banner"
+         style="background: linear-gradient(135deg, #2c3e50 0%, #1a1a1a 100%);
+                padding: 40px;
+                margin: 60px 0;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                position: relative;
+                overflow: hidden">
+    <div class="section-container">
+        <div class="promo-content"
+             style="position: relative;
+                    z-index: 2;
+                    text-align: center">
+            <div class="promo-badge"
+                 style="display: inline-block;
+                        background: var(--accent);
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 30px;
+                        font-weight: 600;
+                        font-size: 14px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.1)">Специальное предложение</div>
+            <h3 style="font-size: 32px;
+                       color: white;
+                       margin-bottom: 16px;
+                       text-shadow: 0 2px 4px rgba(0,0,0,0.2)">{{ action_name }}</h3>
+            <span style="font-size: 18px;
+                         color: rgba(255,255,255,0.8);
+                         margin-bottom: 30px;
+                         max-width: 600px;
+                         margin-left: auto;
+                         margin-right: auto">{{ action_text|safe }}</span>
+            <a href="#contact-form"
+               class="button-primary"
+               style="display: inline-block;
+                      padding: 16px 36px;
+                      background: var(--accent);
+                      color: white;
+                      text-decoration: none;
+                      border-radius: 6px;
+                      font-weight: 600;
+                      font-size: 16px;
+                      transition: all 0.3s ease;
+                      box-shadow: 0 4px 15px rgba(0,0,0,0.2)">Воспользоваться предложением</a>
+        </div>
+    </div>
+    <div style="position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('images/hero-bg.jpg') center/cover;
+                opacity: 0.05;
+                z-index: 1"></div>
+</section>
+<!-- Описание  -->
+<section class="section service-description">
+    <div class="section-container">
+        <div class="service-description-grid"
+             style="display: grid;
+                    grid-template-columns: 2fr 1fr;
+                    gap: 40px;
+                    margin-top: 60px">
+            <div class="service-description-main">
+                <h2>Что включает услуга - {{ service_name }}</h2>
+                <p>{{ one_text|safe }}</p>
+                <div class="service-features"
+                     style="display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 30px;
+                            margin-top: 30px">
+                    {% for thesis in list_thesis_service %}
+                        <div class="feature-item"
+                             style="display: flex;
+                                    gap: 15px;
+                                    align-items: flex-start">
+                            <div class="feature-icon" style="font-size: 32px; line-height: 1;">{{ thesis.icon }}</div>
+                            <div class="feature-content">
+                                <h3 style="margin-bottom: 8px; font-size: 18px;">{{ thesis.name }}</h3>
+                                <p>{{ thesis.text|safe }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="service-sidebar">
+                <div class="sidebar-card"
+                     style="background: var(--bg-light);
+                            padding: 25px;
+                            border-radius: 8px;
+                            margin-bottom: 20px">
+                    <h3 style="margin-bottom: 15px;">Быстрый заказ</h3>
+                    <p style="margin-bottom: 20px;">Оставьте заявку, и мы свяжемся с вами в течение 30 минут</p>
+                    <a href="#contact"
+                       class="button-primary full-width"
+                       style="display: block;
+                              text-align: center;
+                              padding: 12px;
+                              background: var(--accent);
+                              color: white;
+                              text-decoration: none;
+                              border-radius: 6px;
+                              font-weight: 600">Заказать консультацию</a>
+                </div>
+                <div class="sidebar-card"
+                     style="background: var(--bg-light);
+                            padding: 25px;
+                            border-radius: 8px">
+                    <h3 style="margin-bottom: 15px;">Нужна помощь?</h3>
+                    <p style="margin-bottom: 15px;">Наши специалисты ответят на все ваши вопросы</p>
+                    <a href="tel:+{{ phone_link }}"
+                       class="contact-link"
+                       style="display: block;
+                              margin-bottom: 10px;
+                              color: var(--accent);
+                              text-decoration: none;
+                              font-weight: 600">{{ phone }}</a>
+                    <a href="mailto:{{ emal_start }}@{{ request.get_host }}"
+                       class="contact-link"
+                       style="display: block;
+                              color: var(--accent);
+                              text-decoration: none;
+                              font-weight: 600">{{ emal_start }}@{{ request.get_host }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Почему мы -->
+{% include "pbn/service_3/include/why_we.html" %}
+<!-- Как проходит работа -->
+{% include "pbn/service_3/include/how_work.html" %}
+<!--Наши кейсы -->
+{% include "pbn/service_3/include/case.html" %}
+<!-- Цены -->
+<section class="section pricing-section" id="pricing">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Стоимость услуги - {{ service_name|lower }}</h2>
+        </div>
+        <div class="pricing-table-wrapper">
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>
+                            {% if  name_table_price %}
+                                {{ name_table_price }}
+                            {% else %}
+                                Услуга
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if  value_table_price %}
+                                {{ value_table_price }}
+                            {% else %}
+                                Стоимость
+                            {% endif %}
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for price  in list_prices %}
+                        <tr>
+                            <td data-label="Услуга">
+                                <strong>{{ price.name }}</strong>
+                            </td>
+                            <td data-label="Описание">{{ price.price_name }}</td>
+                            <td>
+                                <a href="#contact" class="table-button">Заказать</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- Отзывы -->
+{% include "pbn/service_3/include/reviews.html" %}
+<!-- Вопросы -->
+<section class="section faq-section">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Частые вопросы по услуге - {{ service_name|lower }}</h2>
+        </div>
+        <div class="faq-list"  itemscope itemtype="https://schema.org/FAQPage">
+            {% for question in list_question %}
+                <div class="faq-item"
+                     itemscope
+                     itemprop="mainEntity"
+                     itemtype="https://schema.org/Question">
+                    <button class="faq-question">
+                        <span itemprop="name">{{ question.question|capfirst }}</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer"
+                         itemscope
+                         itemprop="acceptedAnswer"
+                         itemtype="https://schema.org/Answer">
+                        <span itemprop="text">{{ question.answer|safe }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Наши услуги -->
+{% include "pbn/service_3/include/services.html" %}
+<div itemscope itemtype="http://schema.org/Product">
+    <meta itemprop="name" content="{{ service_name }}">
+    <div itemtype="http://schema.org/AggregateOffer"
+         itemscope=""
+         itemprop="offers">
+        <meta content="{{ count_price }}" itemprop="offerCount">
+        <meta content="{{ max_price }}" itemprop="highPrice">
+        <meta content="{{ min_price }}" itemprop="lowPrice">
+        <meta content="RUB" itemprop="priceCurrency">
+    </div>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+    <meta itemprop="name" content="{{ service_name }}">
+    <div itemtype="http://schema.org/AggregateOffer"
+         itemscope=""
+         itemprop="offers">
+        <meta content="{{ count_price }}" itemprop="offerCount">
+        <meta content="{{ max_price }}" itemprop="highPrice">
+        <meta content="{{ min_price }}" itemprop="lowPrice">
+        <meta content="RUB" itemprop="priceCurrency">
+    </div>
+</div>
+{% endblock content %}

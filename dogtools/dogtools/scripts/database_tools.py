@@ -12,6 +12,27 @@ class ConnectDB:
         self.connect_db = (
             "mysql+pymysql://max_shark:fdfde0fdf$@176.99.9.17:3306/pbn_crm"
         )
+        self.list_template_question = {
+            "service_2",
+            "service_3",
+        }  # шаблоны, где подгружаем вопрос-ответ для услуг
+        self.list_template_actions = {
+            "service_2"
+        }  # шаблоны,где подгружаем акции для услуг
+        self.list_template_galery = {
+            "service_2"
+        }  # шаблоны, где подгружаем слайдер для главной страницы
+        self.list_template_benefits = {
+            "service_3"
+        }  # шаблоны, где подгружаем преимущества
+        self.list_template_case = {"service_3"}  # шаблоны, где подгружаем кейсы
+        self.list_template_review = {"service_3"}  # шаблоны, где подгружаем отзывы
+        self.list_template_howwork = {
+            "service_3"
+        }  # шаблоны, где подгружаем блок с этапами работ
+        self.list_template_thesis_service = {
+            "service_3"
+        }  # шаблоны, где подгружаем тезисы для услуги
 
     def get_info_main_page(self) -> dict:
         """Получение инофрмации для главной страницы"""
@@ -133,12 +154,18 @@ class ConnectDB:
                     "list_top_arcicle": [],
                 }
             data["list_sliders"] = self._get_main_sliders(data["domain_id"])
-            list_template_actions = {"service_2"}
-            list_template_galery = {"service_2"}
-            if data["template"] in list_template_actions:
+            if data["template"] in self.list_template_actions:
                 data["list_actions"] = self._get_actions(data["domain_id"])
-            if data["template"] in list_template_galery:
+            if data["template"] in self.list_template_galery:
                 data["list_galery"] = self._get_galery(data["domain_id"])
+            if data["template"] in self.list_template_benefits:
+                data["list_benefits"] = self._get_benefits(data["domain_id"])
+            if data["template"] in self.list_template_case:
+                data["list_cases"] = self._get_cases(data["domain_id"])
+            if data["template"] in self.list_template_review:
+                data["list_review"] = self._get_review(data["domain_id"])
+            if data["template"] in self.list_template_howwork:
+                data["list_howwork"] = self._get_howwork(data["domain_id"])
             self._manage_get_otherpage_services_category(data["domain_id"]),
             if (
                 self.dict_other_page["valid"]
@@ -400,7 +427,7 @@ class ConnectDB:
                         for row in rs
                     ],
                 }
-            list_templates_extra_authors = {"service_2"}
+            list_templates_extra_authors = {"service_2", "service_3"}
             if data["template"] in list_templates_extra_authors:
                 data["count_articles"] = len(data["list_articles"])
                 data["sum_view_articles"] = sum(
@@ -442,6 +469,7 @@ class ConnectDB:
                         author_table.c.slug,
                         author_table.c.spec,
                         author_table.c.img_preview,
+                        author_table.c.preview,
                         domain_table.c.logo.label("logo"),
                         domain_table.c.favicon.label("favicon"),
                         domain_table.c.id.label("domain_id"),
@@ -512,6 +540,7 @@ class ConnectDB:
                             "slug": row.slug,
                             "img_preview": row.img_preview,
                             "spec": row.spec,
+                            "preview": row.preview,
                         }
                         for row in rs
                     ],
@@ -1128,6 +1157,8 @@ class ConnectDB:
                         service_table.c.action_name,
                         service_table.c.action_text,
                         service_table.c.action_value,
+                        service_table.c.one_text,
+                        service_table.c.text_preview,
                     )
                     .select_from(
                         service_table.join(
@@ -1181,12 +1212,26 @@ class ConnectDB:
                     "action_value": first_rs.action_value,
                     "action_date_end": datetime.datetime.now()
                     + datetime.timedelta(days=10),
+                    "one_text": first_rs.one_text,
+                    "text_preview": first_rs.text_preview,
                 }
-            list_template_question = {"service_2"}
-            if data["template"] in list_template_question:
+            if data["template"] in self.list_template_question:
                 data["list_question"] = self._get_question(data["service_id"])
                 for i, el in enumerate(data["list_question"]):
                     el["active"] = True if i == 0 else False
+            if data["template"] in self.list_template_benefits:
+
+                data["list_benefits"] = self._get_benefits(data["domain_id"])
+            if data["template"] in self.list_template_case:
+                data["list_cases"] = self._get_cases(data["domain_id"])
+            if data["template"] in self.list_template_review:
+                data["list_review"] = self._get_review(data["domain_id"])
+            if data["template"] in self.list_template_howwork:
+                data["list_howwork"] = self._get_howwork(data["domain_id"])
+            if data["template"] in self.list_template_thesis_service:
+                data["list_thesis_service"] = self._get_thesis_service(
+                    data["service_id"]
+                )
             self._manage_get_price_text_service(data["service_id"])
             if self.list_text_block["valid"] and self.list_prices["valid"]:
                 data.update(
@@ -1399,6 +1444,8 @@ class ConnectDB:
                         service_table.c.sort,
                         service_table.c.preview_picture,
                         service_table.c.slug,
+                        service_table.c.icon_preview,
+                        service_table.c.text_preview,
                     )
                     .select_from(service_table)
                     .where(
@@ -1412,6 +1459,8 @@ class ConnectDB:
                         "name": row.name,
                         "preview_picture": row.preview_picture,
                         "slug": row.slug,
+                        "icon_preview": row.icon_preview,
+                        "text_preview": row.text_preview,
                     }
                     for row in rs
                 ]
@@ -1476,7 +1525,8 @@ class ConnectDB:
         except:
             self.list_prices = {"valid": False}
 
-    def _get_text_block(self, service_id):
+    def _get_text_block(self, service_id: int) -> dict:
+        """Получение текстово-графичеких блоков для конкретной страницы услуги"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -1515,7 +1565,7 @@ class ConnectDB:
             self.list_text_block = {"valid": False}
 
     def _get_actions(self, domain_id: int) -> dict:
-        """"""
+        """Получени списка акций для главной страницы конкретного домена"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -1550,7 +1600,7 @@ class ConnectDB:
             return list_actions
 
     def _get_galery(self, domain_id: int) -> dict:
-        """"""
+        """Получение списка галереи для слайдера на главную страницу домена"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -1583,7 +1633,7 @@ class ConnectDB:
             return list_galery
 
     def _get_question(self, service_id: int) -> dict:
-        """"""
+        """Получение списка вопросов для конкретной страницы услуги"""
         try:
             engine = sa.create_engine(self.connect_db)
             with engine.connect() as con:
@@ -1614,3 +1664,185 @@ class ConnectDB:
             list_questions = []
         finally:
             return list_questions
+
+    def _get_benefits(self, domain_id: int) -> dict:
+        """Получение списка преимущест для заданного домена"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                benefits_table = meta.tables["pbn_benifitscompany"]
+                query = (
+                    sa.select(
+                        benefits_table.c.name,
+                        benefits_table.c.text,
+                        benefits_table.c.icon,
+                        benefits_table.c.sort,
+                    )
+                    .select_from(benefits_table)
+                    .where(
+                        benefits_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(benefits_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_benefits = [
+                    {
+                        "name": row.name,
+                        "text": row.text,
+                        "icon": row.icon,
+                        "sort": row.sort,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_benefits = []
+        finally:
+            return list_benefits
+
+    def _get_cases(self, domain_id: int) -> dict:
+        """Получение списка кейсов для заданного домена"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                cases_table = meta.tables["pbn_cases"]
+                query = (
+                    sa.select(
+                        cases_table.c.name,
+                        cases_table.c.text,
+                        cases_table.c.category_case,
+                        cases_table.c.image,
+                        cases_table.c.sort,
+                    )
+                    .select_from(cases_table)
+                    .where(
+                        cases_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(cases_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_cases = [
+                    {
+                        "name": row.name,
+                        "text": row.text,
+                        "category_case": row.category_case,
+                        "image": row.image,
+                        "sort": row.sort,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_cases = []
+        finally:
+            return list_cases
+
+    def _get_review(self, domain_id: int) -> dict:
+        """Получение списка отзывов для домена"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                review_table = meta.tables["pbn_review"]
+                query = (
+                    sa.select(
+                        review_table.c.author,
+                        review_table.c.post,
+                        review_table.c.text,
+                        review_table.c.image,
+                        review_table.c.sort,
+                    )
+                    .select_from(review_table)
+                    .where(
+                        review_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(review_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_review = [
+                    {
+                        "author": row.author,
+                        "text": row.text,
+                        "post": row.post,
+                        "image": row.image,
+                        "sort": row.sort,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_review = []
+        finally:
+            return list_review
+
+    def _get_howwork(self, domain_id: int) -> dict:
+        """Получение блока - как мы работаем" для заданного домена"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                howwork_table = meta.tables["pbn_howwork"]
+                query = (
+                    sa.select(
+                        howwork_table.c.name,
+                        howwork_table.c.text,
+                        howwork_table.c.sort,
+                    )
+                    .select_from(howwork_table)
+                    .where(
+                        howwork_table.c.domain_id == domain_id,
+                    )
+                    .order_by(sa.asc(howwork_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_howwork = [
+                    {
+                        "name": row.name,
+                        "text": row.text,
+                        "sort": row.sort,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_howwork = []
+        finally:
+            return list_howwork
+
+    def _get_thesis_service(self, service_id: int) -> dict:
+        """Получение списка тезисов для конкретной страницы услуг"""
+        try:
+            engine = sa.create_engine(self.connect_db)
+            with engine.connect() as con:
+                meta = sa.MetaData()
+                meta.reflect(engine)
+                descriptionservice_table = meta.tables["pbn_descriptionservice"]
+                query = (
+                    sa.select(
+                        descriptionservice_table.c.name,
+                        descriptionservice_table.c.text,
+                        descriptionservice_table.c.sort,
+                        descriptionservice_table.c.icon,
+                    )
+                    .select_from(descriptionservice_table)
+                    .where(
+                        descriptionservice_table.c.service_id == service_id,
+                    )
+                    .order_by(sa.asc(descriptionservice_table.c.sort))
+                )
+                rs = con.execute(query).fetchall()
+                list_thesis_service = [
+                    {
+                        "name": row.name,
+                        "text": row.text,
+                        "sort": row.sort,
+                        "icon": row.icon,
+                    }
+                    for row in rs
+                ]
+        except:
+            list_thesis_service = []
+        finally:
+            return list_thesis_service

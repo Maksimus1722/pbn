@@ -1,0 +1,22 @@
+<section class="section portfolio" id="portfolio">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Наши кейсы</h2>
+            <p class="section-subtitle">Примеры успешно реализованных проектов</p>
+        </div>
+        <div class="portfolio-grid">
+            {% for case in list_cases %}
+                <div class="portfolio-item">
+                    <img src="/media/{{ case.image }}"
+                         alt="{{ case.name }}"
+                         class="portfolio-image">
+                    <div class="portfolio-content">
+                        <div class="portfolio-category">{{ case.category_case }}</div>
+                        <h3>{{ case.name }}</h3>
+                        <p>{{ case.text }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

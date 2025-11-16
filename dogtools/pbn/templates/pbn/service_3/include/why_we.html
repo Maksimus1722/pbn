@@ -1,0 +1,18 @@
+<section class="section advantages" id="about">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <p class="section-subtitle">Ключевые преимущества работы с нашей компанией</p>
+        </div>
+        <div class="advantages-grid">
+            {% for benefit in list_benefits %}
+                <div class="advantage-item">
+                    <div class="advantage-number">{{ forloop.counter }}</div>
+                    <div class="advantage-icon">{{ benefit.icon }}</div>
+                    <h3>{{ benefit.name }}</h3>
+                    <p>{{ benefit.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
