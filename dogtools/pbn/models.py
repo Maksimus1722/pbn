@@ -224,21 +224,21 @@ class Domains(models.Model):
         default="",
         blank=True,
         verbose_name="Дополнительный текст на главной",
-        help_text="Используется для шаблонов: услуги-1",
+        help_text="Используется для шаблонов: услуги-1,2",
     )
     extra_subtitle = models.CharField(
         max_length=100,
         default="",
         blank=True,
         verbose_name="Подзаголовок 2-ого текста главной",
-        help_text="Используется для шаблонов: услуги-1",
+        help_text="Используется для шаблонов: услуги-1,2",
     )
     extra_picture = models.ImageField(
         upload_to="static/pbn/img",
         null=True,
         blank=True,
         verbose_name="Дополнительное изображение на главной",
-        help_text="Используется для шаблонов: услуги-1 (пропорции 3x2)",
+        help_text="Используется для шаблонов: услуги-1,2 (пропорции 3x2)",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=(
